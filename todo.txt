@@ -1,0 +1,4 @@
+- [ ] train.py: Scripts for training models. Implement the code to train the models.
+- [ ] evaluate.py: Script to evaluate the model. Implement the code to evaluate the model.
+- [ ] preprocess.py: Script for preprocessing data. Implement the code necessary for data preprocessing.
+- [ ] main.py: Scripts for running the experiment, using train.py, evaluate.py, and preprocess.py to implement the entire process from model training to evaluation.

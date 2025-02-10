@@ -1,0 +1,16 @@
+{
+    "training": {
+        "batch_size": 128,
+        "epochs": 2,
+        "learning_rate": 0.01
+    },
+    "optimizer": {
+        "beta_factors": [0.9, 0.99],
+        "momentum": 0.9,
+        "weight_decay": 0,
+        "epsilon": 1e-6
+    },
+    "data": {
+        "dataset": "cifar10"
+    }
+}
