@@ -25,6 +25,8 @@ class AAMG(Optimizer):
             for p in group['params']:
                 state = self.state[p]
                 state['velocities'] = [torch.zeros_like(p.data) for _ in beta_factors]
+                state['sum_grad_squared'] = torch.zeros_like(p.data)
+                state['step'] = 0
 
     def step(self, closure=None):
         loss = None
@@ -41,15 +43,29 @@ class AAMG(Optimizer):
                     grad = grad.add(p.data, alpha=group['weight_decay'])
                 
                 state = self.state[p]
+                state['step'] += 1
                 
-                # Update velocities
+                # Update sum of squared gradients (MADGRAD's adaptive scaling)
+                state['sum_grad_squared'].addcmul_(grad, grad, value=1)
+                
+                # Compute adaptive learning rate
+                adaptive_lr = group['lr'] / (state['sum_grad_squared'].sqrt() + group['eps'])
+                
+                # Update velocities with AggMo's multiple momentum factors
                 for i, beta in enumerate(self.beta_factors):
-                    state['velocities'][i].mul_(beta).add_(grad, alpha=1 - beta)
+                    if i == 0:
+                        # First momentum incorporates adaptive scaling
+                        state['velocities'][i].mul_(beta).addcmul_(grad, adaptive_lr, value=1 - beta)
+                    else:
+                        # Additional momentums for stability
+                        state['velocities'][i].mul_(beta).add_(grad, alpha=1 - beta)
                 
-                # Compute average momentum
-                avg_momentum = sum(v for v in state['velocities']) / len(self.beta_factors)
+                # Compute weighted average of momentums
+                avg_momentum = sum(v * (1.0 / (1.0 - beta)) 
+                                 for v, beta in zip(state['velocities'], self.beta_factors))
+                avg_momentum.div_(sum(1.0 / (1.0 - beta) for beta in self.beta_factors))
                 
                 # Update parameters
-                p.data.add_(avg_momentum, alpha=-group['lr'])
+                p.data.add_(avg_momentum, alpha=-1.0)
 
         return loss
