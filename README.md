@@ -1,1 +1,10 @@
-# experiment_script_matsuzawa
+
+# Hybrid Ehrenfest Modeling for Efficient Diffusion Acceleration
+> ⚠️ **NOTE:** This research is an automatic research using Research Graph.
+## Abstract
+The phenomenon of diffusion-based generative models signifies a transformative advancement within artificial intelligence, addressing tasks in domains such as image synthesis and text generation. However, their inherently sequential sampling mechanisms result in substantial computational overheads, posing limitations for real-time applications. Tackling these challenges, we propose the Hybrid Ehrenfest Diffusion Acceleration (HEDA) framework. This innovative approach synergizes advanced parallel fixed-point iteration methodologies, akin to the ParaTAA algorithm, with a discrete state-transformation paradigm inspired by the Ehrenfest process. HEDA's two-phase sampling protocol initially projects continuous latent spaces into discrete states utilizing conditional expectations, facilitating stabilization, and transitions. Subsequently, it optimizes computational resources through parallel adaptive updates, significantly accelerating sampling convergence. Empirical evaluations highlight that HEDA surpasses baseline methods, exhibiting robustness across varying operational configurations while markedly reducing computational demands. This contribution establishes a new benchmark for efficient and scalable generative modeling, enabling broader applications and enhancing machine learning systems.
+
+- [Full paper](https://github.com/auto-res2/experiment_script_matsuzawa/blob/devin-987f2331e4c64e92818b4ad0780151f1/paper/paper.pdf)
+- [Related work](http://arxiv.org/abs/2402.09970v2)
+- [Research Graph execution log](https://github.com/auto-res2/experiment_script_matsuzawa/blob/devin-987f2331e4c64e92818b4ad0780151f1/logs/research_graph_log.json)
+- [Devin execution log](https://app.devin.ai/sessions/987f2331e4c64e92818b4ad0780151f1)
