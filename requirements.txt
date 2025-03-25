@@ -1,0 +1,6 @@
+torch>=2.2.0
+torchvision>=0.13.0
+numpy>=1.24.0
+matplotlib
+tensorboard
+einops
