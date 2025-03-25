@@ -58,13 +58,15 @@ def evaluate_model(model, data_loader, config, model_name="model"):
     for i in range(min(5, num_gen_images)):
         plt.subplot(2, 5, i+1)
         img = generated_images[i].detach().cpu().permute(1, 2, 0).numpy()
-        img = (img + 1) / 2  # rescale from [-1, 1] to [0, 1]
+        # Properly clip values to [0, 1] range to avoid matplotlib warnings
+        img = np.clip((img + 1) / 2, 0, 1)
         plt.imshow(img)
         plt.axis('off')
         
         plt.subplot(2, 5, i+6)
         img = real_images[i].detach().cpu().permute(1, 2, 0).numpy()
-        img = (img + 1) / 2  # rescale from [-1, 1] to [0, 1]
+        # Properly clip values to [0, 1] range to avoid matplotlib warnings
+        img = np.clip((img + 1) / 2, 0, 1)
         plt.imshow(img)
         plt.axis('off')
     

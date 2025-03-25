@@ -288,17 +288,35 @@ def main():
     Main function to run the HFID experiments.
     """
     print("Starting HFID experiments...")
+    print("="*80)
+    print("Hierarchically Factorized Isometric Diffusion (HFID) Experiment")
+    print("="*80)
     
     # Setup environment
     device = setup_environment()
     
+    # Print experiment configuration
+    print("\nExperiment Configuration:")
+    print(f"  Image Size: {config['image_size']}x{config['image_size']}")
+    print(f"  Batch Size: {config['batch_size']}")
+    print(f"  Learning Rate: {config['learning_rate']}")
+    print(f"  Number of Epochs: {config['num_epochs']}")
+    print(f"  Training Samples: {config['train_samples']}")
+    print(f"  Validation Samples: {config['val_samples']}")
+    print(f"  Using Isometry: {config.get('use_isometry', True)}")
+    print(f"  Using Consistency: {config.get('use_consistency', True)}")
+    
     # Preprocess data
+    print("\nPreprocessing data...")
     train_loader, val_loader = preprocess_data(config)
+    print(f"  Training batches: {len(train_loader)}")
+    print(f"  Validation batches: {len(val_loader)}")
     
     # Run experiments based on configuration
     results = {}
     
     if config['run_experiment1']:
+        print("\nRunning Experiment 1: Global vs. Joint Quality and Disentanglement Comparison")
         hfid_model, base_model, hfid_metrics, base_metrics = experiment1(
             train_loader, val_loader, config, device
         )
@@ -306,20 +324,58 @@ def main():
             'hfid_metrics': hfid_metrics,
             'base_metrics': base_metrics
         }
+        
+        # Print comparison summary
+        print("\nExperiment 1 Summary:")
+        print("  HFID vs BaseMethod Comparison:")
+        print(f"  FID Score: {hfid_metrics['fid']:.2f} vs {base_metrics['fid']:.2f}")
+        print(f"  SSIM: {hfid_metrics['ssim']:.2f} vs {base_metrics['ssim']:.2f}")
+        print(f"  MIG: {hfid_metrics['mig']:.2f} vs {base_metrics['mig']:.2f}")
+        print(f"  Perceptual Loss: {hfid_metrics['perceptual_loss']:.2f} vs {base_metrics['perceptual_loss']:.2f}")
     
     if config['run_experiment2']:
+        print("\nRunning Experiment 2: Ablation Study on Hierarchical Structure Components")
         ablation_results = experiment2(
             train_loader, val_loader, config, device
         )
         results['experiment2'] = ablation_results
+        
+        # Print ablation summary
+        print("\nExperiment 2 Summary:")
+        print("  Ablation Study Results:")
+        for variant in config['variants']:
+            name = variant['name']
+            metrics = ablation_results[name]['metrics']
+            print(f"  {name}:")
+            print(f"    FID: {metrics['fid']:.2f}")
+            print(f"    SSIM: {metrics['ssim']:.2f}")
+            print(f"    MIG: {metrics['mig']:.2f}")
+            print(f"    Perceptual Loss: {metrics['perceptual_loss']:.2f}")
     
     if config.get('run_experiment3', False):
+        print("\nRunning Experiment 3: Computational Efficiency and Scalability Analysis")
         efficiency_results = experiment3(
             train_loader, val_loader, config, device
         )
         results['experiment3'] = efficiency_results
+        
+        # Print efficiency summary
+        print("\nExperiment 3 Summary:")
+        print("  Computational Efficiency Results:")
+        hfid_avg_time = sum(efficiency_results['hfid_times']) / len(efficiency_results['hfid_times'])
+        base_avg_time = sum(efficiency_results['base_times']) / len(efficiency_results['base_times'])
+        print(f"  Average Epoch Time - HFID: {hfid_avg_time:.2f}s, Base: {base_avg_time:.2f}s")
+        
+        if torch.cuda.is_available():
+            hfid_avg_mem = sum(efficiency_results['hfid_memory']) / len(efficiency_results['hfid_memory'])
+            base_avg_mem = sum(efficiency_results['base_memory']) / len(efficiency_results['base_memory'])
+            print(f"  Average Memory Usage - HFID: {hfid_avg_mem:.2f}GB, Base: {base_avg_mem:.2f}GB")
     
-    print("\nAll experiments completed successfully!")
+    print("\n" + "="*80)
+    print("All experiments completed successfully!")
+    print("Results saved to ./logs/ directory")
+    print("="*80)
+    
     return results
 
 if __name__ == "__main__":

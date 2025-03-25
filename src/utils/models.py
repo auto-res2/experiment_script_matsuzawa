@@ -61,8 +61,16 @@ class HFIDModel(nn.Module):
         return loss
 
     def generate(self, num_images, device):
-        # For demo purposes - generate random images with correct dimensions
+        """
+        Generate random images for demonstration purposes.
+        
+        In a real implementation, this would use the trained model to generate images.
+        Here we generate normalized random tensors to simulate model output.
+        """
+        # Generate random tensors and normalize to avoid extreme values
         z = torch.randn(num_images, 3, 128, 128, device=device)
+        # Apply tanh to constrain values to [-1, 1] range
+        z = torch.tanh(z)
         return z
 
 
@@ -91,6 +99,14 @@ class BaseMethodModel(nn.Module):
         return output, {'total': loss_recon, 'reconstruction': loss_recon}
 
     def generate(self, num_images, device):
-        # For demo purposes - generate random images with correct dimensions
+        """
+        Generate random images for demonstration purposes.
+        
+        In a real implementation, this would use the trained model to generate images.
+        Here we generate normalized random tensors to simulate model output.
+        """
+        # Generate random tensors and normalize to avoid extreme values
         z = torch.randn(num_images, 3, 128, 128, device=device)
+        # Apply tanh to constrain values to [-1, 1] range
+        z = torch.tanh(z)
         return z
