@@ -1,0 +1,199 @@
+Starting HFID experiments...
+================================================================================
+Hierarchically Factorized Isometric Diffusion (HFID) Experiment
+================================================================================
+Using device: cuda
+GPU: Tesla T4
+Memory allocated: 0.00 GB
+Memory reserved: 0.00 GB
+
+Experiment Configuration:
+  Image Size: 128x128
+  Batch Size: 8
+  Learning Rate: 0.0002
+  Number of Epochs: 2
+  Training Samples: 100
+  Validation Samples: 20
+  Using Isometry: True
+  Using Consistency: True
+
+Preprocessing data...
+Preprocessing data...
+  Training batches: 13
+  Validation batches: 3
+
+Running Experiment 1: Global vs. Joint Quality and Disentanglement Comparison
+
+================================================================================
+Experiment 1: Global vs. Joint Quality and Disentanglement Comparison
+================================================================================
+Training HFID...
+Epoch 1/2, Batch 0/13, Loss: 1.9109
+Epoch 1/2, Batch 10/13, Loss: 1.8630
+Epoch 1/2 completed in 0.61s, Avg Loss: 1.8809
+Epoch 2/2, Batch 0/13, Loss: 1.8609
+Epoch 2/2, Batch 10/13, Loss: 1.8405
+Epoch 2/2 completed in 0.28s, Avg Loss: 1.8499
+Training BaseMethod...
+Epoch 1/2, Batch 0/13, Loss: 0.5296
+Epoch 1/2, Batch 10/13, Loss: 0.4642
+Epoch 1/2 completed in 0.27s, Avg Loss: 0.4913
+Epoch 2/2, Batch 0/13, Loss: 0.4522
+Epoch 2/2, Batch 10/13, Loss: 0.4097
+Epoch 2/2 completed in 0.27s, Avg Loss: 0.4273
+Evaluating HFID...
+FID score: 17.49
+Mutual Information Gap: 0.87
+SSIM score: 0.88
+Perceptual loss: 0.16
+
+Evaluation metrics for HFID:
+  FID: 17.4908
+  LPIPS: 0.2901
+  MIG: 0.8660
+  SSIM: 0.8796
+  PERCEPTUAL_LOSS: 0.1624
+Evaluating BaseMethod...
+FID score: 13.12
+Mutual Information Gap: 0.93
+SSIM score: 0.88
+Perceptual loss: 0.38
+
+Evaluation metrics for BaseMethod:
+  FID: 13.1199
+  LPIPS: 0.1116
+  MIG: 0.9331
+  SSIM: 0.8803
+  PERCEPTUAL_LOSS: 0.3832
+
+Experiment 1 complete.
+
+Experiment 1 Summary:
+  HFID vs BaseMethod Comparison:
+  FID Score: 17.49 vs 13.12
+  SSIM: 0.88 vs 0.88
+  MIG: 0.87 vs 0.93
+  Perceptual Loss: 0.16 vs 0.38
+
+Running Experiment 2: Ablation Study on Hierarchical Structure Components
+
+================================================================================
+Experiment 2: Ablation Study on Hierarchical Structure Components
+================================================================================
+
+Training variant: Full_HFID
+Training Full_HFID...
+Epoch 1/2, Batch 0/13, Loss: 1.9113
+Epoch 1/2, Batch 10/13, Loss: 1.8811
+Epoch 1/2 completed in 0.28s, Avg Loss: 1.8899
+Epoch 2/2, Batch 0/13, Loss: 1.8759
+Epoch 2/2, Batch 10/13, Loss: 1.8588
+Epoch 2/2 completed in 0.28s, Avg Loss: 1.8690
+Evaluating Full_HFID...
+FID score: 10.41
+Mutual Information Gap: 0.92
+SSIM score: 0.76
+Perceptual loss: 0.17
+
+Evaluation metrics for Full_HFID:
+  FID: 10.4117
+  LPIPS: 0.2940
+  MIG: 0.9162
+  SSIM: 0.7637
+  PERCEPTUAL_LOSS: 0.1727
+
+Training variant: No_Isometry
+Training No_Isometry...
+Epoch 1/2, Batch 0/13, Loss: 0.9865
+Epoch 1/2, Batch 10/13, Loss: 0.9439
+Epoch 1/2 completed in 0.28s, Avg Loss: 0.9597
+Epoch 2/2, Batch 0/13, Loss: 0.9376
+Epoch 2/2, Batch 10/13, Loss: 0.8937
+Epoch 2/2 completed in 0.28s, Avg Loss: 0.9118
+Evaluating No_Isometry...
+FID score: 13.67
+Mutual Information Gap: 0.76
+SSIM score: 0.83
+Perceptual loss: 0.22
+
+Evaluation metrics for No_Isometry:
+  FID: 13.6681
+  LPIPS: 0.1608
+  MIG: 0.7624
+  SSIM: 0.8296
+  PERCEPTUAL_LOSS: 0.2165
+
+Training variant: No_Consistency
+Training No_Consistency...
+Epoch 1/2, Batch 0/13, Loss: 1.4077
+Epoch 1/2, Batch 10/13, Loss: 1.3729
+Epoch 1/2 completed in 0.28s, Avg Loss: 1.3871
+Epoch 2/2, Batch 0/13, Loss: 1.3535
+Epoch 2/2, Batch 10/13, Loss: 1.3222
+Epoch 2/2 completed in 0.28s, Avg Loss: 1.3310
+Evaluating No_Consistency...
+FID score: 22.24
+Mutual Information Gap: 0.65
+SSIM score: 0.81
+Perceptual loss: 0.28
+
+Evaluation metrics for No_Consistency:
+  FID: 22.2371
+  LPIPS: 0.1279
+  MIG: 0.6461
+  SSIM: 0.8099
+  PERCEPTUAL_LOSS: 0.2824
+
+Experiment 2 complete.
+
+Experiment 2 Summary:
+  Ablation Study Results:
+  Full_HFID:
+    FID: 10.41
+    SSIM: 0.76
+    MIG: 0.92
+    Perceptual Loss: 0.17
+  No_Isometry:
+    FID: 13.67
+    SSIM: 0.83
+    MIG: 0.76
+    Perceptual Loss: 0.22
+  No_Consistency:
+    FID: 22.24
+    SSIM: 0.81
+    MIG: 0.65
+    Perceptual Loss: 0.28
+
+Running Experiment 3: Computational Efficiency and Scalability Analysis
+
+================================================================================
+Experiment 3: Computational Efficiency and Scalability Analysis
+================================================================================
+
+Measuring HFID model performance...
+HFID - Epoch 1/2, Batch 0/13
+HFID - Epoch 1/2, Batch 10/13
+HFID - Epoch 1 completed in 0.26s
+HFID - Epoch 2/2, Batch 0/13
+HFID - Epoch 2/2, Batch 10/13
+HFID - Epoch 2 completed in 0.26s
+
+Measuring Base model performance...
+Base - Epoch 1/2, Batch 0/13
+Base - Epoch 1/2, Batch 10/13
+Base - Epoch 1 completed in 0.48s
+Base - Epoch 2/2, Batch 0/13
+Base - Epoch 2/2, Batch 10/13
+Base - Epoch 2 completed in 0.45s
+
+Experiment 3 complete.
+
+Experiment 3 Summary:
+  Computational Efficiency Results:
+  Average Epoch Time - HFID: 0.26s, Base: 0.47s
+  Average Memory Usage - HFID: 0.01GB, Base: 0.01GB
+
+================================================================================
+All experiments completed successfully!
+Results saved to ./logs/ directory
+================================================================================
