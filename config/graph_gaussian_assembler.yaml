@@ -1,0 +1,32 @@
+
+model:
+  name: GraphGaussianAssembler
+  version: 1.0
+  
+optimization:
+  learning_rate: 0.0008
+  batch_size: 1
+  num_iterations: 1500
+  
+graph_params:
+  graph_conv_layers: 2
+  hidden_dim: 64
+  attention_heads: 4
+  
+gaussian_params:
+  initial_num_gaussians: 105
+  min_opacity: 0.01
+  
+adaptive_scheduling:
+  init_steps: 50
+  min_steps: 10
+  
+diffusion:
+  num_inference_steps: 50
+  guidance_scale: 7.5
+  
+rendering:
+  image_size: 256
+  camera_dist: 2.0
+  elevation_range: [-10, 30]
+  azimuth_range: [0, 360]

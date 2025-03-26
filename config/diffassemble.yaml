@@ -1,0 +1,23 @@
+
+model:
+  name: DiffAssemble
+  version: 1.0
+  
+optimization:
+  learning_rate: 0.0005
+  batch_size: 1
+  num_iterations: 1200
+  
+reassembly:
+  num_steps: 30
+  temperature: 0.7
+  
+diffusion:
+  num_inference_steps: 50
+  guidance_scale: 7.5
+  
+rendering:
+  image_size: 256
+  camera_dist: 2.0
+  elevation_range: [-10, 30]
+  azimuth_range: [0, 360]

@@ -1,0 +1,23 @@
+
+model:
+  name: GaussianDreamer
+  version: 1.0
+  
+optimization:
+  learning_rate: 0.001
+  batch_size: 1
+  num_iterations: 1000
+  
+gaussian_params:
+  initial_num_gaussians: 100
+  min_opacity: 0.01
+  
+diffusion:
+  num_inference_steps: 50
+  guidance_scale: 7.5
+  
+rendering:
+  image_size: 256
+  camera_dist: 2.0
+  elevation_range: [-10, 30]
+  azimuth_range: [0, 360]
