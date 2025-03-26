@@ -35,6 +35,5 @@ jobs:
           path: |
             logs/output.txt
             logs/error.txt
-            logs/*.png
             logs/*.pdf
           retention-days: 1
