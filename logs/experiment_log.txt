@@ -1,0 +1,99 @@
+PyTorch3D not available, some rendering functionality will be limited.
+Using GPU: Tesla T4
+GPU Memory: 16.71 GB
+
+=== Starting Graph-GaussianAssembler Experiments ===
+Running on device: cuda
+
+=== Running quick test... ===
+Initialized GaussianDreamer with config: config/gaussiandreamer.yaml
+[GaussianDreamer] Generating 3D asset for prompt: 'quick test prompt'
+Test asset point cloud shape: (1000, 3)
+GraphDenoisingModule output shape: torch.Size([10, 3])
+IndependentDenoisingModule output shape: torch.Size([10, 3])
+AdaptiveTimeScheduler predicted steps: 50
+Quick test finished.
+
+
+=== Experiment 1: End-to-End Comparison ===
+Initialized GaussianDreamer with config: config/gaussiandreamer.yaml
+Initialized DiffAssemble with config: config/diffassemble.yaml
+[GraphGaussianAssembler] Using default identity denoising module.
+PyTorch3D not available, renderer setup skipped.
+
+[Experiment 1] Processing prompt: 'a futuristic city'
+[GaussianDreamer] Generating 3D asset for prompt: 'a futuristic city'
+[DiffAssemble] Generating 3D asset for prompt: 'a futuristic city'
+[GraphGaussianAssembler] Generating 3D asset for prompt: 'a futuristic city'
+Chamfer Distance (Baseline vs Full): 0.0662
+Chamfer Distance (Recon vs Full):    0.0561
+
+[Experiment 1] Processing prompt: 'a medieval castle'
+[GaussianDreamer] Generating 3D asset for prompt: 'a medieval castle'
+[DiffAssemble] Generating 3D asset for prompt: 'a medieval castle'
+[GraphGaussianAssembler] Generating 3D asset for prompt: 'a medieval castle'
+Chamfer Distance (Baseline vs Full): 0.0168
+Chamfer Distance (Recon vs Full):    0.0282
+
+[Experiment 1] Processing prompt: 'a natural landscape'
+[GaussianDreamer] Generating 3D asset for prompt: 'a natural landscape'
+[DiffAssemble] Generating 3D asset for prompt: 'a natural landscape'
+[GraphGaussianAssembler] Generating 3D asset for prompt: 'a natural landscape'
+Chamfer Distance (Baseline vs Full): 0.1527
+Chamfer Distance (Recon vs Full):    0.0029
+Plot saved to logs/experiment1_chamfer_comparison.pdf
+
+=== Experiment 2: Ablation Study ===
+[Asset Variant] Using Graph-based denoising for prompt 'complex mechanical part'.
+[GraphGaussianAssembler] Using provided denoising module.
+[GraphGaussianAssembler] Generating 3D asset for prompt: 'complex mechanical part'
+[Asset Variant] Using Independent (non-graph) denoising for prompt 'complex mechanical part'.
+[GraphGaussianAssembler] Using provided denoising module.
+[GraphGaussianAssembler] Generating 3D asset for prompt: 'complex mechanical part'
+
+Prompt: complex mechanical part
+Redundancy Metric (Graph Module): 0.4804
+Redundancy Metric (Simple Module): 0.4165
+[Asset Variant] Using Graph-based denoising for prompt 'intricate sculpture'.
+[GraphGaussianAssembler] Using provided denoising module.
+[GraphGaussianAssembler] Generating 3D asset for prompt: 'intricate sculpture'
+[Asset Variant] Using Independent (non-graph) denoising for prompt 'intricate sculpture'.
+[GraphGaussianAssembler] Using provided denoising module.
+[GraphGaussianAssembler] Generating 3D asset for prompt: 'intricate sculpture'
+
+Prompt: intricate sculpture
+Redundancy Metric (Graph Module): 0.6528
+Redundancy Metric (Simple Module): 0.4631
+Plot saved to logs/experiment2_redundancy_comparison.pdf
+
+=== Experiment 3: Adaptive Time Scheduling Evaluation ===
+
+[Experiment 3] Processing prompt: 'simple bowl'
+[GraphGaussianAssembler] Using default identity denoising module.
+[GraphGaussianAssembler] Initializing asset for prompt: 'simple bowl'
+Prompt: simple bowl
+Adaptive Scheduler iterations: 250
+Fixed Scheduler iterations:    250
+Chamfer Distance -> Adaptive: 0.0000, Fixed: 0.0000
+Plot saved to logs/experiment3_trajectory_simple_bowl.pdf
+
+[Experiment 3] Processing prompt: 'busy marketplace'
+[GraphGaussianAssembler] Using default identity denoising module.
+[GraphGaussianAssembler] Initializing asset for prompt: 'busy marketplace'
+Prompt: busy marketplace
+Adaptive Scheduler iterations: 250
+Fixed Scheduler iterations:    250
+Chamfer Distance -> Adaptive: 0.0000, Fixed: 0.0000
+Plot saved to logs/experiment3_trajectory_busy_marketplace.pdf
+
+[Experiment 3] Processing prompt: 'dense forest scene'
+[GraphGaussianAssembler] Using default identity denoising module.
+[GraphGaussianAssembler] Initializing asset for prompt: 'dense forest scene'
+Prompt: dense forest scene
+Adaptive Scheduler iterations: 250
+Fixed Scheduler iterations:    250
+Chamfer Distance -> Adaptive: 0.0000, Fixed: 0.0000
+Plot saved to logs/experiment3_trajectory_dense_forest_scene.pdf
+
+=== All experiments completed ===
+Total runtime: 0.83 seconds
