@@ -1,0 +1,98 @@
+================================================================================
+D-DAME Experiment Script
+================================================================================
+Python version: 3.10.16 (main, Dec 12 2024, 19:07:39) [GCC 11.4.0]
+Current working directory: /home/runner/work/experiment_script_matsuzawa/experiment_script_matsuzawa
+Script location: /home/runner/work/experiment_script_matsuzawa/experiment_script_matsuzawa/src/main.py
+Time: 2025-03-27 09:25:36
+================================================================================
+NumPy version: 2.2.4
+PyTorch version: 2.6.0+cu124
+CUDA available: True
+CUDA version: 12.4
+GPU device: Tesla T4
+GPU memory: 16.71 GB
+Matplotlib version: 3.10.1
+All imports successful.
+================================================================================
+Using device: cuda
+
+================================================================================
+STARTING D-DAME TEST EXPERIMENTS
+================================================================================
+Setting random seed for reproducibility...
+Configuring experiment parameters...
+Using configuration: max_iters=2, num_epochs=1
+
+----------------------------------------
+EXPERIMENT 1: Controlled Comparison
+----------------------------------------
+Starting Experiment 1: Controlled Comparison with Fixed-Threshold Baseline
+=== Experiment 1 Epoch 0 ===
+[Baseline][Epoch 0] Batch 0: Loss below threshold, skipping grad update.
+[Baseline][Epoch 0][Batch 0] Loss: 0.0000, Grad Norm: 0.0000
+[Baseline][Epoch 0] Batch 1: Loss below threshold, skipping grad update.
+[Baseline][Epoch 0][Batch 1] Loss: 0.0000, Grad Norm: 0.0000
+[D-DAME][Epoch 0][Batch 0] Raw Loss: 0.1319, Damping Mean: 0.4931, Risk Mean: -0.0275
+[D-DAME][Epoch 0][Batch 1] Raw Loss: 0.1296, Damping Mean: 0.4991, Risk Mean: -0.0034
+Plot saved to experiment1_loss_metrics.pdf
+Plot saved to experiment1_gradnorm_metrics.pdf
+Plot saved to experiment1_risk_damping_metrics.pdf
+Experiment 1 Completed.
+
+Experiment 1 completed in 12.38 seconds
+
+----------------------------------------
+EXPERIMENT 2: Ablation Study
+----------------------------------------
+Starting Experiment 2: Ablation Study on Components of D-DAME
+=== Experiment 2 Epoch 0 ===
+[D-DAME][Epoch 0][Batch 0] Raw Loss: 0.1160, Damping Mean: 0.4503, Risk Mean: -0.2007
+[D-DAME][Epoch 0][Batch 1] Raw Loss: 0.1118, Damping Mean: 0.4406, Risk Mean: -0.2408
+[D-DAME (no_dmre)][Epoch 0][Batch 0] Loss: 0.0000
+[D-DAME (no_dmre)][Epoch 0][Batch 1] Loss: 0.0000
+[D-DAME][Epoch 0][Batch 0] Raw Loss: 0.1103, Damping Mean: 0.4390, Risk Mean: -0.2473
+[D-DAME][Epoch 0][Batch 1] Raw Loss: 0.1238, Damping Mean: 0.4447, Risk Mean: -0.2238
+Plot saved to experiment2_loss_metrics.pdf
+Plot saved to experiment2_risk_metrics.pdf
+Experiment 2 Completed.
+
+Experiment 2 completed in 1.31 seconds
+
+----------------------------------------
+EXPERIMENT 3: Sensitivity Analysis
+----------------------------------------
+Starting Experiment 3: Sensitivity Analysis of Adaptive Anti-Gradient Control
+--- Sensitivity Analysis with probe_intensity = 0.0 ---
+[D-DAME][Epoch 0][Batch 0] Raw Loss: 0.1146, Damping Mean: 0.4982, Risk Mean: -0.0073
+[D-DAME][Epoch 0][Batch 1] Raw Loss: 0.1368, Damping Mean: 0.4883, Risk Mean: -0.0470
+--- Sensitivity Analysis with probe_intensity = 0.1 ---
+[D-DAME][Epoch 0][Batch 0] Applied memorization probe.
+[D-DAME][Epoch 0][Batch 0] Raw Loss: 0.1295, Damping Mean: 0.4914, Risk Mean: -0.0345
+[D-DAME][Epoch 0][Batch 1] Applied memorization probe.
+[D-DAME][Epoch 0][Batch 1] Raw Loss: 0.1244, Damping Mean: 0.4965, Risk Mean: -0.0142
+--- Sensitivity Analysis with probe_intensity = 0.2 ---
+[D-DAME][Epoch 0][Batch 0] Applied memorization probe.
+[D-DAME][Epoch 0][Batch 0] Raw Loss: 0.1217, Damping Mean: 0.4871, Risk Mean: -0.0527
+[D-DAME][Epoch 0][Batch 1] Applied memorization probe.
+[D-DAME][Epoch 0][Batch 1] Raw Loss: 0.1063, Damping Mean: 0.4919, Risk Mean: -0.0327
+--- Sensitivity Analysis with probe_intensity = 0.3 ---
+[D-DAME][Epoch 0][Batch 0] Applied memorization probe.
+[D-DAME][Epoch 0][Batch 0] Raw Loss: 0.1149, Damping Mean: 0.4846, Risk Mean: -0.0619
+[D-DAME][Epoch 0][Batch 1] Applied memorization probe.
+[D-DAME][Epoch 0][Batch 1] Raw Loss: 0.1185, Damping Mean: 0.4721, Risk Mean: -0.1125
+Plot saved to experiment3_loss_metrics.pdf
+Plot saved to experiment3_gradnorm_metrics.pdf
+Plot saved to experiment3_risk_damping_metrics.pdf
+Experiment 3 Completed.
+
+Experiment 3 completed in 1.55 seconds
+
+================================================================================
+ALL EXPERIMENTS COMPLETED SUCCESSFULLY
+Total runtime: 15.24 seconds
+Results saved to:
+  - PDF plots: experiment*_metrics.pdf
+  - Model checkpoints: models/
+  - TensorBoard logs: logs/
+================================================================================
