@@ -6,8 +6,8 @@ import time
 import torch
 import numpy as np
 import matplotlib.pyplot as plt
-from torchmetrics.functional import peak_signal_noise_ratio as compute_psnr
-from torchmetrics.functional import structural_similarity_index_measure as compute_ssim
+from torchmetrics.image import peak_signal_noise_ratio as compute_psnr
+from torchmetrics.image import structural_similarity_index_measure as compute_ssim
 from utils.metrics import temporal_consistency
 
 def experiment1(dataloader, baseline_model, atrd_model, device):

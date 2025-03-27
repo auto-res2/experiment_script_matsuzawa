@@ -20,6 +20,7 @@ class StableVSR(nn.Module):
         for frame in lr_sequence:
             inp = frame.unsqueeze(0)
             out = F.relu(self.conv(inp))
+            out = F.interpolate(out, scale_factor=2.0, mode='bilinear', align_corners=False)
             output_sequence.append(out.squeeze(0))
         return output_sequence
 
@@ -49,6 +50,7 @@ class ATRD(nn.Module):
                 out = out + 0.01 * torch.tanh(out)  # dummy extra processing
             else:
                 out = F.relu(self.conv(inp))
+            out = F.interpolate(out, scale_factor=2.0, mode='bilinear', align_corners=False)
             output_sequence.append(out.squeeze(0))
         return output_sequence
 
