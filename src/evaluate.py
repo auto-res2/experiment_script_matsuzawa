@@ -6,8 +6,8 @@ import time
 import torch
 import numpy as np
 import matplotlib.pyplot as plt
-from torchmetrics.functional import peak_signal_noise_ratio as compute_psnr
-from torchmetrics.functional import structural_similarity_index_measure as compute_ssim
+from torchmetrics.image import peak_signal_noise_ratio as compute_psnr
+from torchmetrics.image import structural_similarity_index_measure as compute_ssim
 from utils.metrics import temporal_consistency
 
 def experiment1(dataloader, baseline_model, atrd_model, device):
@@ -34,8 +34,8 @@ def experiment1(dataloader, baseline_model, atrd_model, device):
         psnr_bl = np.mean([compute_psnr(baseline_out[i], hr_sequence[i]).item() for i in range(len(hr_sequence))])
         psnr_atrd = np.mean([compute_psnr(atrd_out[i], hr_sequence[i]).item() for i in range(len(hr_sequence))])
         
-        ssim_bl = np.mean([compute_ssim(baseline_out[i], hr_sequence[i]).item() for i in range(len(hr_sequence))])
-        ssim_atrd = np.mean([compute_ssim(atrd_out[i], hr_sequence[i]).item() for i in range(len(hr_sequence))])
+        ssim_bl = np.mean([compute_ssim(baseline_out[i].unsqueeze(0), hr_sequence[i].unsqueeze(0)).item() for i in range(len(hr_sequence))])
+        ssim_atrd = np.mean([compute_ssim(atrd_out[i].unsqueeze(0), hr_sequence[i].unsqueeze(0)).item() for i in range(len(hr_sequence))])
         
         try:
             import lpips
@@ -92,13 +92,13 @@ def experiment2(dataloader, atrd_model, atrd_no_otar_model, device):
         
         metrics_full = {
             'psnr': np.mean([compute_psnr(out_full[i], hr_sequence[i]).item() for i in range(len(hr_sequence))]),
-            'ssim': np.mean([compute_ssim(out_full[i], hr_sequence[i]).item() for i in range(len(hr_sequence))]),
+            'ssim': np.mean([compute_ssim(out_full[i].unsqueeze(0), hr_sequence[i].unsqueeze(0)).item() for i in range(len(hr_sequence))]),
             'temp_consistency': temporal_consistency(out_full)
         }
         
         metrics_no_otar = {
             'psnr': np.mean([compute_psnr(out_no_otar[i], hr_sequence[i]).item() for i in range(len(hr_sequence))]),
-            'ssim': np.mean([compute_ssim(out_no_otar[i], hr_sequence[i]).item() for i in range(len(hr_sequence))]),
+            'ssim': np.mean([compute_ssim(out_no_otar[i].unsqueeze(0), hr_sequence[i].unsqueeze(0)).item() for i in range(len(hr_sequence))]),
             'temp_consistency': temporal_consistency(out_no_otar)
         }
         
