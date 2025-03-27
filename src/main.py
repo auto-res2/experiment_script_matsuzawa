@@ -8,9 +8,64 @@ Ensemble (D-DAME) method:
 3. Sensitivity analysis of adaptive anti-gradient control
 """
 import os
-import torch
-import torch.optim as optim
-from torch.utils.tensorboard import SummaryWriter
+import sys
+import time
+import datetime
+
+print("="*80)
+print("D-DAME Experiment Script")
+print("="*80)
+print(f"Python version: {sys.version}")
+print(f"Current working directory: {os.getcwd()}")
+print(f"Script location: {os.path.abspath(__file__)}")
+print(f"Time: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+print("="*80)
+
+try:
+    import numpy as np
+    print(f"NumPy version: {np.__version__}")
+except ImportError:
+    print("NumPy not found. Installing required packages...")
+    import subprocess
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "-r", 
+                          os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 
+                                      "requirements.txt")])
+    print("Packages installed successfully.")
+    import numpy as np
+    print(f"NumPy version: {np.__version__}")
+
+try:
+    import torch
+    import torch.optim as optim
+    from torch.utils.tensorboard import SummaryWriter
+    print(f"PyTorch version: {torch.__version__}")
+    print(f"CUDA available: {torch.cuda.is_available()}")
+    if torch.cuda.is_available():
+        print(f"CUDA version: {torch.version.cuda}")
+        print(f"GPU device: {torch.cuda.get_device_name(0)}")
+        print(f"GPU memory: {torch.cuda.get_device_properties(0).total_memory / 1e9:.2f} GB")
+except ImportError:
+    print("PyTorch not found. Installing required packages...")
+    import subprocess
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "-r", 
+                          os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 
+                                      "requirements.txt")])
+    print("Packages installed successfully.")
+    import torch
+    import torch.optim as optim
+    from torch.utils.tensorboard import SummaryWriter
+    print(f"PyTorch version: {torch.__version__}")
+    print(f"CUDA available: {torch.cuda.is_available()}")
+
+try:
+    import matplotlib
+    print(f"Matplotlib version: {matplotlib.__version__}")
+except ImportError:
+    print("Matplotlib not found. Installing required packages...")
+    import subprocess
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "matplotlib>=3.4.0"])
+    import matplotlib
+    print(f"Matplotlib version: {matplotlib.__version__}")
 
 from preprocess import get_dataloader
 from train import (
@@ -20,9 +75,11 @@ from train import (
 from evaluate import evaluate_model, compare_models
 from utils.model_utils import set_seed, plot_metrics
 
-import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from config.ddame_config import CONFIG
+
+print("All imports successful.")
+print("="*80)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Using device: {device}")
@@ -195,20 +252,58 @@ def test_experiment():
     Quick test to ensure that all the code executes. 
     The test runs one or two mini-iterations for each experiment.
     """
-    print("Testing experiments with quick mini-iterations...")
+    print("\n" + "="*80)
+    print("STARTING D-DAME TEST EXPERIMENTS")
+    print("="*80)
     
+    print("Setting random seed for reproducibility...")
     set_seed(42)
     
+    print("Configuring experiment parameters...")
     CONFIG['max_iters'] = 2  # Override to use fewer iterations
     CONFIG['num_epochs'] = 1  # Override to use fewer epochs
+    print(f"Using configuration: max_iters={CONFIG['max_iters']}, num_epochs={CONFIG['num_epochs']}")
     
     try:
+        print("\n" + "-"*40)
+        print("EXPERIMENT 1: Controlled Comparison")
+        print("-"*40)
+        start_time = time.time()
         experiment1()
+        exp1_time = time.time() - start_time
+        print(f"Experiment 1 completed in {exp1_time:.2f} seconds")
+        
+        print("\n" + "-"*40)
+        print("EXPERIMENT 2: Ablation Study")
+        print("-"*40)
+        start_time = time.time()
         experiment2()
+        exp2_time = time.time() - start_time
+        print(f"Experiment 2 completed in {exp2_time:.2f} seconds")
+        
+        print("\n" + "-"*40)
+        print("EXPERIMENT 3: Sensitivity Analysis")
+        print("-"*40)
+        start_time = time.time()
         experiment3()
-        print("All tests completed successfully.")
+        exp3_time = time.time() - start_time
+        print(f"Experiment 3 completed in {exp3_time:.2f} seconds")
+        
+        print("\n" + "="*80)
+        print("ALL EXPERIMENTS COMPLETED SUCCESSFULLY")
+        print(f"Total runtime: {exp1_time + exp2_time + exp3_time:.2f} seconds")
+        print("Results saved to:")
+        print("  - PDF plots: experiment*_metrics.pdf")
+        print("  - Model checkpoints: models/")
+        print("  - TensorBoard logs: logs/")
+        print("="*80)
     except Exception as e:
-        print(f"Error during test: {e}")
+        print("\n" + "!"*80)
+        print(f"ERROR DURING EXPERIMENTS: {e}")
+        print("Stack trace:")
+        import traceback
+        traceback.print_exc()
+        print("!"*80)
         raise
 
 if __name__ == "__main__":
