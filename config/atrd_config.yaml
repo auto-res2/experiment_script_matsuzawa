@@ -1,0 +1,20 @@
+
+model:
+  name: "ATRD"
+  diffusion_steps: 40
+  otar_enabled: true
+
+data:
+  num_sequences: 5
+  num_frames: 5
+  height: 64
+  width: 64
+  channels: 3
+
+training:
+  batch_size: 4
+  learning_rate: 0.0001
+  num_epochs: 10
+
+experiment:
+  diffusion_steps_list: [10, 20, 30, 40]
