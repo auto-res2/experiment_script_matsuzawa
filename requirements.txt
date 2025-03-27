@@ -1,0 +1,13 @@
+# Required Python packages for DFAD experiments
+accelerate
+diffusers
+numpy
+Pillow
+tokenizers
+torch>=1.13
+tqdm
+transformers
+opencv-python
+memory_profiler
+matplotlib
+seaborn
