@@ -1,1 +1,10 @@
-# experiment_script_matsuzawa
+
+# Refining Generative Models with Human-Driven Feedback Mechanisms
+> ⚠️ **NOTE:** This research is an automatic research using Research Graph.
+## Abstract
+\textbf{Abstract}\newline The remarkable progress in text-to-image diffusion models has catalyzed astounding advancements in generative artificial intelligence, fostering creative expression and technical innovation. A significant challenge faced by these models is their propensity to produce harmful or unethical content when trained on large-scale, unfiltered datasets from the internet. Mitigating such undesired outputs while maintaining high-quality generative capabilities necessitates robust and versatile interventions. Addressing this crucial issue, we introduce the Dual-Feedback Adapter Diffusion (DFAD) framework. DFAD incorporates both textual feedback, derived from linguistic annotations, and spatial-attribute feedback, which leverages detailed spatial and feature-level cues, into the guidance mechanism of diffusion models. The seamless integration of these dual feedback pathways leverages their complementary strengths to enhance content control. Extensive experiments validate the efficacy of DFAD, demonstrating its superior ability to suppress harmful content effectively while maintaining intricate image quality and fidelity. Our contributions include (1) the innovative integration of dual-modality feedback mechanisms into diffusion process control, (2) comprehensive analytical and empirical evaluations against state-of-the-art methods, and (3) implementation of adaptable, plug-and-play modules facilitating wide applicability across pre-existing generative architectures. We propose DFAD as an impactful solution for advancing the ethical and responsible deployment of generative AI technologies.
+
+- [Full paper](https://github.com/auto-res2/experiment_script_matsuzawa/blob/devin-236fae19d45c47969e353d987dcdb4d6/paper/paper.pdf)
+- [Related work](http://arxiv.org/abs/2407.21032v1)
+- [Research Graph execution log](https://github.com/auto-res2/experiment_script_matsuzawa/blob/devin-236fae19d45c47969e353d987dcdb4d6/logs/research_graph_log.json)
+- [Devin execution log](https://app.devin.ai/sessions/236fae19d45c47969e353d987dcdb4d6)
