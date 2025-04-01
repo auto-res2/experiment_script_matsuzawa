@@ -1,0 +1,25 @@
+
+================================================================================
+========================= MM-BTLM EXPERIMENT RUNNER =========================
+================================================================================
+
+🔧 Command-line Arguments:
+  • Config Path: config/mm_btlm_config.json
+  • Test Mode: Disabled
+
+📂 Loading configuration from: config/mm_btlm_config.json
+  • Configuration loaded successfully
+
+🔍 Environment Information:
+  • PyTorch Version: 2.6.0+cu124
+  • CUDA Available: True
+  • CUDA Version: 12.4
+  • GPU Device: Tesla T4
+
+🚀 Starting experiment execution...
+================================================================================
+============================== MM-BTLM EXPERIMENT ==============================
+================================================================================
+
+📋 EXPERIMENT CONFIGURATION:
+  • Test Mode: Disabled
