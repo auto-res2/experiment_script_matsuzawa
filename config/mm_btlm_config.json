@@ -1,0 +1,41 @@
+{
+  "model": {
+    "use_adaptive_gate": true,
+    "text_model": "gpt2",
+    "vision_encoder": "resnet18",
+    "cross_attention_heads": 4
+  },
+  "training": {
+    "learning_rate": 1e-4,
+    "batch_size": 8,
+    "num_epochs": 5,
+    "optimizer": "adam",
+    "weight_decay": 1e-5
+  },
+  "data": {
+    "num_samples": 100,
+    "text_length": 20,
+    "train_split": 0.7,
+    "val_split": 0.2,
+    "test_split": 0.1
+  },
+  "paths": {
+    "logs_dir": "logs",
+    "models_dir": "models",
+    "data_dir": "data"
+  },
+  "experiments": {
+    "exp1_num_samples": 10,
+    "exp2_mask_prob": 0.3,
+    "exp3_num_runs": 20
+  },
+  "device": {
+    "gpu_memory_limit_gb": 14,
+    "precision": "float32"
+  },
+  "test_mode": {
+    "enabled": true,
+    "num_samples": 10,
+    "num_epochs": 2
+  }
+}
