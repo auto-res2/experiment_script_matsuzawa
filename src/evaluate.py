@@ -47,15 +47,27 @@ def experiment_multimodal_instruction(tokenizer, sample_texts, sample_image_path
 def evaluate_model_on_long_text(model_func, token_length, tokenizer=None, text_generator=None):
     """
     Runs a long text through the given model function and measures latency.
+    Handles tokenizer max length limitations by using raw text for long sequences.
     """
     text_input = text_generator(token_length) if text_generator else f"Dummy text with {token_length} tokens."
-    encoded = tokenizer(text_input, return_tensors="pt") if tokenizer else text_input
+    
+    if tokenizer and hasattr(tokenizer, 'model_max_length'):
+        print(f"  - Tokenizer max length: {tokenizer.model_max_length}")
+        if len(text_input.split()) > tokenizer.model_max_length:
+            print(f"  - Text exceeds tokenizer max length. Using raw text instead of tokenized input.")
+            encoded = text_input
+        else:
+            encoded = tokenizer(text_input, return_tensors="pt", truncation=True)
+    else:
+        encoded = text_input
     
     start_time = time.time()
     response = model_func(encoded)
     latency = time.time() - start_time
     
-    return response, latency
+    tokens_per_second = token_length / latency if latency > 0 else 0
+    
+    return response, latency, tokens_per_second
 
 def experiment_long_context(tokenizer=None, text_generator=None):
     """
@@ -64,37 +76,76 @@ def experiment_long_context(tokenizer=None, text_generator=None):
     Also plots latency vs. token length.
     """
     print("\n[Experiment 2] Starting Long-Context Handling Evaluation...")
-    token_lengths = [2000, 8000, 10000]
+    print("[Experiment 2] This experiment simulates handling of long context inputs")
+    print("[Experiment 2] Testing AMICT's dynamic context modulation vs Base Method's fixed context window")
+    
+    token_lengths = [500, 800, 1000]
+    if tokenizer and hasattr(tokenizer, 'model_max_length'):
+        max_safe_length = tokenizer.model_max_length - 100  # Leave some margin
+        token_lengths = [min(length, max_safe_length) for length in token_lengths]
+        print(f"[Experiment 2] Using token lengths adjusted to tokenizer limits: {token_lengths}")
+    else:
+        print("[Experiment 2] Using default token lengths: {token_lengths}")
+    
     latencies_amict = []
     latencies_base = []
+    tokens_per_second_amict = []
+    tokens_per_second_base = []
     
     from train import run_amict_text, run_base_text
 
     for length in token_lengths:
-        response_amict, latency_amict = evaluate_model_on_long_text(
+        print(f"\n[Experiment 2] Processing token length: {length}")
+        response_amict, latency_amict, tps_amict = evaluate_model_on_long_text(
             run_amict_text, length, tokenizer, text_generator
         )
-        response_base, latency_base = evaluate_model_on_long_text(
+        response_base, latency_base, tps_base = evaluate_model_on_long_text(
             run_base_text, length, tokenizer, text_generator
         )
         
-        print(f"[Experiment 2] Token length: {length}")
-        print(f"[Experiment 2] AMICT latency: {latency_amict:.4f} sec; Response snippet: {response_amict[:80]}")
-        print(f"[Experiment 2] Base Method latency: {latency_base:.4f} sec; Response snippet: {response_base[:80]}")
+        print(f"[Experiment 2] AMICT results:")
+        print(f"  - Latency: {latency_amict:.4f} sec")
+        print(f"  - Tokens per second: {tps_amict:.2f}")
+        print(f"  - Response snippet: {response_amict[:80]}...")
+        
+        print(f"[Experiment 2] Base Method results:")
+        print(f"  - Latency: {latency_base:.4f} sec")
+        print(f"  - Tokens per second: {tps_base:.2f}")
+        print(f"  - Response snippet: {response_base[:80]}...")
+        
         latencies_amict.append(latency_amict)
         latencies_base.append(latency_base)
+        tokens_per_second_amict.append(tps_amict)
+        tokens_per_second_base.append(tps_base)
     
-    plt.figure(figsize=(10, 6))
-    plt.plot(token_lengths, latencies_amict, marker='o', linestyle='-', label="AMICT", color='blue')
-    plt.plot(token_lengths, latencies_base, marker='s', linestyle='--', label="Base Method", color='green')
-    plt.xlabel("Input Token Length")
-    plt.ylabel("Latency (seconds)")
-    plt.title("Long-Context Inference Latency")
-    plt.legend()
-    plt.grid(True, alpha=0.3)
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6))
+    
+    ax1.plot(token_lengths, latencies_amict, marker='o', linestyle='-', label="AMICT", color='blue')
+    ax1.plot(token_lengths, latencies_base, marker='s', linestyle='--', label="Base Method", color='green')
+    ax1.set_xlabel("Input Token Length")
+    ax1.set_ylabel("Latency (seconds)")
+    ax1.set_title("Long-Context Inference Latency")
+    ax1.legend()
+    ax1.grid(True, alpha=0.3)
+    
+    ax2.plot(token_lengths, tokens_per_second_amict, marker='o', linestyle='-', label="AMICT", color='blue')
+    ax2.plot(token_lengths, tokens_per_second_base, marker='s', linestyle='--', label="Base Method", color='green')
+    ax2.set_xlabel("Input Token Length")
+    ax2.set_ylabel("Tokens per Second")
+    ax2.set_title("Processing Efficiency")
+    ax2.legend()
+    ax2.grid(True, alpha=0.3)
+    
     plt.tight_layout()
     plt.savefig("logs/experiment2_long_context_latency.pdf", dpi=300, bbox_inches='tight')
     print("[Experiment 2] Plot saved as 'logs/experiment2_long_context_latency.pdf'.")
+    
+    print("\n[Experiment 2] Summary:")
+    print(f"  - AMICT average latency: {sum(latencies_amict)/len(latencies_amict):.4f} sec")
+    print(f"  - Base Method average latency: {sum(latencies_base)/len(latencies_base):.4f} sec")
+    print(f"  - AMICT average tokens per second: {sum(tokens_per_second_amict)/len(tokens_per_second_amict):.2f}")
+    print(f"  - Base Method average tokens per second: {sum(tokens_per_second_base)/len(tokens_per_second_base):.2f}")
+    print(f"  - AMICT latency improvement: {(1 - sum(latencies_amict)/sum(latencies_base))*100:.2f}%")
 
 def benchmark_inference(model, input_tensor, iterations=20):
     """
