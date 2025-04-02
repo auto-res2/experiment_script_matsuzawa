@@ -1,0 +1,57 @@
+Starting AFiT Experiment
+==================================================
+Using GPU: Tesla T4
+CUDA Version: 12.4
+GPU Memory: 16.71 GB
+Configuration loaded.
+
+Step 1: Preprocessing data...
+Data preprocessing complete.
+
+Step 2: Training the model...
+Starting training for 5 epochs...
+Epoch 1/5, Composite Loss: 1.8036
+Epoch 2/5, Composite Loss: 1.7987
+Epoch 3/5, Composite Loss: 1.7948
+Epoch 4/5, Composite Loss: 1.7914
+Epoch 5/5, Composite Loss: 1.7885
+Training completed in 0.01 seconds.
+Model training complete.
+
+Step 3: Evaluating the model...
+Evaluating AFiT model performance...
+Evaluating Dynamic Token Acceleration...
+Iteration 1/5, Loss: 0.9860
+Iteration 2/5, Loss: 0.9880
+Iteration 3/5, Loss: 0.9880
+Iteration 4/5, Loss: 0.9880
+Iteration 5/5, Loss: 0.9880
+Evaluating Adaptive High-Order ODE Solver...
+Step 1/10: Standard FID=100.8726, High-Order FID=100.8774
+Step 2/10: Standard FID=50.9315, High-Order FID=51.2370
+Step 3/10: Standard FID=34.3261, High-Order FID=35.0027
+Step 4/10: Standard FID=26.0564, High-Order FID=27.1602
+Step 5/10: Standard FID=21.1223, High-Order FID=22.6930
+Step 6/10: Standard FID=17.8570, High-Order FID=19.9201
+Step 7/10: Standard FID=15.5463, High-Order FID=18.1166
+Step 8/10: Standard FID=13.8329, High-Order FID=16.9188
+Step 9/10: Standard FID=12.5183, High-Order FID=16.1242
+Step 10/10: Standard FID=11.4834, High-Order FID=15.6116
+
+Evaluation Results:
+Token Acceleration - Final Loss: 0.9880
+ODE Solver - Average FID Improvement: -1.9115
+Model Training - Final Loss: 1.7885
+Model Training Time: 0.01 seconds
+Model evaluation complete.
+
+Experiment Summary:
+==================================================
+Total experiment time: 5.51 seconds
+Device used: cuda
+Final training loss: 1.7885
+Saved plots:
+- logs/training_loss_joint_full.pdf
+- logs/training_loss_dynamicToken_small.pdf
+- logs/fid_vs_timesteps_highOrder_small.pdf
+==================================================
