@@ -1,0 +1,72 @@
+Starting ANGAS experiments...
+
+Using device: cuda
+GPU: Tesla T4 with 15.6 GB VRAM
+
+[Experiment 1] Running Base Method sampler:
+  Step 01/10, Error Norm: 11.1534
+  Step 02/10, Error Norm: 11.1456
+  Step 03/10, Error Norm: 11.1382
+  Step 04/10, Error Norm: 11.1312
+  Step 05/10, Error Norm: 11.1247
+  Step 06/10, Error Norm: 11.1187
+  Step 07/10, Error Norm: 11.1131
+  Step 08/10, Error Norm: 11.1079
+  Step 09/10, Error Norm: 11.1032
+  Step 10/10, Error Norm: 11.0990
+
+[Experiment 1] Running ANGAS sampler:
+  Step 01/10, Error Norm: 11.1782
+  Step 02/10, Error Norm: 11.1679
+  Step 03/10, Error Norm: 11.1581
+  Step 04/10, Error Norm: 11.1489
+  Step 05/10, Error Norm: 11.1403
+  Step 06/10, Error Norm: 11.1322
+  Step 07/10, Error Norm: 11.1247
+  Step 08/10, Error Norm: 11.1178
+  Step 09/10, Error Norm: 11.1114
+  Step 10/10, Error Norm: 11.1057
+Plot saved as: logs/convergence_error_comparison.pdf
+
+[Experiment 1] Evaluation Metrics (simulated):
+  Base Method: FID = 35.49, Inception Score = 5.60
+  ANGAS:       FID = 27.15, Inception Score = 6.54
+
+[Experiment 2] Running ANGAS variant sampler (with correction):
+  Step 01/10, Residual Norm: 11.1782
+  Step 02/10, Residual Norm: 11.1679
+  Step 03/10, Residual Norm: 11.1581
+  Step 04/10, Residual Norm: 11.1489
+  Step 05/10, Residual Norm: 11.1403
+  Step 06/10, Residual Norm: 11.1322
+  Step 07/10, Residual Norm: 11.1247
+  Step 08/10, Residual Norm: 11.1178
+  Step 09/10, Residual Norm: 11.1114
+  Step 10/10, Residual Norm: 11.1057
+
+[Experiment 2] Running ANGAS variant sampler (without correction):
+  Step 01/10, Residual Norm: 11.1900
+  Step 02/10, Residual Norm: 11.1785
+  Step 03/10, Residual Norm: 11.1676
+  Step 04/10, Residual Norm: 11.1573
+  Step 05/10, Residual Norm: 11.1477
+  Step 06/10, Residual Norm: 11.1387
+  Step 07/10, Residual Norm: 11.1303
+  Step 08/10, Residual Norm: 11.1225
+  Step 09/10, Residual Norm: 11.1155
+  Step 10/10, Residual Norm: 11.1090
+Plot saved as: logs/residual_error_comparison.pdf
+
+[Experiment 3] Running grid search on dynamic threshold values:
+  Testing threshold value: 0.5
+    Final Error Norm: 11.1027, Final Correction Magnitude: 0.1815
+  Testing threshold value: 1.0
+    Final Error Norm: 11.1027, Final Correction Magnitude: 0.1815
+  Testing threshold value: 1.5
+    Final Error Norm: 11.1027, Final Correction Magnitude: 0.1815
+  Testing threshold value: 2.0
+    Final Error Norm: 11.1057, Final Correction Magnitude: 0.0909
+Plot saved as: logs/dynamic_threshold_error.pdf
+Plot saved as: logs/dynamic_threshold_correction.pdf
+
+All experiments completed in 1.09 seconds.
