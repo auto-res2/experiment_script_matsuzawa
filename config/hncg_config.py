@@ -1,0 +1,20 @@
+"""
+Configuration parameters for the HNCG experiment.
+"""
+
+RANDOM_SEED = 42
+DEVICE = "cuda"  # Use "cuda" for GPU, "cpu" for CPU
+
+DATA_SIZE = 1000
+NUM_CLUSTERS = 4
+
+MODEL_INPUT_FEATURES = 2
+MODEL_HIDDEN_SIZE = 128
+
+BATCH_SIZE = 64
+LEARNING_RATE = 1e-3
+NUM_EPOCHS = 20
+
+GUIDANCE_SCALE = 0.1
+MAX_STEPS = 100
+CONVERGENCE_TOLERANCE = 1e-3
