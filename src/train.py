@@ -5,8 +5,8 @@ import torchvision.models as models
 import numpy as np
 import time
 import os
-from src.utils.diffusion import diffusion_step, double_tweedie_transform, calculate_adaptive_lambda
-from src.utils.consistency import ConsistencyLoss, AdaptiveConsistency
+from utils.diffusion import diffusion_step, double_tweedie_transform, calculate_adaptive_lambda
+from utils.consistency import ConsistencyLoss, AdaptiveConsistency
 
 def load_model(model_name='resnet18', num_classes=10, pretrained=True):
     """Load a model architecture.

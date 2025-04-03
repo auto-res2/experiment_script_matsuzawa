@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import os
 import time
-from src.utils.diffusion import diffusion_step, double_tweedie_transform, calculate_adaptive_lambda, check_consistency
+from utils.diffusion import diffusion_step, double_tweedie_transform, calculate_adaptive_lambda, check_consistency
 
 def cap_defense(inputs, score_model, max_steps=10, adaptive_consistency=True, 
                use_double_tweedie=True, adaptive_steps=True):
