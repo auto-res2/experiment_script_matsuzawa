@@ -83,43 +83,149 @@ def test(device='cuda'):
     The test function will run the three experiments quickly.
     This is intended to verify that the code executes without errors.
     """
-    print("Running quick tests for all experiments...")
+    print("\n" + "="*80)
+    print("TEDP TEST MODE - Running Quick Verification Tests")
+    print("="*80)
     
-    dataset = SyntheticDataset(size=100, poison_ratio=0.05)
-    loader = DataLoader(dataset, batch_size=16, shuffle=True)
+    dataset_size = 100
+    poison_ratio = 0.05
+    batch_size = 16
+    
+    print("\nTest Configuration:")
+    print("-"*50)
+    print(f"Dataset: {dataset_size} samples, {poison_ratio:.2%} poison ratio")
+    print(f"Device: {device}")
+    print(f"Running with reduced epochs for quick verification")
+    print("-"*50)
+    
+    print("\nInitializing test dataset...")
+    dataset = SyntheticDataset(size=dataset_size, poison_ratio=poison_ratio)
+    loader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
+    
+    poisoned_count = sum(label for _, label in dataset)
+    print(f"Test dataset created with {dataset_size} samples ({poisoned_count} poisoned, {dataset_size-poisoned_count} clean)")
+    
+    print("\nInitializing models for testing...")
     model_tedp = DiffusionModel()
     model_baseline = DiffusionModel()
     purification_module = PurificationModule(noise_std_init=0.05, variance_explosion=1.1, step_size=0.1)
     
+    print("\n" + "-"*80)
+    print("TEST 1: Advanced Diffusion Purification Benchmark (2 epochs)")
+    print("-"*80)
     experiment1(model_tedp, model_baseline, purification_module, loader, num_epochs=2, device=device)
     
+    print("\n" + "-"*80)
+    print("TEST 2: Latent-Space Regularization Analysis (1 epoch)")
+    print("-"*80)
     experiment2(model_tedp, loader, num_epochs=1, device=device)
     
+    print("\n" + "-"*80)
+    print("TEST 3: Adaptive Tuning and Ablation Study (2 epochs)")
+    print("-"*80)
     experiment3(num_epochs=2, device=device)
     
-    print("All tests finished quickly.")
+    print("\n" + "="*80)
+    print("TEST SUMMARY: All tests completed successfully")
+    print("="*80)
 
 
 def run_full_experiments(device='cuda'):
     """
     Run all three experiments with full settings.
     """
-    print("Starting full TEDP experiments...")
+    print("\n" + "="*80)
+    print("TEDP (Trigger-Eradicating Diffusion Purification) Experiment Suite")
+    print("="*80)
     
-    dataset = SyntheticDataset(size=500, poison_ratio=0.05)
-    loader = DataLoader(dataset, batch_size=16, shuffle=True)
+    dataset_size = 500
+    poison_ratio = 0.05
+    batch_size = 16
+    
+    noise_std_init = 0.05
+    variance_explosion = 1.1
+    step_size = 0.1
+    
+    exp1_epochs = 5
+    exp2_epochs = 3
+    exp3_epochs = 5
+    
+    print("\nExperiment Configuration:")
+    print("-"*50)
+    print(f"Dataset Parameters:")
+    print(f"  - Size: {dataset_size} samples")
+    print(f"  - Poison ratio: {poison_ratio:.2%}")
+    print(f"  - Batch size: {batch_size}")
+    print(f"\nPurification Parameters:")
+    print(f"  - Initial noise std: {noise_std_init}")
+    print(f"  - Variance explosion: {variance_explosion}")
+    print(f"  - Step size: {step_size}")
+    print(f"\nTraining Parameters:")
+    print(f"  - Experiment 1: {exp1_epochs} epochs")
+    print(f"  - Experiment 2: {exp2_epochs} epochs")
+    print(f"  - Experiment 3: {exp3_epochs} epochs")
+    print(f"  - Device: {device}")
+    print("-"*50)
+    
+    print("\nInitializing dataset and models...")
+    dataset = SyntheticDataset(size=dataset_size, poison_ratio=poison_ratio)
+    loader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
+    
+    poisoned_count = sum(label for _, label in dataset)
+    print(f"Dataset created with {dataset_size} samples ({poisoned_count} poisoned, {dataset_size-poisoned_count} clean)")
+    
+    print("\nInitializing models...")
     model_tedp = DiffusionModel()
     model_baseline = DiffusionModel()
-    purification_module = PurificationModule(noise_std_init=0.05, variance_explosion=1.1, step_size=0.1)
+    purification_module = PurificationModule(noise_std_init=noise_std_init, 
+                                            variance_explosion=variance_explosion, 
+                                            step_size=step_size)
     
-    experiment1(model_tedp, model_baseline, purification_module, loader, num_epochs=5, device=device)
+    print("\nModel architecture summary:")
+    print(f"  - Input channels: 3")
+    print(f"  - Latent dimensions: 32 channels")
+    print(f"  - Total parameters: {sum(p.numel() for p in model_tedp.parameters()):,}")
+    
+    print("\n" + "="*80)
+    print("EXPERIMENT 1: Advanced Diffusion Purification Benchmark")
+    print("="*80)
+    print("This experiment compares TEDP purification with baseline (no purification)")
+    print("Metrics: FID Score, PSNR, Trigger Detection Rate")
+    print("-"*80)
+    
+    experiment1(model_tedp, model_baseline, purification_module, loader, num_epochs=exp1_epochs, device=device)
+    
+    print("\n" + "="*80)
+    print("EXPERIMENT 2: Latent-Space Regularization Analysis")
+    print("="*80)
+    print("This experiment analyzes the latent space to detect clustering of poisoned samples")
+    print("Metrics: Silhouette Score, PCA Visualization")
+    print("-"*80)
     
     model_for_exp2 = DiffusionModel()
-    experiment2(model_for_exp2, loader, num_epochs=3, device=device)
+    experiment2(model_for_exp2, loader, num_epochs=exp2_epochs, device=device)
     
-    experiment3(num_epochs=5, device=device)
+    print("\n" + "="*80)
+    print("EXPERIMENT 3: Adaptive Tuning and Ablation Study")
+    print("="*80)
+    print("This experiment compares fixed vs. adaptive purification strength")
+    print("Metrics: Training Loss, Purification Strength Evolution")
+    print("-"*80)
     
+    experiment3(num_epochs=exp3_epochs, device=device)
+    
+    print("\n" + "="*80)
+    print("EXPERIMENT SUMMARY")
+    print("="*80)
     print("All experiments completed successfully.")
+    print("Generated plots:")
+    print("  - logs/FID_comparison_pair1.pdf")
+    print("  - logs/PSNR_comparison_pair1.pdf")
+    print("  - logs/TriggerDetection_comparison_pair1.pdf")
+    print("  - logs/latent_space_projection.pdf")
+    print("  - logs/training_loss_comparison.pdf")
+    print("  - logs/purification_strength_adaptive.pdf")
+    print("="*80)
 
 
 if __name__ == '__main__':

@@ -130,7 +130,7 @@ def experiment2(model, loader, num_epochs=3, device='cuda'):
     print("Starting Experiment 2: Latent-Space Regularization Analysis")
     
     latent_collection = []  # will be a list of numpy arrays
-    latent_labels = []      # store the corresponding poison labels
+    batch_labels = []       # store the corresponding poison labels for each batch
     
     def latent_hook(module, input, output):
         latent = output.view(output.size(0), -1).detach().cpu().numpy()
@@ -138,29 +138,44 @@ def experiment2(model, loader, num_epochs=3, device='cuda'):
     
     hook_handle = model.latent_layer.register_forward_hook(latent_hook)
     
+    print("Collecting labels from dataset...")
+    for images, labels in loader:
+        batch_labels.extend(labels.numpy())
+    batch_labels = np.array(batch_labels)
+    print(f"Dataset size: {len(batch_labels)} samples with {sum(batch_labels)} poisoned samples")
+    
+    print(f"Training model for {num_epochs} epochs and collecting latent representations...")
     from train import train_pipeline
     train_pipeline(model, loader, purification=None, num_epochs=num_epochs, device=device)
     
     hook_handle.remove()
     
-    for _, label in loader.dataset:
-        latent_labels.append(label)
-    latent_labels = np.array(latent_labels)
-    
     latents = np.concatenate(latent_collection, axis=0)
-    print("Collected latent representations: shape", latents.shape)
+    print(f"Collected latent representations: shape {latents.shape}")
+    
+    repeated_labels = np.tile(batch_labels, num_epochs)
+    print(f"Repeated labels shape: {repeated_labels.shape}")
+    
+    if len(repeated_labels) > latents.shape[0]:
+        repeated_labels = repeated_labels[:latents.shape[0]]
+    elif len(repeated_labels) < latents.shape[0]:
+        latents = latents[:len(repeated_labels)]
+    
+    print(f"Final shapes - Latents: {latents.shape}, Labels: {repeated_labels.shape}")
     
     pca = PCA(n_components=2)
     latents_2d = pca.fit_transform(latents)
+    print(f"PCA explained variance ratio: {pca.explained_variance_ratio_}")
     
-    if len(latents) > 10:
-        sil_score = silhouette_score(latents, latent_labels[:latents.shape[0]])
+    if len(latents) > 10 and len(np.unique(repeated_labels)) > 1:
+        sil_score = silhouette_score(latents, repeated_labels)
+        print("Silhouette Score: {:.3f}".format(sil_score))
     else:
         sil_score = 0
-    print("Silhouette Score: {:.3f}".format(sil_score))
+        print("Skipping silhouette score calculation (not enough samples or unique labels)")
     
     plt.figure(figsize=(6, 6))
-    scatter = plt.scatter(latents_2d[:,0], latents_2d[:,1], c=latent_labels[:latents_2d.shape[0]], cmap='viridis', alpha=0.7)
+    scatter = plt.scatter(latents_2d[:,0], latents_2d[:,1], c=repeated_labels[:latents_2d.shape[0]], cmap='viridis', alpha=0.7)
     plt.xlabel("PC1")
     plt.ylabel("PC2")
     plt.title("Latent Space Projection (PCA)")
