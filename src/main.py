@@ -14,25 +14,57 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import os
+import sys
 import time
 from typing import Dict, Tuple, List, Optional, Any
 
-from config.experiment_config import (
-    DEVICE, RANDOM_SEED, LATENT_DIM, DIFFUSION_STEPS, STEP_SIZE,
-    DIVERGENCE_THRESHOLD, REVERSION_LR, REVERSION_STEPS, MAX_ADAPTIVE_STEPS,
-    STEP_SIZE_DECAY, DATASET, DATA_DIR
-)
-from src.utils.models import SimpleCNN, LatentEncoder, DiffusionPurifier
-from src.utils.diffusion_utils import (
-    fgsm_attack, insert_trigger, kl_divergence, set_seed
-)
-from src.preprocess import get_dataset
-from src.train import train_classifier, train_latent_encoder
-from src.evaluate import (
-    evaluate_classifier, test_purification_robustness,
-    trigger_reversion, adaptive_purification
-)
-from config.experiment_config import EPSILON
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+try:
+    from config.experiment_config import (
+        DEVICE, RANDOM_SEED, LATENT_DIM, DIFFUSION_STEPS, STEP_SIZE,
+        DIVERGENCE_THRESHOLD, REVERSION_LR, REVERSION_STEPS, MAX_ADAPTIVE_STEPS,
+        STEP_SIZE_DECAY, DATASET, DATA_DIR, EPSILON
+    )
+except ImportError:
+    print("WARNING: Could not import from config.experiment_config. Using default values.")
+    DEVICE = "cpu"
+    RANDOM_SEED = 42
+    LATENT_DIM = 128
+    DIFFUSION_STEPS = 10
+    STEP_SIZE = 0.1
+    DIVERGENCE_THRESHOLD = 5.0
+    REVERSION_LR = 0.1
+    REVERSION_STEPS = 10
+    MAX_ADAPTIVE_STEPS = 5
+    STEP_SIZE_DECAY = 0.9
+    DATASET = "cifar10"
+    DATA_DIR = "./data"
+    EPSILON = 0.03
+
+try:
+    from src.utils.models import SimpleCNN, LatentEncoder, DiffusionPurifier
+    from src.utils.diffusion_utils import fgsm_attack, insert_trigger, kl_divergence, set_seed
+    from src.preprocess import get_dataset
+    from src.train import train_classifier, train_latent_encoder
+    from src.evaluate import (
+        evaluate_classifier, test_purification_robustness,
+        trigger_reversion, adaptive_purification
+    )
+except ImportError:
+    try:
+        print("WARNING: Could not import from src. Trying without src prefix.")
+        from utils.models import SimpleCNN, LatentEncoder, DiffusionPurifier
+        from utils.diffusion_utils import fgsm_attack, insert_trigger, kl_divergence, set_seed
+        from preprocess import get_dataset
+        from train import train_classifier, train_latent_encoder
+        from evaluate import (
+            evaluate_classifier, test_purification_robustness,
+            trigger_reversion, adaptive_purification
+        )
+    except ImportError:
+        print("ERROR: Failed to import required modules. Please check your Python path.")
+        sys.exit(1)
 
 def test_experiment1():
     """
@@ -224,12 +256,54 @@ def run_all_experiments():
     return results
 
 if __name__ == "__main__":
-    if torch.cuda.is_available():
-        print(f"CUDA is available. Using GPU: {torch.cuda.get_device_name(0)}")
-        print(f"GPU Memory: {torch.cuda.get_device_properties(0).total_memory / 1e9:.2f} GB")
-    else:
-        print("CUDA is not available. Using CPU.")
-        from config.experiment_config import DEVICE
+    print("\n" + "="*80)
+    print(" D2PTR: Dual-Stage Diffusion Purification with Trigger Reversion ")
+    print(" Starting Experimental Evaluation ")
+    print("="*80)
+    
+    print("\n[SYSTEM INFORMATION]")
+    print(f"Python version: {sys.version}")
+    print(f"PyTorch version: {torch.__version__}")
+    print(f"NumPy version: {np.__version__}")
+    
+    try:
+        if torch.cuda.is_available():
+            print(f"CUDA is available. Using GPU: {torch.cuda.get_device_name(0)}")
+            print(f"GPU Memory: {torch.cuda.get_device_properties(0).total_memory / 1e9:.2f} GB")
+            print(f"CUDA version: {torch.version.cuda}")
+        else:
+            print("CUDA is not available. Using CPU.")
+            globals()["DEVICE"] = "cpu"
+    except RuntimeError as e:
+        print(f"CUDA error: {e}")
+        print("Falling back to CPU.")
         globals()["DEVICE"] = "cpu"
     
-    run_all_experiments()
+    print("\n[CONFIGURATION]")
+    print(f"Random seed: {RANDOM_SEED}")
+    print(f"Device: {DEVICE}")
+    print(f"Dataset: {DATASET}")
+    print(f"Latent dimension: {LATENT_DIM}")
+    print(f"Diffusion steps: {DIFFUSION_STEPS}")
+    print(f"Step size: {STEP_SIZE}")
+    print(f"Adversarial epsilon: {EPSILON}")
+    print(f"Divergence threshold: {DIVERGENCE_THRESHOLD}")
+    print(f"Reversion learning rate: {REVERSION_LR}")
+    print(f"Reversion steps: {REVERSION_STEPS}")
+    print(f"Max adaptive steps: {MAX_ADAPTIVE_STEPS}")
+    print(f"Step size decay: {STEP_SIZE_DECAY}")
+    
+    print("\n[STARTING EXPERIMENTS]")
+    print("Running all D2PTR experiments. This may take a few minutes...")
+    
+    start_time = time.time()
+    results = run_all_experiments()
+    end_time = time.time()
+    
+    print("\n[EXECUTION TIMING]")
+    print(f"Total execution time: {end_time - start_time:.2f} seconds")
+    
+    print("\n[EXPERIMENT COMPLETED]")
+    print("All D2PTR experiments have been successfully executed.")
+    print("Results are available in the logs directory.")
+    print("="*80)

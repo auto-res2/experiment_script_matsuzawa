@@ -7,7 +7,10 @@ import torchvision.transforms as transforms
 from torch.utils.data import DataLoader, Subset
 import numpy as np
 import os
+import sys
 from typing import Tuple, Dict
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 def get_dataset(dataset_name: str, data_dir: str) -> Tuple[DataLoader, DataLoader]:
     """
@@ -34,7 +37,13 @@ def get_dataset(dataset_name: str, data_dir: str) -> Tuple[DataLoader, DataLoade
     else:
         raise ValueError(f"Dataset {dataset_name} not supported")
     
-    from config.experiment_config import BATCH_SIZE, NUM_WORKERS
+    BATCH_SIZE = 32
+    NUM_WORKERS = 0  # Use 0 for CPU-only environments
+    
+    try:
+        from config.experiment_config import BATCH_SIZE, NUM_WORKERS
+    except ImportError:
+        print("WARNING: Could not import BATCH_SIZE and NUM_WORKERS from config. Using defaults.")
     
     train_loader = DataLoader(
         train_dataset, batch_size=BATCH_SIZE, shuffle=True, 

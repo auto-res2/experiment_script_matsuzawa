@@ -8,12 +8,29 @@ import torch.nn.functional as F
 import numpy as np
 import matplotlib.pyplot as plt
 import os
+import sys
 from tqdm import tqdm
 from typing import Dict, Tuple, List, Optional
 
-from config.experiment_config import DEVICE, RANDOM_SEED
-from src.utils.models import SimpleCNN, LatentEncoder, DiffusionPurifier
-from src.utils.diffusion_utils import set_seed
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+try:
+    from config.experiment_config import DEVICE, RANDOM_SEED
+except ImportError:
+    print("WARNING: Could not import from config.experiment_config. Using default values.")
+    DEVICE = "cpu"
+    RANDOM_SEED = 42
+
+try:
+    from src.utils.models import SimpleCNN, LatentEncoder, DiffusionPurifier
+    from src.utils.diffusion_utils import set_seed
+except ImportError:
+    try:
+        print("WARNING: Could not import from src. Trying without src prefix.")
+        from utils.models import SimpleCNN, LatentEncoder, DiffusionPurifier
+        from utils.diffusion_utils import set_seed
+    except ImportError:
+        print("ERROR: Failed to import required modules. Please check your Python path.")
 
 def train_classifier(train_loader: torch.utils.data.DataLoader, 
                      model: nn.Module, 
