@@ -1,1 +1,11 @@
-# experiment_script_matsuzawa
+
+# Tweedie-Controlled Diffusion Purification: Adaptive Noise and Consistency Training for Robust Adversarial Defense
+> ⚠️ **NOTE:** This research is an automatic research using Research Graph.
+## Abstract
+We propose Tweedie-Controlled Diffusion Purification (TCDP), a novel adversarial purification method designed to enhance the robustness of neural network classifiers against adversarial attacks. Building on diffusion purification frameworks such as Purify++, TCDP overcomes key limitations including high computational cost, fixed noise schedules, and limited theoretical guarantees. Our approach integrates a dual-stage diffusion process with a double application of Tweedie’s formula and an associated consistency loss to enforce smoothness across adjacent noise levels. In the forward diffusion stage, adversarial samples are progressively corrupted using an adaptive noise schedule. In the reverse stage, a two‐pass denoising procedure first removes the bulk of the noise and then refines the output while monitoring reconstruction quality. The adaptive noise control mechanism dynamically balances deterministic reverse ODE steps with stochastic Langevin dynamics to reduce unnecessary computation while maintaining high purification quality. Experiments on CIFAR-10 under various PGD attack strengths show that TCDP achieves higher classification accuracy and lower reconstruction error compared to baseline methods. Ablation studies further confirm the benefits of both the double Tweedie framework and adaptive noise control, establishing TCDP as an effective and efficient defense strategy.
+
+- [Full paper](https://github.com/auto-res2/experiment_script_matsuzawa/blob/devin-64f21420bc124322aa2f3ee7386ff7a0/paper/paper.pdf)
+- [HTML view](https://github.com/auto-res2/experiment_script_matsuzawa/blob/devin-64f21420bc124322aa2f3ee7386ff7a0/html/index.html)
+- [Related work](http://arxiv.org/abs/2310.18762v1)
+- [Research Graph execution log](https://github.com/auto-res2/experiment_script_matsuzawa/blob/devin-64f21420bc124322aa2f3ee7386ff7a0/logs/research_graph_log.json)
+- [Devin execution log](https://app.devin.ai/sessions/64f21420bc124322aa2f3ee7386ff7a0)
