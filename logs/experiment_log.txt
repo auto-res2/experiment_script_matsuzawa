@@ -1,0 +1,68 @@
+
+==================================================
+GPU Compatibility Check
+==================================================
+CUDA is available. Device: Tesla T4
+Confirmed: Running on Tesla T4 GPU
+Memory allocated: 0.00 MB
+Memory reserved: 0.00 MB
+Total memory: 14.57 GB
+Created test tensor of shape torch.Size([1000, 1000]) on cuda:0
+
+==================================================
+TCDP Experiment Suite
+==================================================
+Running on: GPU
+
+==================================================
+Running Experiment 1: Robustness Under Adaptive Adversarial Attacks
+Warning: Checkpoint not found ([Errno 2] No such file or directory: './models/resnet18_cifar10.pth'). Using randomly initialized model for demonstration.
+Warning: Pretrained models not found ([Errno 2] No such file or directory: './models/purify_pp.pth'). Using randomly initialized models for demonstration.
+
+Using PGD attack with epsilon = 0.0157
+  Batch 0: Purify++ Acc: 0.188, TCDP Acc: 0.062
+  Batch 1: Purify++ Acc: 0.156, TCDP Acc: 0.031
+
+Using PGD attack with epsilon = 0.0314
+  Batch 0: Purify++ Acc: 0.188, TCDP Acc: 0.062
+  Batch 1: Purify++ Acc: 0.156, TCDP Acc: 0.031
+
+Using PGD attack with epsilon = 0.0471
+  Batch 0: Purify++ Acc: 0.188, TCDP Acc: 0.062
+  Batch 1: Purify++ Acc: 0.156, TCDP Acc: 0.031
+Epsilon 0.0157 -> Purify++: Acc=0.172, MSE=0.2706 | TCDP: Acc=0.047, MSE=0.2357
+Epsilon 0.0314 -> Purify++: Acc=0.172, MSE=0.2706 | TCDP: Acc=0.047, MSE=0.2357
+Epsilon 0.0471 -> Purify++: Acc=0.172, MSE=0.2706 | TCDP: Acc=0.047, MSE=0.2357
+
+==================================================
+
+Running Experiment 2: Ablation Study – Evaluating Component Impact
+Warning: Pretrained models not found ([Errno 2] No such file or directory: './models/tcdp.pth'). Using randomly initialized models for demonstration.
+
+Processing noise level: 0.05
+  Batch 0: MSE Full: 0.2932, NoCons: 0.2770, Fixed: 0.2699
+  Batch 1: MSE Full: 0.2612, NoCons: 0.2457, Fixed: 0.2396
+
+Processing noise level: 0.1
+  Batch 0: MSE Full: 0.2932, NoCons: 0.2772, Fixed: 0.2699
+  Batch 1: MSE Full: 0.2612, NoCons: 0.2460, Fixed: 0.2396
+
+Processing noise level: 0.15
+  Batch 0: MSE Full: 0.2932, NoCons: 0.2777, Fixed: 0.2699
+  Batch 1: MSE Full: 0.2612, NoCons: 0.2464, Fixed: 0.2396
+Noise 0.05 -> Full: 0.2772, NoCons: 0.2614, Fixed: 0.2547
+Noise 0.10 -> Full: 0.2772, NoCons: 0.2616, Fixed: 0.2547
+Noise 0.15 -> Full: 0.2772, NoCons: 0.2620, Fixed: 0.2547
+
+==================================================
+
+Running Experiment 3: Adaptive Noise Control Efficiency
+Warning: Pretrained models not found ([Errno 2] No such file or directory: './models/tcdp_adaptive.pth'). Using randomly initialized models for demonstration.
+Batch 0: Adaptive -> Steps: 1, Time: 0.0144s; Fixed -> Time: 0.0008s; Consistency history: [0.28727051615715027, 0.002252555452287197]
+Batch 1: Adaptive -> Steps: 1, Time: 0.0059s; Fixed -> Time: 0.0007s; Consistency history: [0.25653308629989624, 0.0022532169241458178]
+
+Average Adaptive Time per Batch: 0.0102s, Average Fixed Time per Batch: 0.0007s, Average Adaptive Steps: 1.00
+
+==================================================
+Total execution time: 8.43 seconds
+==================================================
