@@ -1,0 +1,128 @@
+================================================================================
+DALWGAN Experiment
+================================================================================
+Device: cuda
+PyTorch version: 2.6.0+cu124
+Test mode: False
+Running experiment(s): all
+================================================================================
+
+================================================================================
+Running Experiment 1: Synthetic Data Analysis for Intrinsic Dimension Recovery
+================================================================================
+Generating swiss_roll dataset with 1500 samples...
+Generated dataset with shape: (1500, 3)
+Saved plot: synthetic_data.pdf
+Creating DALWGAN model...
+Training DALWGAN for 100 epochs...
+Epoch 1/100 - G Loss: -0.6830, D Loss: -11.7473, Rank: 2.0007, Diff: 0.0848
+Epoch 5/100 - G Loss: -25.8194, D Loss: -275.4339, Rank: 2.0317, Diff: 0.0334
+Epoch 10/100 - G Loss: -141.8998, D Loss: -1276.2669, Rank: 2.0394, Diff: 0.0125
+Epoch 15/100 - G Loss: -330.9843, D Loss: -3458.5259, Rank: 2.0077, Diff: 0.0020
+Epoch 20/100 - G Loss: -833.1871, D Loss: -7049.7068, Rank: 1.9757, Diff: 1.4781
+Epoch 25/100 - G Loss: -1338.2450, D Loss: -12701.4553, Rank: 1.9796, Diff: 0.0504
+Epoch 30/100 - G Loss: -2215.2500, D Loss: -20771.4552, Rank: 1.9501, Diff: 0.6478
+Epoch 35/100 - G Loss: -3344.9244, D Loss: -31422.6086, Rank: 1.9530, Diff: 0.2904
+Epoch 40/100 - G Loss: -4537.7284, D Loss: -45689.5334, Rank: 1.9321, Diff: 0.0003
+Epoch 45/100 - G Loss: -6519.7775, D Loss: -63430.8486, Rank: 1.9194, Diff: 0.7824
+Epoch 50/100 - G Loss: -9134.6249, D Loss: -85067.4352, Rank: 1.9185, Diff: 0.2588
+Epoch 55/100 - G Loss: -11349.4615, D Loss: -111941.0531, Rank: 1.9199, Diff: 0.0503
+Epoch 60/100 - G Loss: -14290.7799, D Loss: -143452.7393, Rank: 1.9194, Diff: 0.4116
+Epoch 65/100 - G Loss: -18528.7018, D Loss: -179377.4102, Rank: 1.9196, Diff: 0.0139
+Epoch 70/100 - G Loss: -22433.5068, D Loss: -222086.2611, Rank: 1.9196, Diff: 0.2151
+Epoch 75/100 - G Loss: -27494.1763, D Loss: -271853.3249, Rank: 1.9193, Diff: 0.0966
+Epoch 80/100 - G Loss: -32925.8079, D Loss: -327195.2695, Rank: 1.9192, Diff: 0.0450
+Epoch 85/100 - G Loss: -39124.4263, D Loss: -388647.4128, Rank: 1.9193, Diff: 0.0009
+Epoch 90/100 - G Loss: -46236.1374, D Loss: -457477.3659, Rank: 1.9193, Diff: 0.0011
+Epoch 95/100 - G Loss: -54249.7604, D Loss: -536203.1914, Rank: 1.9192, Diff: 0.0018
+Epoch 100/100 - G Loss: -63096.5894, D Loss: -618055.6146, Rank: 1.9192, Diff: 0.0041
+Saved plot: training_curves.pdf
+Analyzing latent space...
+Singular values of latent representations: [669.63135   31.836847]
+Saved plot: singular_values.pdf
+Saved plot: latent_pca.pdf
+Saved plot: latent_tsne.pdf
+Estimated intrinsic dimension: 0.86
+Model saved to ./models/exp1
+Experiment 1 finished.
+
+
+================================================================================
+Running Experiment 2: Quality Evaluation on Real-World Image Datasets
+================================================================================
+Loading mnist dataset...
+Loaded dataset with 60000 samples
+Creating DALWGAN model for image data...
+Training DALWGAN for 20 epochs...
+Epoch 1/20 - G Loss: -2424.3820, D Loss: -1146.9257, Rank: 100.5855, Diff: 579.8236
+Epoch 5/20 - G Loss: 82452.5394, D Loss: -69086.2221, Rank: 101.9260, Diff: 5148.6102
+Epoch 10/20 - G Loss: 1305486.8676, D Loss: -1332578.0717, Rank: 102.6643, Diff: 22562.1022
+Epoch 15/20 - G Loss: 12006559.5490, D Loss: -6818248.5846, Rank: 102.6625, Diff: 48858.6659
+Epoch 20/20 - G Loss: 31625492.3563, D Loss: -16133567.0917, Rank: 102.3915, Diff: 95703.3267
+Generating samples...
+Saved plot: mnist_generated_samples.pdf
+Model saved to ./models/exp2
+Experiment 2 finished.
+
+
+================================================================================
+Running Experiment 3: Ablation Study on Diffusion Purification Stage
+================================================================================
+Generating swiss_roll dataset with 500 samples...
+Generated dataset with shape: (500, 3)
+Running ablation study for different diffusion configurations...
+Running ablation config: steps5_euler
+  Iteration 1/10 - Loss: 0.1031
+  Iteration 2/10 - Loss: 0.0290
+  Iteration 3/10 - Loss: 0.0043
+  Iteration 4/10 - Loss: 0.0015
+  Iteration 5/10 - Loss: 0.0058
+  Iteration 6/10 - Loss: 0.0099
+  Iteration 7/10 - Loss: 0.0117
+  Iteration 8/10 - Loss: 0.0113
+  Iteration 9/10 - Loss: 0.0094
+  Iteration 10/10 - Loss: 0.0071
+Final loss for config steps5_euler: 0.0071
+Running ablation config: steps5_heun
+  Iteration 1/10 - Loss: 0.0257
+  Iteration 2/10 - Loss: 0.0010
+  Iteration 3/10 - Loss: 0.0041
+  Iteration 4/10 - Loss: 0.0083
+  Iteration 5/10 - Loss: 0.0076
+  Iteration 6/10 - Loss: 0.0048
+  Iteration 7/10 - Loss: 0.0024
+  Iteration 8/10 - Loss: 0.0009
+  Iteration 9/10 - Loss: 0.0003
+  Iteration 10/10 - Loss: 0.0001
+Final loss for config steps5_heun: 0.0001
+Running ablation config: steps15_euler
+  Iteration 1/10 - Loss: 0.2275
+  Iteration 2/10 - Loss: 0.0571
+  Iteration 3/10 - Loss: 0.0133
+  Iteration 4/10 - Loss: 0.0553
+  Iteration 5/10 - Loss: 0.0604
+  Iteration 6/10 - Loss: 0.0364
+  Iteration 7/10 - Loss: 0.0166
+  Iteration 8/10 - Loss: 0.0068
+  Iteration 9/10 - Loss: 0.0031
+  Iteration 10/10 - Loss: 0.0019
+Final loss for config steps15_euler: 0.0019
+Running ablation config: steps15_heun
+  Iteration 1/10 - Loss: 0.0847
+  Iteration 2/10 - Loss: 0.0231
+  Iteration 3/10 - Loss: 0.0373
+  Iteration 4/10 - Loss: 0.0112
+  Iteration 5/10 - Loss: 0.0020
+  Iteration 6/10 - Loss: 0.0040
+  Iteration 7/10 - Loss: 0.0072
+  Iteration 8/10 - Loss: 0.0082
+  Iteration 9/10 - Loss: 0.0071
+  Iteration 10/10 - Loss: 0.0052
+Final loss for config steps15_heun: 0.0052
+Saved plot: diffusion_ablation.pdf
+Experiment 3 finished.
+
+
+================================================================================
+Total execution time: 964.84 seconds
+================================================================================
