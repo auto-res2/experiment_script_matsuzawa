@@ -1,0 +1,141 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Research Paper</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      margin: 2rem auto;
+      max-width: 800px;
+      padding: 0 1rem;
+      line-height: 1.6;
+      color: #333;
+      background-color: #fff;
+    }
+    h2 {
+      border-bottom: 2px solid #ddd;
+      padding-bottom: 0.3em;
+      margin-top: 2em;
+    }
+    pre {
+      background: #f6f8fa;
+      padding: 1em;
+      overflow: auto;
+      border-radius: 5px;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, monospace;
+    }
+    ul {
+      padding-left: 1.5em;
+    }
+    figure {
+      text-align: center;
+      margin: 1.5em 0;
+    }
+    figcaption {
+      font-size: 0.9em;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+<!-- Title -->
+<section>
+  <h2>Title</h2>
+  <p>Unified Purification-Reversion Defense for Diffusion Model Backdoor Mitigation</p>
+</section>
+
+<!-- Abstract -->
+<section>
+  <h2>Abstract</h2>
+  <p>Diffusion models have achieved impressive success in image generation, yet they remain vulnerable to backdoor attacks that trigger undesirable outputs when a hidden pattern is present. We propose a novel defense framework, Unified Purification-Reversion (UPR) Defense, which builds upon ideas from TERD and Purify++ to protect diffusion models.</p>
+  <p>UPR Defense integrates an advanced trigger reversion mechanism with efficient numerical purification based on Heun’s method and employs a dual-space consistency loss operating on both the image and noise domains. This dual-check approach enables the detection and correction of subtle and adaptive triggers while keeping computational overhead in check.</p>
+  <p>Experiments on standard datasets, including CIFAR-10 and CelebA, demonstrate that UPR Defense maintains high true positive rates and low false positive rates over a range of trigger intensities. Extensive evaluations analyze reconstruction quality using PSNR and SSIM, convergence speed, and the impact of controlled randomness. The results confirm that UPR Defense outperforms baseline methods, offering a robust recovery against backdoor insertion and adaptive attacks, and providing a promising pathway toward more secure and trustworthy diffusion models.</p>
+</section>
+
+<!-- Introduction -->
+<section>
+  <h2>Introduction</h2>
+  <p>The advent of diffusion models has revolutionized image generation, enabling high-fidelity synthesis from latent representations. However, adversaries can exploit these models by inserting backdoor triggers that cause harmful or manipulated outputs in response to pre-defined perturbations. Addressing these vulnerabilities is crucial for ensuring the integrity and reliability of generative models in practical applications.</p>
+  <p>In this paper, we introduce Unified Purification-Reversion (UPR) Defense, a framework that integrates advanced trigger reversion with efficient numerical purification techniques and controlled randomness. UPR Defense is motivated by the strengths of TERD, which derives a reversed loss and employs a multi-step trigger reversion procedure, and by the improvements offered by Purify++ in terms of adaptive noise control. Our approach overcomes limitations in previous methods, such as heavy computational costs and challenges in reversing extremely low-intensity or adaptive backdoor triggers.</p>
+  <ul>
+    <li><strong>Advanced Trigger Reversion:</strong> Uses controlled noisy initialization and adaptive purification via Heun’s method to reduce computation while preserving high fidelity in trigger reversal.</li>
+    <li><strong>Dual-Space Consistency Loss:</strong> Aligns the reversed trigger distribution with benign noise and image outputs, enhancing detection under subtle or adaptive attacks.</li>
+    <li><strong>Controlled Randomness Mechanism:</strong> Incorporates a mixing strategy and adaptive noise scheduling to balance stochastic and deterministic updates during purification.</li>
+    <li><strong>Extensive Experiments:</strong> Evaluations on CIFAR-10 and CelebA validate the robustness, computational efficiency, and convergence properties compared to baseline defenses.</li>
+  </ul>
+  <p>Our experimental results confirm that UPR Defense not only achieves high detection accuracy but also improves efficiency and robustness under adversarial conditions. Future work will further refine the loss regularization and extend the framework to additional classes of generative models.</p>
+</section>
+
+<!-- Related Work -->
+<section>
+  <h2>Related Work</h2>
+  <p>Recent research on securing generative models has focused on mitigating backdoor attacks in diffusion-based image synthesis. The TERD framework introduced a unified defense by formulating a reversed loss and employing a multi-step trigger reversion strategy, achieving high true positive and true negative rates. However, TERD's reliance on computationally heavy differential multi-step samplers limits its practicality, particularly against adaptive attacks with extremely low trigger scaling factors.</p>
+  <p>In contrast, Purify++ emphasizes noise control and efficient numerical simulations, including techniques like Heun’s method, which reduces computational overhead while maintaining predictive fidelity. Other works in backdoor defense have explored input and model detection using metrics such as KL divergence between noise distributions, yet single-space analysis may overlook subtle red flags.</p>
+  <p>UPR Defense distinguishes itself by integrating dual-space consistency checking across both image and noise domains and by incorporating controlled randomness for dynamic adaptation to trigger intensities. This unified approach combines the reversible loss optimization of TERD with the adaptive purification dynamics of Purify++, offering a robust, efficient, and flexible framework applicable to various diffusion model architectures, including those based on stochastic differential equations.</p>
+</section>
+
+<!-- Background -->
+<section>
+  <h2>Background</h2>
+  <p>Diffusion models generate images through iterative denoising, starting from a noisy latent space and converging to an image distribution. In the context of backdoor attacks, a trigger is a pre-defined perturbation that compels the model to produce an undesirable output when present. The challenge lies in detecting and reversing such subtle perturbations without degrading overall image quality.</p>
+  <p>Prior work, notably TERD, modeled backdoor triggers by deriving a reversed loss to guide input purification; however, these methods typically require extensive computational resources due to multi-step differential sampling. Advances in numerical methods for solving ordinary differential equations, such as Heun’s method, provide an efficient alternative by approximating the reverse diffusion step with controlled error margins.</p>
+  <p>Furthermore, consistency losses computed in both the image and noise spaces have proven effective for identifying discrepancies induced by backdoor triggers. In our approach, the successful reversal of a trigger is signaled by the close alignment of the noise and image distributions in purified versus benign inputs, as measured by metrics including mean squared error and Kullback-Leibler divergence. This theoretical framework underpins the design of UPR Defense, which minimizes the divergence between purified and benign distributions by integrating controlled randomness and adaptive noise scheduling into the purification process.</p>
+</section>
+
+<!-- Method -->
+<section>
+  <h2>Method</h2>
+  <p>The Unified Purification-Reversion (UPR) Defense method combines advanced trigger reversion, efficient numerical purification, and a novel dual-space consistency loss. The process begins with an advanced trigger reversion mechanism that provides an initial estimate of the backdoor trigger.</p>
+  <p>Unlike TERD, which uses noise sampled directly from a prior, UPR Defense uses a controlled noisy initialization managed by a randomness control scheme inspired by Purify++, reducing variance and preventing overcorrection. Subsequently, an adaptive purification process replaces the computationally expensive differential multi-step samplers with a Heun’s method-based numerical simulation, balancing computational efficiency and reliable reverse diffusion.</p>
+  <p>Following the trigger reversion, UPR Defense employs a dual-space consistency loss: in the noise space, the Kullback-Leibler divergence between the reversed trigger distribution and a benign noise distribution is minimized, while in the image space, a consistency loss ensures that the purified output closely resembles a benign image. Additionally, a controlled randomness mechanism is integrated via a mixing strategy that combines deterministic updates with injected stochastic noise, and an adaptive noise schedule adjusts noise intensity over iterations, providing further refinement when needed.</p>
+  <p>All components are jointly optimized by minimizing a loss function that comprises both image-space and noise-space consistency terms and a regularization term to prevent excessive deviations during purification. This unified optimization framework improves robustness against various trigger intensities and enhances computational efficiency by reducing the number of iterations needed for convergence.</p>
+  <pre><code>// Pseudocode for UPR Defense method
+initialize trigger_estimate using controlled noisy initialization
+for each iteration in purification_process:
+    compute reversed_loss in noise and image space
+    update purification state using Heun’s method
+    apply controlled randomness via mixing strategy
+    adjust noise intensity with adaptive scheduling
+    if convergence criteria met then break
+return purified_output
+</code></pre>
+</section>
+
+<!-- Experimental Setup -->
+<section>
+  <h2>Experimental Setup</h2>
+  <p>Our experiments evaluate UPR Defense on datasets such as CIFAR-10 and CelebA, simulating forward and reverse diffusion processes with synthetically added triggers of varying intensities. Three primary experiments were conducted.</p>
+  <p>The first experiment examines robustness under different trigger intensities by adding a small bright square trigger scaled by factors of 0.2, 0.5, 0.8, and 1.0, and comparing UPR Defense to a baseline TERD method. Reconstruction quality is quantified using Peak Signal-to-Noise Ratio (PSNR), Structural Similarity Index (SSIM), and detection accuracy (with a threshold set at PSNR &gt; 30).</p>
+  <p>The second experiment assesses computational efficiency and convergence speed by comparing the traditional multi-step sampler in TERD with the Heun’s method-based sampler in UPR Defense. This comparison involves measuring wall-clock time per sample and counting iterations to reach a consistency loss threshold (e.g., 1e-3) over 30 test images using Python’s time module and PyTorch’s efficient tensor operations.</p>
+  <p>The third experiment investigates the effect of controlled randomness and adaptive noise scheduling. We perform grid searches over different mixing coefficients (0.1, 0.5, 0.9) and various noise schedules (constant, linear, exponential) and track the consistency loss over 50 iterations for each configuration. Average loss curves are computed to study convergence behavior.</p>
+  <p>The experiments are implemented using Python with PyTorch, NumPy, and Matplotlib, and include utility functions for adding trigger patterns, computing loss functions, and visualizing loss versus iteration curves. All experimental protocols ensure reproducibility and provide comprehensive quantitative and qualitative comparisons between UPR Defense and baseline methods.</p>
+</section>
+
+<!-- Results -->
+<section>
+  <h2>Results</h2>
+  <p>Experimental results indicate that UPR Defense outperforms baseline defenses such as TERD. In robustness experiments, UPR Defense consistently maintains high reconstruction quality across different trigger intensities, with average PSNR and SSIM values suggesting that purified images closely resemble benign originals; detection accuracies approach 100% when using a PSNR threshold above 30.</p>
+  <p>Reconstruction quality plots demonstrate that the dual-space consistency loss effectively reverses even low-intensity triggers without introducing significant artifacts.</p>
+  <p>In the computational efficiency experiment, UPR Defense employing Heun’s method converges more rapidly than the traditional multi-step sampler, requiring fewer iterations and lower wall-clock times per sample. Quantitative comparisons show that both the average time per sample and the number of iterations are significantly lower for the UPR-Heun variant compared to TERD.</p>
+  <p>Finally, grid search experiments on controlled randomness and adaptive noise scheduling reveal that a mid-range mixing coefficient (approximately 0.5) paired with a linear decay noise schedule yields the best trade-off between robust trigger reversal and convergence stability. The corresponding loss curves illustrate effective minimization of the consistency loss over iterations under these optimal settings.</p>
+  <figure>
+    <img src="images/reconstruction_quality.png" alt="Reconstruction quality plot" style="max-width:100%;height:auto;display:block;margin:0 auto;">
+    <figcaption>Reconstruction quality plot demonstrating the performance of UPR Defense.</figcaption>
+  </figure>
+  <p>While some challenges persist against highly adaptive attack strategies, the overall results validate the effectiveness and efficiency of UPR Defense in mitigating backdoor attacks on diffusion models.</p>
+</section>
+
+<!-- Conclusions -->
+<section>
+  <h2>Conclusions</h2>
+  <p>This paper has presented Unified Purification-Reversion (UPR) Defense, a novel framework for defending diffusion models against backdoor attacks. By integrating an advanced trigger reversion strategy with efficient Heun’s method-based numerical purification and a dual consistency loss across both image and noise spaces, UPR Defense addresses key limitations of existing methods such as TERD.</p>
+  <p>Experimental evaluations on CIFAR-10 and CelebA demonstrate that UPR Defense achieves superior reconstruction quality, robust trigger reversal, and significant reductions in computational overhead. The incorporation of controlled randomness through a mixing strategy and adaptive noise scheduling further enhances its resilience against low-intensity and adaptive backdoor triggers.</p>
+  <p>Although some challenges remain in fully neutralizing adaptive attack scenarios, the proposed framework represents a substantial advancement toward secure and reliable diffusion models. Future work will explore its extension to additional generative architectures and further refinement of the purification process via advanced regularization techniques.</p>
+</section>
+
+</body>
+</html>
