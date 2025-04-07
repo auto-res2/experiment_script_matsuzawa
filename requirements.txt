@@ -1,0 +1,8 @@
+torch
+transformers
+detoxify
+pytorch_lightning
+numpy
+pandas
+matplotlib
+seaborn
