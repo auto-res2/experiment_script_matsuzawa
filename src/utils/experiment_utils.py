@@ -92,6 +92,19 @@ def save_plot(x, y, xlabel, ylabel, title, filename, figsize=(6, 4), color='blue
         color: Line color
         marker: Marker style
     """
+    if len(y) == 0:
+        plt.figure(figsize=figsize)
+        plt.xlabel(xlabel)
+        plt.ylabel(ylabel)
+        plt.title(title + " (No Data)")
+        plt.tight_layout()
+        plt.savefig(filename)
+        plt.close()
+        return
+        
+    if len(x) != len(y):
+        x = np.arange(1, len(y) + 1)
+        
     plt.figure(figsize=figsize)
     plt.plot(x, y, color=color, marker=marker)
     plt.xlabel(xlabel)

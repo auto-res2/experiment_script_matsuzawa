@@ -62,8 +62,11 @@ class ANCDNetwork(nn.Module):
         out_initial = self.integrator(shared_out)
         
         with torch.no_grad():
-            correction = 0.1 * (out_initial - x)
-            shared_out_corrected = shared_out - correction
+            output_correction = 0.1 * (out_initial - x)
+            
+            feature_correction = torch.zeros_like(shared_out)
+            feature_correction = 0.01 * torch.sign(output_correction.sum(dim=1, keepdim=True).expand_as(shared_out))
+            shared_out_corrected = shared_out - feature_correction
         
         out = self.integrator(shared_out_corrected)
         return out
@@ -109,8 +112,11 @@ class ANCDNetworkVariants(nn.Module):
             
             if self.use_consistency_loss:
                 with torch.no_grad():
-                    correction = 0.1 * (out_initial - x)
-                    shared_out_corrected = shared_out - correction
+                    output_correction = 0.1 * (out_initial - x)
+                    
+                    feature_correction = torch.zeros_like(shared_out)
+                    feature_correction = 0.01 * torch.sign(output_correction.sum(dim=1, keepdim=True).expand_as(shared_out))
+                    shared_out_corrected = shared_out - feature_correction
                 
                 out = self.integrator(shared_out_corrected)
             else:
