@@ -21,12 +21,6 @@
       margin-bottom: 0.5em;
       border-bottom: none;
     }
-    .title-divider {
-      width: 50%;
-      height: 2px;
-      background-color: #ccc;
-      margin: 0.5em auto 2em;
-    }
     h2 {
       border-bottom: 2px solid #ddd;
       padding-bottom: 0.3em;
@@ -57,7 +51,6 @@
 <body>
 <!-- Title -->
 <h2 class="paper-title">Adaptive Multimodal Instruction and Co-Training (AMICT): A Compact Approach for On-Device Multimodal AI</h2>
-<div class="title-divider"></div>
 
 <!-- Abstract -->
 <section>
@@ -85,7 +78,7 @@
 <!-- Background -->
 <section>
   <h2>Background</h2>
-  <p>Understanding the innovations behind AMICT requires a review of several foundational concepts. The starting point is the GPT-3–style architecture, which is enhanced in BTLM-3B-8K by incorporating SwiGLU nonlinearity for improved training stability and ALiBi positional embeddings that enable better extrapolation over long input sequences. The original model was trained on the SlimPajama dataset using two distinct context lengths (2,048 and 8,192 tokens) and employed maximal update parameterization (&micro;P) to transfer optimal hyperparameters from proxy models.</p>
+  <p>Understanding the innovations behind AMICT requires a review of several foundational concepts. The starting point is the GPT-3–style architecture, which is enhanced in BTLM-3B-8K by incorporating SwiGLU nonlinearity for improved training stability and ALiBi positional embeddings that enable better extrapolation over long input sequences. The original model was trained on the SlimPajama dataset using two distinct context lengths (2,048 and 8,192 tokens) and employed maximal update parameterization (&mu;P) to transfer optimal hyperparameters from proxy models.</p>
   <p>A crucial advancement in AMICT is its dual-stage multimodal pretraining. At this stage, the model is exposed to a corpus that includes not only high-quality text, but also aligned image snippets—such as captioned images—and short segments of audio. Dedicated, lightweight encoders process non-textual data in parallel with the text module, and cross-modal attention blocks enable the fusion of features across modalities. Following this, the enhanced instruction-tuning phase further adapts the model by fine-tuning it on interactive scenarios. A lightweight reinforcement learning layer, inspired by recent alignment strategies, further refines the model by comparing outputs against dynamically updated knowledge sources.</p>
   <p>Dynamic context modulation represents another key element. While the base model employs fixed context windows, AMICT introduces adaptive attention mechanisms that modulate based on the semantic density of the input, preserving effectiveness even when token counts exceed 8K. Finally, the hardware–software co-design ensures that the model is optimized for quantization and can run with low memory usage on edge devices. These design choices collectively ensure that the multimodal capabilities do not compromise speed or overall compactness.</p>
 </section>
@@ -98,25 +91,32 @@
     <li><strong>Dual-Stage Multimodal Pretraining:</strong> The model is initially trained on a curated, deduplicated corpus that includes text, captioned images, and audio snippets. Dedicated yet lightweight encoders for image and audio data run parallel to the text encoder, merging outputs via cross-modal attention blocks. The underlying transformer architecture continues to utilize SwiGLU activations and ALiBi positional embeddings to ensure effective long-context processing.</li>
     <li><strong>Enhanced Instruction-Tuning and Alignment:</strong> In a further fine-tuning phase, the model is exposed to a variety of interactive tasks such as conversational chat, query-answering, and visual instruction following. A lightweight reinforcement learning loop, which employs web-based feedback and comparative ranking techniques, is integrated to reduce hallucinations and bias. This phase ensures that the model is better aligned with real-world application requirements.</li>
     <li><strong>Dynamic Context Modulation:</strong> Instead of relying on static context windows, AMICT introduces a dynamic modulation module that adjusts attention distributions based on the semantic density of inputs. This adaptive mechanism enables the model to maintain accuracy and coherence even when the input extends to 10K tokens or beyond.</li>
-    <li><strong>Hardware–Software Co-Design for On-Device Inference:</strong> The final module focuses on maintaining efficiency. AMICT is optimized with quantization-friendly techniques, reducing memory usage to roughly 3GB at 4-bit precision, and achieving inference costs about 2.5&times; lower than typical 7B models. Modifications in resource scheduling between the multimodal submodules and the core transformer facilitate rapid and efficient on-device inference.</li>
+    <li><strong>Hardware–Software Co-Design for On-Device Inference:</strong> The final module focuses on maintaining efficiency. AMICT is optimized with quantization-friendly techniques, reducing memory usage to roughly 3GB at 4-bit precision, and achieving inference costs about 2.5× lower than typical 7B models. Modifications in resource scheduling between the multimodal submodules and the core transformer facilitate rapid and efficient on-device inference.</li>
   </ul>
-  <pre><code>// Pseudocode for the dual-stage training process
-for (each batch in training_data) {
-    // Process text, image, and audio inputs
-    text_features = textEncoder(batch.text);
-    image_features = imageEncoder(batch.images);
-    audio_features = audioEncoder(batch.audio);
-    
-    // Merge features using cross-modal attention
-    merged_features = crossModalAttention(text_features, image_features, audio_features);
-    
-    // Forward pass through the transformer
-    output = transformer(merged_features);
-    
-    // Compute loss and update model parameters
-    loss = computeLoss(output, batch.labels);
-    updateModel(loss);
-}
+  <p>The careful integration of these components ensures that improvements in multimodal processing and long-context handling do not come at the expense of speed or efficiency.</p>
+  <pre><code>// Pseudocode for the integration process
+initialize BTLM_3B_8K_model()
+load_multimodal_corpus(text, images, audio)
+
+// Dual-stage multimodal pretraining
+for epoch in pretraining_epochs:
+    process_text_data()
+    process_image_data()
+    process_audio_data()
+    apply_cross_modal_attention()
+    update_model_parameters()
+
+// Enhanced instruction-tuning and alignment
+for task in interactive_tasks:
+    fine_tune_model(task)
+    apply_reinforcement_learning_loop()
+
+// Dynamic context modulation
+adjust_attention_based_on_semantic_density()
+
+// Hardware–Software Co-Design adjustments
+optimize_for_quantization()
+reduce_memory_usage()
 </code></pre>
 </section>
 
@@ -140,16 +140,16 @@ for (each batch in training_data) {
   <p>- The long-context handling test shows that while both AMICT and the Base Method manage increased token counts, AMICT demonstrates a smoother performance degradation when processing inputs as long as 10K tokens. Latency measurements indicate minimal variation, with dynamic context modulation enabling sustained coherence and rapid response generation.</p>
   <p>- In the on-device inference benchmark, the hardware–software co-design presents near-zero differences in latency and memory usage compared to the baseline when measured on dummy models. Although both systems exhibit similar numerical outcomes in the simulated environment, these results highlight the potential for significant gains in real-world scenarios, where quantization and effective resource scheduling can lead to more notable improvements.</p>
   <figure>
-    <img src="images/bar_chart.png" alt="Bar chart comparing response string lengths" />
+    <img src="images/response_lengths.png" alt="Bar chart comparing response string lengths" />
     <figcaption>Bar chart comparing response string lengths from the multimodal evaluation.</figcaption>
   </figure>
   <figure>
-    <img src="images/latency_curve.png" alt="Latency vs. Token Length curve" />
-    <figcaption>Latency versus token length curves from the long-context experiment.</figcaption>
+    <img src="images/latency_vs_tokens.png" alt="Latency versus token length curves" />
+    <figcaption>Graph plotting latency as a function of token length in the long-context experiment.</figcaption>
   </figure>
   <figure>
-    <img src="images/dual_axis_bar_chart.png" alt="Inference latency and memory utilization chart" />
-    <figcaption>Dual-axis bar charts depicting inference latency and memory utilization in the simulated on-device setup.</figcaption>
+    <img src="images/inference_latency_memory.png" alt="Dual-axis bar charts for inference latency and memory utilization" />
+    <figcaption>Dual-axis bar charts depicting inference latency and memory usage in the simulated on-device setup.</figcaption>
   </figure>
 </section>
 
@@ -159,6 +159,5 @@ for (each batch in training_data) {
   <p>In summary, Adaptive Multimodal Instruction and Co-Training (AMICT) offers a novel, compact solution for enhancing multimodal processing, dynamic long-context understanding, and efficient on-device inference. By building upon the BTLM-3B-8K architecture and integrating multiple innovations—including dual-stage multimodal pretraining, an enhanced instruction-tuning phase with reinforcement learning feedback, dynamic attention modulation, and a hardware–software co-design—AMICT successfully addresses the limitations of its predecessor.</p>
   <p>Our experiments, implemented via realistic Python-based evaluations, confirm that AMICT can achieve performance levels comparable to large 7B-parameter models while operating at a fraction of the computational and memory cost. Future research may focus on further refining dynamic context modulation, extending multimodal capabilities to additional languages and data modalities, and introducing explicit measures for bias mitigation. Overall, AMICT represents a significant step toward the deployment of efficient and versatile on-device AI systems.</p>
 </section>
-
 </body>
 </html>
