@@ -1,0 +1,10 @@
+batch_size: 16
+image_size: [3, 32, 32]
+dataset_size: 64
+guidance_scales: [5, 10, 50]
+max_iterations: 50
+loss_threshold: 0.001
+learning_rate: 0.01
+optimizers: ["adam", "rmsprop", "anderson"]
+plot_path: "plots"
+log_path: "logs"
