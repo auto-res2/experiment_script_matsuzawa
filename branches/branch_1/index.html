@@ -49,10 +49,8 @@
   </style>
 </head>
 <body>
-<!-- Title -->
 <h2 class="paper-title">Diffusion-Assisted Latent Wasserstein GAN for Robust Generative Modeling</h2>
 
-<!-- Abstract -->
 <section>
   <h2>Abstract</h2>
   <p>We propose Diffusion-Assisted Latent Wasserstein GAN (DALWGAN), a novel framework that augments adaptive latent space learning with a diffusion-based purification stage directly applied in the latent space. By integrating a short diffusion process into the conventional latent Wasserstein GAN (LWGAN) framework, DALWGAN refines latent representations so they align more accurately with the intrinsic data manifold while mitigating noise and sampling artifacts.</p>
@@ -60,95 +58,89 @@
   <p>Extensive experiments on synthetic datasets (including the Swiss roll and S-curve) as well as real-world image datasets like MNIST and CelebA demonstrate that DALWGAN achieves superior performance, as measured by improved Fréchet Inception Distance and Inception Score relative to baseline LWGAN and conventional diffusion-based models. Ablation studies further elucidate the impact of diffusion steps and integration methods on both latent space recovery and generative quality, underscoring the robustness and effectiveness of our approach.</p>
 </section>
 
-<!-- Introduction -->
 <section>
   <h2>Introduction</h2>
   <p>Recent advances in generative modeling have been propelled by deep neural network architectures such as Generative Adversarial Networks (GANs) and Variational Auto-Encoders (VAEs). Despite their successes, a persistent challenge remains: effectively representing data that intrinsically lie on non-Euclidean, low-dimensional manifolds. Traditional generative methods typically assume an ambient Euclidean latent space, an assumption that can lead to mismatches between the latent representations and the true data manifold, thereby degrading generation quality.</p>
   <p>The latent Wasserstein GAN (LWGAN) framework sought to alleviate this issue by adaptively learning the intrinsic dimensionality of data through the use of a structured latent prior and a deterministic encoder-to-generator mapping. Nevertheless, the sensitivity of this mapping to noise and its potential imperfection in manifold estimation has motivated further refinement. In this context, we introduce Diffusion-Assisted Latent Wasserstein GAN (DALWGAN), a framework that integrates a diffusion purification stage within the latent space. By refining latent codes via a short, controlled diffusion process, DALWGAN effectively reduces noise, thereby ensuring that the inputs to the generator adhere more closely to the underlying data manifold.</p>
   <p>Our contributions include:</p>
   <ul>
-    <li><strong>Adaptive Fusion:</strong> The fusion of adaptive latent embedding with a diffusion-based purification process to enhance latent manifold recovery.</li>
+    <li><strong>Fusion:</strong> The fusion of adaptive latent embedding with a diffusion-based purification process to enhance latent manifold recovery.</li>
     <li><strong>Purification Module:</strong> The introduction of a purification module that employs numerical techniques, such as Heun’s method, to iteratively refine latent representations.</li>
-    <li><strong>Extensive Experiments:</strong> An extensive experimental framework that evaluates latent representation quality and generation fidelity on both synthetic and real-world datasets, demonstrating the superiority of DALWGAN over baseline LWGAN and diffusion-based generative models.</li>
+    <li><strong>Experimental Framework:</strong> An extensive experimental framework that evaluates latent representation quality and generation fidelity on both synthetic and real-world datasets, demonstrating the superiority of DALWGAN over baseline LWGAN and diffusion-based generative models.</li>
   </ul>
   <p>These contributions collectively establish a new benchmark in robust generative modeling, paving the way for more stable and high-fidelity synthesis.</p>
 </section>
 
-<!-- Related Work -->
 <section>
   <h2>Related Work</h2>
   <p>Prior research in generative adversarial networks has focused on reducing the discrepancy between real and synthesized data distributions using various adversarial training schemes. LWGAN advanced this agenda by utilizing an adaptive latent space that is enforced through a structured prior distribution, where a diagonal matrix with binary entries and an associated rank penalty is used to capture the intrinsic dimensionality of the data. Although this method improves latent representation, its deterministic encoder-to-generator mapping can be sensitive to noise.</p>
-  <p>In parallel, diffusion models have emerged as powerful tools for image purification by iteratively adding and then removing noise, as demonstrated in methods such as Purify++. However, diffusion-based purification is predominantly applied in pixel space, incurring significant computational overhead. DALWGAN distinguishes itself by integrating the diffusion process in latent space, thus combining the strengths of both adaptive latent embedding and noise purification while maintaining computational efficiency.</p>
-  <p>In direct comparisons, while earlier methods focused on either adapting the latent space or purifying noisy outputs, our approach unifies these methodologies into a single model that refines latent codes before generation, resulting in enhanced robustness and image quality.</p>
+  <p>In parallel, diffusion models have emerged as powerful tools for image purification by iteratively adding and then removing noise, as demonstrated in methods such as Purify++. However, diffusion-based purification is predominantly applied in pixel space, incurring significant computational overhead. DALWGAN distinguishes itself by integrating the diffusion process in latent space, thus combining the strengths of both adaptive latent embedding and noise purification while maintaining computational efficiency. In direct comparisons, while earlier methods focused on either adapting the latent space or purifying noisy outputs, our approach unifies these methodologies into a single model that refines latent codes before generation, resulting in enhanced robustness and image quality.</p>
 </section>
 
-<!-- Background -->
 <section>
   <h2>Background</h2>
   <p>Generative models such as GANs and VAEs require a mapping from high-dimensional inputs to a lower-dimensional latent space, which is often assumed to be Euclidean. However, many real-world datasets (for example, natural images) lie on non-Euclidean manifolds with much lower intrinsic dimensionality. The LWGAN framework addresses this by adopting an informative prior modeled as a generalized normal distribution N(0, A), where A is a diagonal matrix with entries chosen from {0, 1}, with a rank penalty that encourages the latent representation to reflect the true data manifold.</p>
   <p>Despite this innovation, the reliance on a deterministic mapping from data to latent space exposes the model to noise and estimation imperfections. Diffusion-based methods, on the other hand, operate by injecting controlled noise and subsequently performing a reverse denoising process. When applied in latent space, such diffusion processes can refine latent codes to more accurately capture the underlying manifold. Combining optimal transport theory via the Wasserstein distance and controlled stochastic processes governed by numerical solvers such as Heun’s method yields a model in which latent representations are both robust and true to the data’s intrinsic structure.</p>
 </section>
 
-<!-- Method -->
 <section>
   <h2>Method</h2>
-  <p>The proposed Diffusion-Assisted Latent Wasserstein GAN (DALWGAN) extends the LWGAN framework by introducing a latent diffusion purification module. The method consists of three key steps. First, an encoder network Q maps the input data X to a latent representation Z, with a prior distribution expressed as N(0, A). Here, A is a diagonal matrix with binary entries, and a rank penalty on A enforces the intrinsic dimensionality of the data manifold.</p>
+  <p>The proposed Diffusion-Assisted Latent Wasserstein GAN (DALWGAN) extends the LWGAN framework by introducing a latent diffusion purification module. The method consists of three key steps.</p>
+  <p>First, an encoder network Q maps the input data X to a latent representation Z, with a prior distribution expressed as N(0, A). Here, A is a diagonal matrix with binary entries, and a rank penalty on A enforces the intrinsic dimensionality of the data manifold.</p>
   <p>Second, the latent code does not directly feed into the generator. Instead, it is processed by a diffusion purification module which performs a two-phase update: a forward noise injection followed by a controlled reverse denoising process. This purification stage is implemented using numerical techniques such as Heun’s method, which involve predictor-corrector steps whereby an initial prediction of the updated latent code is made, and a correction is applied to fine-tune the estimate, resulting in a refined code z* that is cleaner and closer to the true manifold.</p>
   <p>Third, the refined latent code z* is supplied to the generator G, which synthesizes data samples. The overall loss function comprises three components: the Wasserstein GAN loss, which minimizes the discrepancy between the generated and real data distributions; the rank penalty loss on the matrix A, which maintains the intrinsic dimensionality; and a diffusion purification loss that quantifies the discrepancy between the purified latent code and the target manifold representation. This integrated loss function facilitates joint optimization of latent space adaptation and purification, culminating in improved generation stability and fidelity.</p>
-  <pre><code>// Pseudocode for the diffusion purification process
-initialize latent code z from encoder Q(X)
-for each diffusion step:
-    z_noisy = add_noise(z)
-    z_pred = predictor_update(z_noisy)
-    z = corrector_update(z, z_pred)
-refined_z = z
-// Feed refined_z into generator G to synthesize data
-  </code></pre>
+  <pre><code>// Pseudocode for the diffusion purification module
+for each latent code z in batch:
+    z_noisy = inject_noise(z)
+    z_predict = heuns_predictor(z_noisy)
+    z_refined = heuns_corrector(z_noisy, z_predict)
+    pass z_refined to generator
+</code></pre>
 </section>
 
-<!-- Experimental Setup -->
 <section>
   <h2>Experimental Setup</h2>
-  <p>Our experimental evaluation of DALWGAN is structured into three parts. The first experiment employs synthetic datasets, such as the Swiss roll and S-curve, with well-understood intrinsic manifolds. In this setup, the encoder, generator, and diffusion purification modules are implemented using PyTorch. The latent representations are examined through singular value decomposition (SVD) to assess intrinsic dimensionality, and visualizations using PCA and t-SNE (with plots saved as ‘singular_values.pdf’, ‘latent_pca.pdf’, and ‘latent_tsne.pdf’) provide qualitative insights into the alignment of the latent space with the true manifold.</p>
-  <p>The second experiment evaluates generation quality on real-world datasets such as MNIST and CelebA. Data is preprocessed using torchvision transformations, and separate models (baseline LWGAN, DALWGAN, and a reference diffusion-based generative model) are trained. Image generation performance is quantitatively assessed using metrics such as the Fréchet Inception Distance (FID) and Inception Score (IS), and generated image grids (saved as ‘mnist_generated_samples.pdf’) are inspected for visual fidelity.</p>
-  <p>The third experiment constitutes an ablation study on the diffusion purification stage, where we vary the number of diffusion steps (e.g., 5 versus 15) and compare integration methods (Euler versus Heun). For this study, we evaluate the mean squared error between the purified and original latent representations over several iterations, with loss curves plotted and saved as ‘diffusion_ablation.pdf’. All experiments are implemented using standard Python libraries (NumPy, scikit-learn, matplotlib) and deep learning frameworks (PyTorch), ensuring reproducibility and robustness of the experimental protocol.</p>
+  <p>Our experimental evaluation of DALWGAN is structured into three parts. The first experiment employs synthetic datasets, such as the Swiss roll and S-curve, with well-understood intrinsic manifolds. In this setup, the encoder, generator, and diffusion purification modules are implemented using PyTorch. The latent representations are examined through singular value decomposition (SVD) to assess intrinsic dimensionality, and visualizations using PCA and t-SNE (with plots saved as 'singular_values.pdf', 'latent_pca.pdf', and 'latent_tsne.pdf') provide qualitative insights into the alignment of the latent space with the true manifold.</p>
+  <p>The second experiment evaluates generation quality on real-world datasets such as MNIST and CelebA. Data is preprocessed using torchvision transformations, and separate models (baseline LWGAN, DALWGAN, and a reference diffusion-based generative model) are trained. Image generation performance is quantitatively assessed using metrics such as the Fréchet Inception Distance (FID) and Inception Score (IS), and generated image grids (saved as 'mnist_generated_samples.pdf') are inspected for visual fidelity.</p>
+  <p>The third experiment constitutes an ablation study on the diffusion purification stage, where we vary the number of diffusion steps (e.g., 5 versus 15) and compare integration methods (Euler versus Heun). For this study, we evaluate the mean squared error between the purified and original latent representations over several iterations, with loss curves plotted and saved as 'diffusion_ablation.pdf'. All experiments are implemented using standard Python libraries (NumPy, scikit-learn, matplotlib) and deep learning frameworks (PyTorch), ensuring reproducibility and robustness of the experimental protocol.</p>
 </section>
 
-<!-- Results -->
 <section>
   <h2>Results</h2>
   <p>Experimental results indicate that integrating the diffusion purification stage in the latent space significantly enhances both the quality of the generated data and the recovery of the intrinsic data manifold. In Experiment 1 (synthetic Swiss roll dataset), the baseline LWGAN produced latent representations with singular values near the expected rank, yet visualizations using PCA and t-SNE revealed artifacts and less distinct clustering. In contrast, the full DALWGAN model, which integrates adaptive latent embedding with diffusion purification, resulted in smoother and more distinctly separated latent clusters.</p>
-  <p>The singular value analysis documented in ‘singular_values.pdf’ corroborated that the refined latent space better maintained the expected dimensionality. In Experiment 2 (MNIST dataset), DALWGAN yielded generated samples of higher visual quality, as evidenced by the image grid in ‘mnist_generated_samples.pdf’, and achieved superior simulated evaluation metrics—namely, a lower FID and a higher Inception Score—compared to both baseline LWGAN and a reference diffusion model.</p>
-  <p>Experiment 3, involving an ablation study on the diffusion purification stage, demonstrated that configurations using Heun’s integration method yielded lower mean squared errors between the purified and original latent codes across training iterations when compared to Euler’s method. The corresponding loss curves, saved under ‘diffusion_ablation.pdf’, clearly indicate that the predictor-corrector approach inherent in Heun’s method provides a more effective purification, validating its critical role in the DALWGAN framework.</p>
+  <p>The singular value analysis corroborated that the refined latent space better maintained the expected dimensionality. In Experiment 2 (MNIST dataset), DALWGAN yielded generated samples of higher visual quality, and achieved superior simulated evaluation metrics—namely, a lower FID and a higher Inception Score—compared to both baseline LWGAN and a reference diffusion model. Experiment 3, involving an ablation study on the diffusion purification stage, demonstrated that configurations using Heun’s integration method yielded lower mean squared errors between the purified and original latent codes across training iterations when compared to Euler’s method.</p>
+
   <figure>
-    <img src="images/singular_values.pdf" alt="Singular Value Analysis">
-    <figcaption>Singular Value Analysis</figcaption>
+    <img src="images/latent_pca.pdf" alt="PCA Visualization of Latent Space" />
+    <figcaption>PCA visualization of the latent space alignment with the true manifold.</figcaption>
   </figure>
+
   <figure>
-    <img src="images/latent_pca.pdf" alt="Latent PCA Visualization">
-    <figcaption>Latent PCA Visualization</figcaption>
+    <img src="images/latent_tsne.pdf" alt="t-SNE Visualization of Latent Space" />
+    <figcaption>t-SNE visualization showing distinctly separated latent clusters after diffusion purification.</figcaption>
   </figure>
+
   <figure>
-    <img src="images/latent_tsne.pdf" alt="Latent t-SNE Visualization">
-    <figcaption>Latent t-SNE Visualization</figcaption>
+    <img src="images/singular_values.pdf" alt="Singular Values Analysis" />
+    <figcaption>Singular values analysis confirming the maintenance of intrinsic dimensionality.</figcaption>
   </figure>
+
   <figure>
-    <img src="images/mnist_generated_samples.pdf" alt="MNIST Generated Samples">
-    <figcaption>MNIST Generated Samples</figcaption>
+    <img src="images/mnist_generated_samples.pdf" alt="MNIST Generated Samples" />
+    <figcaption>Generated MNIST samples demonstrating improved visual quality.</figcaption>
   </figure>
+
   <figure>
-    <img src="images/diffusion_ablation.pdf" alt="Diffusion Ablation Loss Curves">
-    <figcaption>Diffusion Ablation Loss Curves</figcaption>
+    <img src="images/diffusion_ablation.pdf" alt="Diffusion Ablation Study Loss Curves" />
+    <figcaption>Loss curves from the ablation study comparing Heun’s and Euler’s methods in the diffusion purification stage.</figcaption>
   </figure>
 </section>
 
-<!-- Conclusions -->
 <section>
   <h2>Conclusions</h2>
   <p>This work introduced Diffusion-Assisted Latent Wasserstein GAN (DALWGAN), a novel framework that enhances generative modeling through the incorporation of a diffusion purification stage within the latent space. By refining the latent codes via a controlled diffusion process, DALWGAN effectively mitigates noise and ensures that latent representations align closely with the intrinsic data manifold.</p>
   <p>Our extensive experiments on synthetic and real-world datasets demonstrate that DALWGAN outperforms baseline LWGAN and conventional diffusion-based generative models in terms of both latent space recovery and generation quality. The ablation studies confirm that the choice of integration method, particularly the use of Heun’s predictor-corrector scheme, critically influences performance improvements.</p>
   <p>While the current model assumes a continuous generator and enforces a 1-Lipschitz constraint via gradient penalty, future work may explore stochastic generator architectures and the integration of the latent purification module into high-resolution frameworks such as BigGAN. Additionally, extending the application of DALWGAN to structural estimation in economics presents a promising avenue for future research. Overall, DALWGAN sets a new benchmark for robust generative modeling by synergistically combining adaptive latent embedding with diffusion-based refinement.</p>
 </section>
-
 </body>
 </html>
