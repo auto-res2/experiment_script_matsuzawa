@@ -12,7 +12,10 @@ from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
 from torchvision import utils
 
-sns.set(style="whitegrid")
+plt.rcParams['pdf.fonttype'] = 42  # Ensure fonts are embedded properly
+plt.rcParams['figure.dpi'] = 300   # High resolution figures
+sns.set_style("whitegrid")
+sns.set_context("paper", font_scale=1.5)  # Larger fonts for academic papers
 
 def compute_svd_analysis(latent_representations, save_path="logs/singular_values.pdf"):
     """

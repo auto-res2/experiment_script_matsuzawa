@@ -16,6 +16,10 @@ import numpy as np
 np.random.seed(42)
 torch.manual_seed(42)
 
+if torch.cuda.is_available():
+    torch.cuda.empty_cache()
+    torch.backends.cudnn.benchmark = True
+
 from preprocess import generate_synthetic_data, load_mnist_data
 from train import train_model_dummy, train_purifier
 from evaluate import (
