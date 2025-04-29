@@ -1,1 +1,8 @@
-# experiment_script_matsuzawa
+
+# Dual-Threshold Consistency and Backdoor Scrubbing for Robust Ambient Diffusion Training
+> ⚠️ **NOTE:** This research is an automatic research using Research Graph.
+## Abstract
+This paper introduces Dual-Threshold Consistency and Backdoor Scrubbing (DTCBS), a novel framework for training diffusion models on corrupted data while defending against maliciously injected triggers. Diffusion models trained on noisy data typically rely on approximations based on Tweedie’s formula and consistency losses, which can lead to both memorization of training samples and vulnerabilities to backdoor attacks. In DTCBS, we extend the ambient diffusion framework by integrating a two‐stage consistency training process with a reverse-noise screening mechanism. The first stage employs a double application of Tweedie’s formula and implements a consistency gate that invalidates samples exhibiting inconsistent denoising across adjacent noise scales. The second stage refines the training by iteratively updating the denoiser along with the filtering components to suppress hidden triggers while maintaining overall reconstruction quality. Extensive experiments on CIFAR-10 and synthetic datasets demonstrate that DTCBS not only improves detection of malicious samples with a higher true positive rate and lower false positive rate, but also enhances overall denoising performance compared to baseline ambient diffusion methods. These results indicate that the proposed framework effectively reduces memorization and provides robust defense against adversarial perturbations in noisy training data.
+
+- [Research history](https://github.com/auto-res2/experiment_script_matsuzawa/blob/base-branch/.research/research_history.json)
+- [Devin execution log](https://app.devin.ai/sessions/0cf4430d07114976857d6e480aa58e19)
