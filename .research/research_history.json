@@ -1,0 +1,25 @@
+{
+  "base_queries": [
+    "transformer"
+  ],
+  "base_github_url": "https://github.com/state-spaces/mamba",
+  "base_method_text": {
+    "arxiv_id": "2405.21060v1",
+    "arxiv_url": "http://arxiv.org/abs/2405.21060v1",
+    "title": "Transformers are SSMs: Generalized Models and Efficient Algorithms\n  Through Structured State Space Duality",
+    "authors": [
+      "Tri Dao",
+      "Albert Gu"
+    ],
+    "published_date": "2024-05-31T17:50:01Z",
+    "journal": "",
+    "doi": "",
+    "summary": "While Transformers have been the main architecture behind deep learning's\nsuccess in language modeling, state-space models (SSMs) such as Mamba have\nrecently been shown to match or outperform Transformers at small to medium\nscale. We show that these families of models are actually quite closely\nrelated, and develop a rich framework of theoretical connections between SSMs\nand variants of attention, connected through various decompositions of a\nwell-studied class of structured semiseparable matrices. Our state space\nduality (SSD) framework allows us to design a new architecture (Mamba-2) whose\ncore layer is an a refinement of Mamba's selective SSM that is 2-8X faster,\nwhile continuing to be competitive with Transformers on language modeling.",
+    "github_url": "https://github.com/state-spaces/mamba",
+    "main_contributions": "The paper develops a theoretical framework called Structured State Space Duality (SSD) that connects structured state-space models (SSMs) and attention mechanisms through structured semiseparable matrices. It introduces a new hardware-efficient algorithm for computing SSMs and presents the Mamba-2 architecture, which refines the Mamba architecture, achieving competitive performance with Transformers on language modeling tasks while scaling more efficiently in sequence length.",
+    "methodology": "The methodology involves establishing theoretical connections between SSMs and attention via matrix transformations and tensor contractions. It uses block decompositions of semiseparable matrices for efficient computation. The Mamba-2 architecture incorporates modifications like parallel parameter projections and extra normalization layers inspired by Transformer architectures.",
+    "experimental_setup": "Experiments were conducted on language modeling tasks using the Pile dataset. The Mamba-2 architecture was evaluated on perplexity and zero-shot downstream evaluations, including LAMBADA, HellaSwag, PIQA, ARC-E, ARC-C, WinoGrande, and OpenbookQA. Efficiency benchmarks compared SSD against Mamba's scan implementation and FlashAttention-2. A multi-query associative recall task (MQAR) was also used to test long-range dependency handling.",
+    "limitations": "The paper acknowledges a trade-off between expressivity and hardware efficiency in the SSD framework. The scalar-identity structure imposed on the A matrices in SSD is more restrictive than general diagonal SSMs, potentially limiting expressiveness. While Mamba-2 shows strong performance, there might be scenarios where more expressive SSMs or attention mechanisms are needed.",
+    "future_research_directions": "Future research directions include refining structured matrix algorithms to improve performance on general diagonal SSMs, designing non-causal variants of Mamba, exploring the transfer of interpretability techniques from Transformers to SSMs, and investigating other structured masks within the structured masked attention (SMA) framework. Exploring hybrid architectures combining SSD layers with MLP and attention layers is also suggested."
+  }
+}
