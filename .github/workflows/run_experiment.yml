@@ -25,15 +25,15 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run experiment
-        run: python src/main.py > logs/output.txt 2> logs/error.txt
-        continue-on-error: true
+        run: |
+          mkdir -p logs
+          python src/main.py > logs/output.txt 2> logs/error.txt
 
       - name: Upload all logs and figures
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: experiment-artifacts
-          path: |
-            logs/output.txt
-            logs/error.txt
-            logs/*.pdf
+          path: logs/**
           retention-days: 1
+          if-no-files-found: warn
