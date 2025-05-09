@@ -58,5 +58,7 @@
       "limitations": "The experiments were conducted on a respectable scale but were limited by compute resources, preventing larger-scale experiments. It is unclear how well GLA would scale to even larger models/datasets. The study focuses primarily on language modeling, and the impact of GLA on biased or harmful outputs of language models is not explored.",
       "future_research_directions": "Future research directions include scaling GLA to larger models and datasets and applying GLA to other modalities, especially those with long-range dependencies. Further exploration of integrating different types of feature maps into GLA is also suggested."
     }
-  ]
+  ],
+  "base_experimental_code": "from mamba_ssm.modules.mamba2 import Mamba2\nfrom mamba_ssm.modules.mamba_simple import Mamba\n\n# Example usage of Mamba or Mamba2 module\n# Forward pass\noutput = Mamba(d_model=512, d_state=16, d_conv=4, expand=2)(input_tensor)\noutput = Mamba2(d_model=512, d_state=128, d_conv=4, expand=2)(input_tensor)",
+  "base_experimental_info": "The Mamba-2 architecture incorporates modifications like parallel parameter projections and extra normalization layers inspired by Transformer architectures.\n\nThe benchmarks/benchmark_generation_mamba_simple.py file demonstrates the usage of MambaLMHeadModel for generation. It includes parameters such as model name, prompt, prompt length, generation length, temperature, top-k, top-p, min-p, and repetition penalty."
 }
