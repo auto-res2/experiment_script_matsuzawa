@@ -1,1 +1,5 @@
-# Please list the required python packages.
+# Required python packages for G-DS3 Transformer experiments
+torch
+matplotlib
+ptflops
+numpy
