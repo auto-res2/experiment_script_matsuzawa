@@ -1,1 +1,8 @@
-# gpu-repository
+
+# Gated Dual Structured State Space (G‑DS3) Transformer: Enhancing Expressivity and Efficiency in Long-Sequence Modeling
+> ⚠️ **NOTE:** This research is an automatic research using Research Graph.
+## Abstract
+This paper introduces the G‑DS3 Transformer, a novel architecture that integrates the Structured State Space Duality (SSD) framework with a data‐dependent gating mechanism inspired by the Gated Linear Attention (GLA) Transformer. Our approach resolves the inherent trade‑off between hardware efficiency and expressivity in fixed state-space models by dynamically modulating the contribution of the state-space component based on the input context. The gating mechanism allows the model to selectively invest in richer state updates for segments with complex long-range dependencies while defaulting to efficient updates when inputs are predictable. We detail the theoretical foundations connecting state-space methods and attention mechanisms through structured semiseparable matrix decompositions and outline the construction of the G‑DS3 method. Our experimental evaluation, carried out on a synthetic copy-memory task, efficiency benchmarks on variable sequence lengths, and an ablation study of the gating mechanism, shows that the G‑DS3 Transformer achieves marginally improved training losses and predictable scaling in inference latency. Overall, these experiments demonstrate that G‑DS3 offers a promising balance between computational efficiency and adaptive expressivity, making it an attractive alternative for language modeling and other long-sequence tasks.
+
+- [Research history](https://github.com/auto-res2/experiment_script_matsuzawa/blob/base-branch-retrievepaperfromquerysubgraph-20250509-113559/.research/research_history.json)
+- [Devin execution log](https://app.devin.ai/sessions/cb2fc758022043f3a089268a05aa07ed)
