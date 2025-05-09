@@ -21,5 +21,42 @@
     "experimental_setup": "Experiments were conducted on language modeling tasks using the Pile dataset. The Mamba-2 architecture was evaluated on perplexity and zero-shot downstream evaluations, including LAMBADA, HellaSwag, PIQA, ARC-E, ARC-C, WinoGrande, and OpenbookQA. Efficiency benchmarks compared SSD against Mamba's scan implementation and FlashAttention-2. A multi-query associative recall task (MQAR) was also used to test long-range dependency handling.",
     "limitations": "The paper acknowledges a trade-off between expressivity and hardware efficiency in the SSD framework. The scalar-identity structure imposed on the A matrices in SSD is more restrictive than general diagonal SSMs, potentially limiting expressiveness. While Mamba-2 shows strong performance, there might be scenarios where more expressive SSMs or attention mechanisms are needed.",
     "future_research_directions": "Future research directions include refining structured matrix algorithms to improve performance on general diagonal SSMs, designing non-causal variants of Mamba, exploring the transfer of interpretability techniques from Transformers to SSMs, and investigating other structured masks within the structured masked attention (SMA) framework. Exploring hybrid architectures combining SSD layers with MLP and attention layers is also suggested."
-  }
+  },
+  "add_queries": [
+    "vision"
+  ],
+  "generated_queries": [
+    "vision transformer",
+    "structured ssm",
+    "state space",
+    "semiseparable matrix",
+    "efficient attention"
+  ],
+  "add_github_urls": [
+    "https://github.com/sustcsonglin/flash-linear-attention"
+  ],
+  "add_method_texts": [
+    {
+      "arxiv_id": "2312.06635v6",
+      "arxiv_url": "http://arxiv.org/abs/2312.06635v6",
+      "title": "Gated Linear Attention Transformers with Hardware-Efficient Training",
+      "authors": [
+        "Songlin Yang",
+        "Bailin Wang",
+        "Yikang Shen",
+        "Rameswar Panda",
+        "Yoon Kim"
+      ],
+      "published_date": "2023-12-11T18:51:59Z",
+      "journal": "",
+      "doi": "",
+      "summary": "Transformers with linear attention allow for efficient parallel training but\ncan simultaneously be formulated as an RNN with 2D (matrix-valued) hidden\nstates, thus enjoying linear-time inference complexity. However, linear\nattention generally underperforms ordinary softmax attention. Moreover, current\nimplementations of linear attention lack I/O-awareness and are thus slower than\nhighly optimized implementations of softmax attention. This work describes a\nhardware-efficient algorithm for linear attention that trades off memory\nmovement against parallelizability. The resulting implementation, dubbed\nFLASHLINEARATTENTION, is faster than FLASHATTENTION-2 (Dao, 2023) as a\nstandalone layer even on short sequence lengths (e.g., 1K). We then generalize\nthis algorithm to a more expressive variant of linear attention with\ndata-dependent gates. When used as a replacement for the standard attention\nlayer in Transformers, the resulting gated linear attention (GLA) Transformer\nis found to perform competitively against the LLaMA-architecture Transformer\n(Touvron et al., 2023) as well recent linear-time-inference baselines such as\nRetNet (Sun et al., 2023a) and Mamba (Gu & Dao, 2023) on moderate-scale\nlanguage modeling experiments. GLA Transformer is especially effective at\nlength generalization, enabling a model trained on 2K to generalize to\nsequences longer than 20K without significant perplexity degradations. For\ntraining speed, the GLA Transformer has higher throughput than a\nsimilarly-sized Mamba model.",
+      "github_url": "https://github.com/sustcsonglin/flash-linear-attention",
+      "main_contributions": "This paper introduces FLASH LINEAR ATTENTION, a hardware-efficient algorithm for linear attention, and generalizes it to Gated Linear Attention (GLA). The GLA Transformer is shown to perform competitively against LLaMA-architecture Transformers and other linear-time inference baselines, particularly excelling in length generalization and recall-intensive tasks. The GLA Transformer also demonstrates higher training throughput than a similarly-sized Mamba model.",
+      "methodology": "The paper develops I/O-aware algorithms for linear attention, including a materialization and a non-materialization version, optimized for different training settings. It introduces a gated linear attention layer with a data-dependent gating mechanism and adapts FLASH LINEAR ATTENTION to this gated case. Secondary-level chunking is used to enable the use of half-precision matmuls, and a memory-efficient method for computing dαt is introduced.",
+      "experimental_setup": "The GLA Transformer is evaluated on moderate-scale language modeling benchmarks, with models trained with 340M/1.3B parameters on 15B/100B tokens, respectively, using the SlimPajama dataset and the Mistral tokenizer. Baselines include Transformer++, RetNet, and Mamba. Performance is measured using perplexity on Wikitext and LAMBADA, and accuracy on other downstream tasks. Length extrapolation is tested on SlimPajama and PG19 datasets. The models are trained using AdamW optimizer.",
+      "limitations": "The experiments were conducted on a respectable scale but were limited by compute resources, preventing larger-scale experiments. It is unclear how well GLA would scale to even larger models/datasets. The study focuses primarily on language modeling, and the impact of GLA on biased or harmful outputs of language models is not explored.",
+      "future_research_directions": "Future research directions include scaling GLA to larger models and datasets and applying GLA to other modalities, especially those with long-range dependencies. Further exploration of integrating different types of feature maps into GLA is also suggested."
+    }
+  ]
 }
