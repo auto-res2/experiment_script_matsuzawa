@@ -22,5 +22,43 @@
     "experimental_setup": "The model was evaluated on several datasets, including PCQM4Mv2, OC20 IS2RE, QM9, MOLPCBA, LIT-PCBA, and a TSP dataset. Performance was measured using metrics such as Mean Absolute Error (MAE), Energy within a Threshold (EwT), Average Precision (AP), and ROC-AUC. Ablation studies were conducted to assess the effectiveness of different components of the model.",
     "limitations": "The main limitation is the computational complexity (≥ O(N2.37)) of the triplet interaction mechanism, which is higher than the O(N2) complexity of base transformers like EGT.",
     "future_research_directions": "Future research directions include exploring sparse and/or low-rank interactions to alleviate computational complexity, evaluating the TGT model on other graph learning tasks like molecule and conformation generation, and further improving the compute and memory efficiency of triplet interaction."
-  }
+  },
+  "add_queries": [
+    "vision"
+  ],
+  "generated_queries": [
+    "graph transformer",
+    "triplet interaction",
+    "triplet attention",
+    "sparse transformer",
+    "vision transformer"
+  ],
+  "add_github_urls": [
+    "https://github.com/ashleylqx/AIB"
+  ],
+  "add_method_texts": [
+    {
+      "arxiv_id": "2108.03418v2",
+      "arxiv_url": "http://arxiv.org/abs/2108.03418v2",
+      "title": "Information Bottleneck Approach to Spatial Attention Learning",
+      "authors": [
+        "Qiuxia Lai",
+        "Yu Li",
+        "Ailing Zeng",
+        "Minhao Liu",
+        "Hanqiu Sun",
+        "Qiang Xu"
+      ],
+      "published_date": "2021-08-07T10:35:32Z",
+      "journal": "",
+      "doi": "",
+      "summary": "The selective visual attention mechanism in the human visual system (HVS)\nrestricts the amount of information to reach visual awareness for perceiving\nnatural scenes, allowing near real-time information processing with limited\ncomputational capacity [Koch and Ullman, 1987]. This kind of selectivity acts\nas an 'Information Bottleneck (IB)', which seeks a trade-off between\ninformation compression and predictive accuracy. However, such information\nconstraints are rarely explored in the attention mechanism for deep neural\nnetworks (DNNs). In this paper, we propose an IB-inspired spatial attention\nmodule for DNN structures built for visual recognition. The module takes as\ninput an intermediate representation of the input image, and outputs a\nvariational 2D attention map that minimizes the mutual information (MI) between\nthe attention-modulated representation and the input, while maximizing the MI\nbetween the attention-modulated representation and the task label. To further\nrestrict the information bypassed by the attention map, we quantize the\ncontinuous attention scores to a set of learnable anchor values during\ntraining. Extensive experiments show that the proposed IB-inspired spatial\nattention mechanism can yield attention maps that neatly highlight the regions\nof interest while suppressing backgrounds, and bootstrap standard DNN\nstructures for visual recognition tasks (e.g., image classification,\nfine-grained recognition, cross-domain classification). The attention maps are\ninterpretable for the decision making of the DNNs as verified in the\nexperiments. Our code is available at https://github.com/ashleylqx/AIB.git.",
+      "github_url": "https://github.com/ashleylqx/AIB",
+      "main_contributions": "The paper proposes an Information Bottleneck (IB)-inspired spatial attention mechanism for visual recognition in DNNs. It minimizes the mutual information (MI) between the attention-modulated representation and the input, while maximizing the MI between the attention-modulated representation and the task label. A quantization module is designed to round continuous attention scores to learnable anchor values, further filtering irrelevant information. The proposed mechanism demonstrates improved interpretability for DNN decision-making.",
+      "methodology": "The methodology involves deriving a spatial attention framework from the IB principle applied to a neural network with an attention module. The framework includes an attention module p(a|x), a set of anchor values for quantization, an encoder p(z|x, a), and a decoder q(y|z). Variational inference and the reparametrization trick are used for training. A straight-through estimator is employed to handle the non-differentiable quantization step.",
+      "experimental_setup": "Experiments were conducted on image classification (CIFAR-10, CIFAR-100), fine-grained recognition (CUB-200-2011, SVHN), and cross-dataset classification (STL-10). Models such as VGG and Wide Residual Networks (WRN) were extended with the proposed attention mechanism and trained from scratch. Interpretability was assessed by measuring attention consistency under spatial and frequency domain modifications.",
+      "limitations": "The paper does not explicitly state limitations, but implicit limitations include the empirical setting of hyperparameters (β, λq, λc), reliance on the straight-through estimator for gradient approximation during quantization, and the specific network architectures (VGG, WRN) used for evaluation, which may not generalize to all architectures.",
+      "future_research_directions": "Future research directions are not explicitly mentioned, but based on the paper, potential areas could include exploring different quantization techniques, applying the IB-inspired attention mechanism to other network architectures and tasks (e.g., object detection, segmentation), and investigating methods to automatically determine optimal hyperparameter values for the IB-inspired attention mechanism."
+    }
+  ]
 }
