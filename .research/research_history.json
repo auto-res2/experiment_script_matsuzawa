@@ -1,0 +1,26 @@
+{
+  "base_queries": [
+    "transformer"
+  ],
+  "base_github_url": "https://github.com/shamim-hussain/tgt",
+  "base_method_text": {
+    "arxiv_id": "2402.04538v2",
+    "arxiv_url": "http://arxiv.org/abs/2402.04538v2",
+    "title": "Triplet Interaction Improves Graph Transformers: Accurate Molecular\n  Graph Learning with Triplet Graph Transformers",
+    "authors": [
+      "Md Shamim Hussain",
+      "Mohammed J. Zaki",
+      "Dharmashankar Subramanian"
+    ],
+    "published_date": "2024-02-07T02:53:06Z",
+    "journal": "",
+    "doi": "",
+    "summary": "Graph transformers typically lack third-order interactions, limiting their\ngeometric understanding which is crucial for tasks like molecular geometry\nprediction. We propose the Triplet Graph Transformer (TGT) that enables direct\ncommunication between pairs within a 3-tuple of nodes via novel triplet\nattention and aggregation mechanisms. TGT is applied to molecular property\nprediction by first predicting interatomic distances from 2D graphs and then\nusing these distances for downstream tasks. A novel three-stage training\nprocedure and stochastic inference further improve training efficiency and\nmodel performance. Our model achieves new state-of-the-art (SOTA) results on\nopen challenge benchmarks PCQM4Mv2 and OC20 IS2RE. We also obtain SOTA results\non QM9, MOLPCBA, and LIT-PCBA molecular property prediction benchmarks via\ntransfer learning. We also demonstrate the generality of TGT with SOTA results\non the traveling salesman problem (TSP).",
+    "github_url": "https://github.com/shamim-hussain/tgt",
+    "main_contributions": "The paper introduces the Triplet Graph Transformer (TGT), a novel architecture that enhances graph transformers by incorporating third-order interactions through triplet attention and aggregation mechanisms. This improves geometric understanding for tasks like molecular geometry prediction. The model achieves state-of-the-art results on PCQM4Mv2 and OC20 IS2RE benchmarks, and demonstrates strong transfer learning capabilities on QM9, MOLPCBA, and LIT-PCBA datasets. The TGT model also shows generality by achieving state-of-the-art results on the traveling salesman problem (TSP).",
+    "methodology": "The TGT architecture extends the Edge-augmented Graph Transformer (EGT) by introducing triplet attention and triplet aggregation modules. Triplet attention enables direct communication between pairs within a 3-tuple of nodes, while triplet aggregation offers a more efficient alternative. A three-stage training procedure is used, involving training a distance predictor, pretraining a task predictor on noisy 3D structures, and finetuning the task predictor on predicted distances. Stochastic inference and regularization methods are also employed.",
+    "experimental_setup": "The model was evaluated on several datasets, including PCQM4Mv2, OC20 IS2RE, QM9, MOLPCBA, LIT-PCBA, and a TSP dataset. Performance was measured using metrics such as Mean Absolute Error (MAE), Energy within a Threshold (EwT), Average Precision (AP), and ROC-AUC. Ablation studies were conducted to assess the effectiveness of different components of the model.",
+    "limitations": "The main limitation is the computational complexity (≥ O(N2.37)) of the triplet interaction mechanism, which is higher than the O(N2) complexity of base transformers like EGT.",
+    "future_research_directions": "Future research directions include exploring sparse and/or low-rank interactions to alleviate computational complexity, evaluating the TGT model on other graph learning tasks like molecule and conformation generation, and further improving the compute and memory efficiency of triplet interaction."
+  }
+}
