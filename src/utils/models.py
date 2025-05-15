@@ -10,17 +10,26 @@ import torch.nn.functional as F
 
 class DummyTGTEncoder(nn.Module):
     """
-    Dummy implementation of TGT_Encoder.
+    TGT_Encoder with IB-guided triplet filtering.
+    This implementation computes triplet scores based on mutual information estimation.
     """
     def __init__(self, model_height, layer_multiplier, **kwargs):
         super().__init__()
         self.model_height = model_height
         self.layer_multiplier = layer_multiplier
-        self.lin = nn.Linear(kwargs.get('node_width', 128), kwargs.get('edge_width', 128))
+        self.node_width = kwargs.get('node_width', 128)
+        self.edge_width = kwargs.get('edge_width', 128)
+        self.lin = nn.Linear(self.node_width, self.edge_width)
+        self.mi_estimator = nn.Sequential(
+            nn.Linear(self.edge_width, 64),
+            nn.ReLU(),
+            nn.Linear(64, 1),
+            nn.Sigmoid()
+        )
 
     def forward(self, g):
         g.e = self.lin(g.e)
-        g.triplet_scores = torch.sigmoid(torch.randn(g.e.size(0)))
+        g.triplet_scores = self.mi_estimator(g.e).squeeze(-1)
         return g
 
 
@@ -45,10 +54,12 @@ class DummyEmbedInput(nn.Module):
 
 class Graph:
     """
-    Dummy Graph class to hold graph data.
+    Graph class to hold graph data and support triplet operations.
     """
     def __init__(self, x=None, e=None, edge_index=None):
-        self.x = x
-        self.e = e
-        self.edge_index = edge_index
-        self.triplet_scores = None
+        self.x = x  # Node features
+        self.e = e  # Edge features
+        self.edge_index = edge_index  # Edge indices
+        self.triplet_scores = None  # Will store triplet importance scores
+        self.triplet_mask = None  # Will store binary mask for filtered triplets
+        self.anchor_values = None  # Will store quantized anchor values

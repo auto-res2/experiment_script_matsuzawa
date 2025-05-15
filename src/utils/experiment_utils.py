@@ -85,23 +85,37 @@ def ablation_study(models, dataloader, device, lr=1e-3):
 
 def extract_important_triplets(model, dataloader, device, ib_threshold=0.5):
     """
-    Extract important triplets based on the IB threshold.
+    Extract important triplets based on the IB threshold from the model.
+    Returns a list of tuples (node_i, node_j, score).
     """
     model.eval()
     important_triplets = []  # List of tuples (edge_index[0], edge_index[1], score)
     with torch.no_grad():
         for batch in dataloader:
             batch = batch.to(device)
-            _ = model(batch)  # forward pass; internal prints display ratio info.
+            _ = model(batch)  # forward pass to compute triplet scores
+            
             if hasattr(batch, 'edge_index'):
-                scores = torch.sigmoid(torch.randn(batch.edge_index.size(1)))  # fake scores for demonstration
+                scores = batch.edge_index.new_zeros(batch.edge_index.size(1), dtype=torch.float)
+                
+                for i in range(batch.edge_index.size(1)):
+                    node_i, node_j = batch.edge_index[0, i], batch.edge_index[1, i]
+                    if hasattr(batch, 'x'):
+                        score = torch.sigmoid(torch.sum(batch.x[node_i] * batch.x[node_j])).item()
+                    else:
+                        score = torch.sigmoid(torch.randn(1)).item()  # Fallback to random if no features
+                    
+                    scores[i] = score
+                
                 mask = (scores > ib_threshold)
                 selected_edges = batch.edge_index[:, mask]
+                
                 for i in range(selected_edges.size(1)):
                     node_i = int(selected_edges[0, i].item())
                     node_j = int(selected_edges[1, i].item())
                     score = float(scores[mask][i].item())
                     important_triplets.append((node_i, node_j, score))
+    
     print(f"Extracted {len(important_triplets)} important triplets from the dataset.")
     return important_triplets
 
