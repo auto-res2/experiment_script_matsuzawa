@@ -1,5 +1,26 @@
 {
   "base_queries": [
     "diffusion model"
-  ]
+  ],
+  "base_github_url": "https://github.com/yixuan/LWGAN",
+  "base_method_text": {
+    "arxiv_id": "2409.18374v1",
+    "arxiv_url": "http://arxiv.org/abs/2409.18374v1",
+    "title": "Adaptive Learning of the Latent Space of Wasserstein Generative\n  Adversarial Networks",
+    "authors": [
+      "Yixuan Qiu",
+      "Qingyi Gao",
+      "Xiao Wang"
+    ],
+    "published_date": "2024-09-27T01:25:22Z",
+    "journal": "",
+    "doi": "",
+    "summary": "Generative models based on latent variables, such as generative adversarial\nnetworks (GANs) and variational auto-encoders (VAEs), have gained lots of\ninterests due to their impressive performance in many fields. However, many\ndata such as natural images usually do not populate the ambient Euclidean space\nbut instead reside in a lower-dimensional manifold. Thus an inappropriate\nchoice of the latent dimension fails to uncover the structure of the data,\npossibly resulting in mismatch of latent representations and poor generative\nqualities. Towards addressing these problems, we propose a novel framework\ncalled the latent Wasserstein GAN (LWGAN) that fuses the Wasserstein\nauto-encoder and the Wasserstein GAN so that the intrinsic dimension of the\ndata manifold can be adaptively learned by a modified informative latent\ndistribution. We prove that there exist an encoder network and a generator\nnetwork in such a way that the intrinsic dimension of the learned encoding\ndistribution is equal to the dimension of the data manifold. We theoretically\nestablish that our estimated intrinsic dimension is a consistent estimate of\nthe true dimension of the data manifold. Meanwhile, we provide an upper bound\non the generalization error of LWGAN, implying that we force the synthetic data\ndistribution to be similar to the real data distribution from a population\nperspective. Comprehensive empirical experiments verify our framework and show\nthat LWGAN is able to identify the correct intrinsic dimension under several\nscenarios, and simultaneously generate high-quality synthetic data by sampling\nfrom the learned latent distribution.",
+    "github_url": "https://github.com/yixuan/LWGAN",
+    "main_contributions": "The paper introduces Latent Wasserstein GAN (LWGAN), a novel framework that adaptively learns the intrinsic dimension of data distributions supported on manifolds. It fuses Wasserstein Auto-Encoders (WAE) and Wasserstein GANs (WGAN) to improve generative modeling quality and representation learning by learning a latent normal distribution whose rank is consistent with the dimension of the data manifold. The paper provides theoretical guarantees on the generalization error bound, estimation consistency, and dimension consistency of LWGAN.",
+    "methodology": "LWGAN combines WAE and WGAN in a primal-dual iterative algorithm. It utilizes a deterministic encoder Q: X -> Z to learn an informative prior distribution PZ ~ N(0, A), where A is a diagonal matrix characterizing the intrinsic dimension of the latent space. A generator G: Z -> X is combined with Q to generate images using the latent code Z. The 1-Wasserstein distance is used to measure the similarities between distributions. The 1-Lipschitz constraint on the critic f is enforced by the gradient penalty technique.",
+    "experimental_setup": "The framework is validated through comprehensive numerical experiments on synthetic datasets (S-curve, Swiss roll, Hyperplane) and benchmark datasets (MNIST, CelebA). The experiments demonstrate LWGAN's ability to detect the intrinsic dimensions for both simulated examples and real image data and generate high-quality samples. The performance is evaluated using Inception Score (IS), Fréchet Inception Distance (FID), and reconstruction errors.",
+    "limitations": "The paper focuses on scenarios where the data lies on a topological manifold. The generator G is deterministic. The method's sensitivity to the choice of neural network architecture and hyperparameters (e.g., gradient penalty parameter, rank regularization parameter) is not fully explored.",
+    "future_research_directions": "Future research directions include investigating a more general scenario where the generator G is stochastic by adding an extra noise vector to its input. Incorporating the stochastic LWGAN into more recent GAN modules such as BigGAN to produce high-resolution and high-fidelity images along with the estimation of the intrinsic dimension is suggested. Application of LWGAN to structural estimation in economics is also proposed."
+  }
 }
