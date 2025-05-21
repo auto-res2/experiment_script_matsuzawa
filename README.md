@@ -1,1 +1,7 @@
-airas-template
+# Iso-LWGAN: A Geometry-Aware Approach to Adaptive Generative Modeling
+> ⚠️ **NOTE:** This research is an automatic research using AIRAS.
+## Abstract
+We introduce Iso-LWGAN, an adaptive dimension-learning framework that builds on the Latent Wasserstein GAN (LWGAN) by integrating an isometric regularization term and partial stochasticity in the generator. Our goal is to address the challenge of learning data manifolds whose intrinsic dimensions are lower than those of the ambient space while also preserving local distances for enhanced interpretability. The isometric regularizer encourages the generator to maintain geometric fidelity between latent codes and output samples, whereas the partially stochastic generator captures the multimodality often present in real-world data. This combination tackles issues of latent mismatch and mode collapse reported in previous GAN-based methods. We quantitatively and qualitatively validate Iso-LWGAN on synthetic manifolds and real datasets such as MNIST, showing that our method preserves local geometry, detects manifold dimensions, and achieves improved coverage of data modes. Experiments reveal that aligning latent distances with generated sample distances leads to smoother interpolations, whereas introducing carefully controlled noise inside the generator helps mitigate mode collapse. Our results underscore Iso-LWGAN’s potential as a powerful and flexible tool for manifold-aware generative modeling.
+
+- [Research history](https://github.com/auto-res2/experiment_script_matsuzawa/blob/base-branch/.research/research_history.json)
+- [Devin execution log](https://app.devin.ai/sessions/b9e5684330724a9d8322db4f1d458905)
