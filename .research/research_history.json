@@ -25,5 +25,139 @@
   },
   "add_queries": [
     "vision"
+  ],
+  "generated_queries": [
+    "latent diffusion",
+    "diffusion manifold",
+    "vision diffusion",
+    "stochastic diffusion",
+    "diffusion model",
+    "latent diffusion",
+    "diffusion manifold",
+    "stochastic diffusion",
+    "latent manifold",
+    "Wasserstein diffusion"
+  ],
+  "add_github_urls": [
+    "https://github.com/mlvlab/SCDM",
+    "https://github.com/RingBDStack/HypDiff",
+    "https://github.com/ML-GSAI/BFN-Solver",
+    "https://github.com/whlzy/FiT",
+    "https://github.com/isno0907/isodiff"
+  ],
+  "add_method_texts": [
+    {
+      "arxiv_id": "2402.16506v3",
+      "arxiv_url": "http://arxiv.org/abs/2402.16506v3",
+      "title": "Stochastic Conditional Diffusion Models for Robust Semantic Image\n  Synthesis",
+      "authors": [
+        "Juyeon Ko",
+        "Inho Kong",
+        "Dogyun Park",
+        "Hyunwoo J. Kim"
+      ],
+      "published_date": "2024-02-26T11:41:28Z",
+      "journal": "",
+      "doi": "",
+      "summary": "Semantic image synthesis (SIS) is a task to generate realistic images\ncorresponding to semantic maps (labels). However, in real-world applications,\nSIS often encounters noisy user inputs. To address this, we propose Stochastic\nConditional Diffusion Model (SCDM), which is a robust conditional diffusion\nmodel that features novel forward and generation processes tailored for SIS\nwith noisy labels. It enhances robustness by stochastically perturbing the\nsemantic label maps through Label Diffusion, which diffuses the labels with\ndiscrete diffusion. Through the diffusion of labels, the noisy and clean\nsemantic maps become similar as the timestep increases, eventually becoming\nidentical at $t=T$. This facilitates the generation of an image close to a\nclean image, enabling robust generation. Furthermore, we propose a class-wise\nnoise schedule to differentially diffuse the labels depending on the class. We\ndemonstrate that the proposed method generates high-quality samples through\nextensive experiments and analyses on benchmark datasets, including a novel\nexperimental setup simulating human errors during real-world applications. Code\nis available at https://github.com/mlvlab/SCDM.",
+      "github_url": "https://github.com/mlvlab/SCDM",
+      "main_contributions": "The paper introduces Stochastic Conditional Diffusion Model (SCDM), a robust conditional diffusion model for semantic image synthesis (SIS) that addresses the challenge of noisy user inputs. SCDM incorporates Label Diffusion, a discrete diffusion process for semantic labels, and a class-wise noise schedule to enhance generation quality, especially for small and rare classes. It also introduces a new noisy SIS benchmark to assess generation performance under noisy conditions.",
+      "methodology": "SCDM employs a novel forward and generation process, using Label Diffusion to stochastically perturb semantic label maps with discrete diffusion. A class-wise noise schedule differentially diffuses labels based on class. The generation process involves two heterogeneous diffusion processes: discrete for labels and continuous reverse for images. Classifier-free guidance and extrapolation techniques are also used.",
+      "experimental_setup": "The method was evaluated on benchmark datasets including ADE20K, CelebAMask-HQ, and COCO-Stuff. A new noisy SIS benchmark was introduced, simulating human errors using downsampled semantic maps, edge masking, and random noise injection. Evaluation metrics included FID, mIoU, LPIPS, SSIM, and PSNR.",
+      "limitations": "The paper mentions that the model might ignore user intention, especially in generating noisy images, and controlling faithfulness to the input semantic maps is a possible future direction. The method cannot dynamically learn the optimal noise schedules for labels.",
+      "future_research_directions": "Future research could focus on controlling the faithfulness to semantic maps and exploring ways to dynamically learn optimal noise schedules for labels. Exploring the application of diffusion models in practical scenarios is also suggested."
+    },
+    {
+      "arxiv_id": "2405.03188v1",
+      "arxiv_url": "http://arxiv.org/abs/2405.03188v1",
+      "title": "Hyperbolic Geometric Latent Diffusion Model for Graph Generation",
+      "authors": [
+        "Xingcheng Fu",
+        "Yisen Gao",
+        "Yuecen Wei",
+        "Qingyun Sun",
+        "Hao Peng",
+        "Jianxin Li",
+        "Xianxian Li"
+      ],
+      "published_date": "2024-05-06T06:28:44Z",
+      "journal": "",
+      "doi": "",
+      "summary": "Diffusion models have made significant contributions to computer vision,\nsparking a growing interest in the community recently regarding the application\nof them to graph generation. Existing discrete graph diffusion models exhibit\nheightened computational complexity and diminished training efficiency. A\npreferable and natural way is to directly diffuse the graph within the latent\nspace. However, due to the non-Euclidean structure of graphs is not isotropic\nin the latent space, the existing latent diffusion models effectively make it\ndifficult to capture and preserve the topological information of graphs. To\naddress the above challenges, we propose a novel geometrically latent diffusion\nframework HypDiff. Specifically, we first establish a geometrically latent\nspace with interpretability measures based on hyperbolic geometry, to define\nanisotropic latent diffusion processes for graphs. Then, we propose a\ngeometrically latent diffusion process that is constrained by both radial and\nangular geometric properties, thereby ensuring the preservation of the original\ntopological properties in the generative graphs. Extensive experimental results\ndemonstrate the superior effectiveness of HypDiff for graph generation with\nvarious topologies.",
+      "github_url": "https://github.com/RingBDStack/HypDiff",
+      "main_contributions": "The paper introduces HypDiff, a novel hyperbolic geometric latent diffusion model for graph generation. It addresses the anisotropy of non-Euclidean structures in graph latent diffusion models by establishing a geometrically latent space based on hyperbolic geometry and proposes a geometrically latent diffusion process constrained by radial and angular geometric properties.",
+      "methodology": "HypDiff employs a two-stage training strategy: first, a hyperbolic autoencoder is trained to obtain pre-trained node embeddings, and then a hyperbolic geometric latent diffusion process is trained. The model uses hyperbolic geometric encoders (HGCN) and a Fermi-Dirac decoder. It introduces an approximate diffusion process based on radial measures and utilizes angular constraints to guide the diffusion model.",
+      "experimental_setup": "The model was evaluated on synthetic datasets (SBM, BA, Community, Ego, BA-G, Grid) and real-world datasets (Cora, Citeseer, Polblogs, MUTAG, IMDB-B, PROTEINS, COLLAB) for node classification and graph generation tasks. Performance was measured using F1 scores for node classification and maximum mean discrepancy (MMD) scores and F1 scores (precision-recall and density-coverage) for graph generation.",
+      "limitations": "The paper does not explicitly mention the limitations of the proposed approach. However, some implicit limitations could include the computational complexity of hyperbolic space and the approximation of Gaussian distribution in hyperbolic space with the Gaussian distribution of the tangent plane.",
+      "future_research_directions": "Future research directions are not explicitly mentioned in the paper. However, potential extensions could involve exploring different hyperbolic models, improving the approximation of Gaussian distributions in hyperbolic space, and applying HypDiff to other graph-related tasks, such as graph classification or link prediction, or exploring how to automatically determine the number of clusters k."
+    },
+    {
+      "arxiv_id": "2404.15766v2",
+      "arxiv_url": "http://arxiv.org/abs/2404.15766v2",
+      "title": "Unifying Bayesian Flow Networks and Diffusion Models through Stochastic\n  Differential Equations",
+      "authors": [
+        "Kaiwen Xue",
+        "Yuhao Zhou",
+        "Shen Nie",
+        "Xu Min",
+        "Xiaolu Zhang",
+        "Jun Zhou",
+        "Chongxuan Li"
+      ],
+      "published_date": "2024-04-24T09:39:06Z",
+      "journal": "",
+      "doi": "",
+      "summary": "Bayesian flow networks (BFNs) iteratively refine the parameters, instead of\nthe samples in diffusion models (DMs), of distributions at various noise levels\nthrough Bayesian inference. Owing to its differentiable nature, BFNs are\npromising in modeling both continuous and discrete data, while simultaneously\nmaintaining fast sampling capabilities. This paper aims to understand and\nenhance BFNs by connecting them with DMs through stochastic differential\nequations (SDEs). We identify the linear SDEs corresponding to the\nnoise-addition processes in BFNs, demonstrate that BFN's regression losses are\naligned with denoise score matching, and validate the sampler in BFN as a\nfirst-order solver for the respective reverse-time SDE. Based on these findings\nand existing recipes of fast sampling in DMs, we propose specialized solvers\nfor BFNs that markedly surpass the original BFN sampler in terms of sample\nquality with a limited number of function evaluations (e.g., 10) on both image\nand text datasets. Notably, our best sampler achieves an increase in speed of\n5~20 times for free. Our code is available at\nhttps://github.com/ML-GSAI/BFN-Solver.",
+      "github_url": "https://github.com/ML-GSAI/BFN-Solver",
+      "main_contributions": "The paper unifies Bayesian Flow Networks (BFNs) and Diffusion Models (DMs) through stochastic differential equations (SDEs). It identifies linear SDEs corresponding to noise-addition processes in BFNs, demonstrates the alignment of BFN's regression losses with denoising score matching (DSM), and validates the BFN sampler as a first-order solver for the respective reverse-time SDE. It introduces specialized solvers for BFNs inspired by fast sampling methods in DMs, significantly improving sample quality with limited function evaluations.",
+      "methodology": "The paper uses stochastic differential equations (SDEs) to model the noise-adding processes in BFNs. It derives reverse-time SDEs for sampling and employs denoising score matching (DSM) to train the networks. It introduces high-order solvers (BFN-Solvers) tailored to the semi-linear structure of BFNs, for both SDEs and ODEs.",
+      "experimental_setup": "The experiments used pre-trained BFN models and were conducted on the CIFAR10 dataset (for continuous data) and the text8 dataset (for discrete data). Sample quality was evaluated using FID (Fréchet Inception Distance) for images and spelling accuracy (SA) for text. User studies were also conducted for text generation quality evaluation.",
+      "limitations": "The scale of the datasets used for training is limited, potentially affecting the generalizability of the findings. The evaluation metrics primarily rely on FID and spelling accuracy as surrogates for sample quality, which may introduce bias. The samplers developed cannot be directly used in likelihood evaluation.",
+      "future_research_directions": "Future research directions include developing predictor-corrector samplers, improving methods for likelihood evaluation, and exploring novel training strategies to refine and scale BFNs to common benchmarks. Systematic comparison of different noise schedules is also suggested."
+    },
+    {
+      "arxiv_id": "2410.13925v1",
+      "arxiv_url": "http://arxiv.org/abs/2410.13925v1",
+      "title": "FiTv2: Scalable and Improved Flexible Vision Transformer for Diffusion\n  Model",
+      "authors": [
+        "ZiDong Wang",
+        "Zeyu Lu",
+        "Di Huang",
+        "Cai Zhou",
+        "Wanli Ouyang",
+        "and Lei Bai"
+      ],
+      "published_date": "2024-10-17T15:51:49Z",
+      "journal": "",
+      "doi": "",
+      "summary": "\\textit{Nature is infinitely resolution-free}. In the context of this\nreality, existing diffusion models, such as Diffusion Transformers, often face\nchallenges when processing image resolutions outside of their trained domain.\nTo address this limitation, we conceptualize images as sequences of tokens with\ndynamic sizes, rather than traditional methods that perceive images as\nfixed-resolution grids. This perspective enables a flexible training strategy\nthat seamlessly accommodates various aspect ratios during both training and\ninference, thus promoting resolution generalization and eliminating biases\nintroduced by image cropping. On this basis, we present the \\textbf{Flexible\nVision Transformer} (FiT), a transformer architecture specifically designed for\ngenerating images with \\textit{unrestricted resolutions and aspect ratios}. We\nfurther upgrade the FiT to FiTv2 with several innovative designs, includingthe\nQuery-Key vector normalization, the AdaLN-LoRA module, a rectified flow\nscheduler, and a Logit-Normal sampler. Enhanced by a meticulously adjusted\nnetwork structure, FiTv2 exhibits $2\\times$ convergence speed of FiT. When\nincorporating advanced training-free extrapolation techniques, FiTv2\ndemonstrates remarkable adaptability in both resolution extrapolation and\ndiverse resolution generation. Additionally, our exploration of the scalability\nof the FiTv2 model reveals that larger models exhibit better computational\nefficiency. Furthermore, we introduce an efficient post-training strategy to\nadapt a pre-trained model for the high-resolution generation. Comprehensive\nexperiments demonstrate the exceptional performance of FiTv2 across a broad\nrange of resolutions. We have released all the codes and models at\n\\url{https://github.com/whlzy/FiT} to promote the exploration of diffusion\ntransformer models for arbitrary-resolution image generation.",
+      "github_url": "https://github.com/whlzy/FiT",
+      "main_contributions": "The paper introduces FiTv2, an enhanced Flexible Vision Transformer for diffusion models, addressing the limitations of existing diffusion models in handling arbitrary image resolutions and aspect ratios. FiTv2 incorporates innovations like Query-Key Vector Normalization, AdaLN-LoRA, a rectified flow scheduler, and a Logit-Normal sampler, achieving faster convergence and improved performance in image generation tasks.",
+      "methodology": "FiTv2 builds upon the Flexible Vision Transformer (FiT) architecture, utilizing a transformer-based approach with 2-D Rotary Positional Embedding (RoPE), Swish-Gated Linear Units (SwiGLU), and Masked Multi-Head Self-Attention. It employs a flexible training pipeline that treats images as sequences of variable-length tokens, accommodating varied resolutions within a predefined maximum token limit. The training strategy is improved by switching from a DDPM noise scheduler to rectified flow and adopting Logit-Normal sampling for timesteps.",
+      "experimental_setup": "The model is trained and evaluated on the ImageNet dataset, using Fre'chet Inception Distance (FID), sFID, Inception Score (IS), improved Precision, and Recall as evaluation metrics. Experiments are conducted on class-guided image generation and text-to-image generation tasks across various resolutions and aspect ratios, including both in-distribution and out-of-distribution settings. The TensorFlow evaluation from ADM is used to report FID-50K and other results.",
+      "limitations": "The original FiT model underperforms on the standard ImageNet 256x256 benchmark and has increased parameter count and computational costs compared to DiT. There are also training instability issues with FiT. While FiTv2 improves upon FiT, specific limitations of FiTv2 itself are not explicitly mentioned in the provided text.",
+      "future_research_directions": "The paper suggests scaling FiTv2 to even larger models to further investigate scalability. It also explores an efficient post-training strategy to adapt pre-trained models for high-resolution generation. Further research could investigate more advanced training-free extrapolation techniques and explore the application of FiTv2 to other image generation tasks and modalities."
+    },
+    {
+      "arxiv_id": "2407.11451v1",
+      "arxiv_url": "http://arxiv.org/abs/2407.11451v1",
+      "title": "Isometric Representation Learning for Disentangled Latent Space of\n  Diffusion Models",
+      "authors": [
+        "Jaehoon Hahm",
+        "Junho Lee",
+        "Sunghyun Kim",
+        "Joonseok Lee"
+      ],
+      "published_date": "2024-07-16T07:36:01Z",
+      "journal": "",
+      "doi": "",
+      "summary": "The latent space of diffusion model mostly still remains unexplored, despite\nits great success and potential in the field of generative modeling. In fact,\nthe latent space of existing diffusion models are entangled, with a distorted\nmapping from its latent space to image space. To tackle this problem, we\npresent Isometric Diffusion, equipping a diffusion model with a geometric\nregularizer to guide the model to learn a geometrically sound latent space of\nthe training data manifold. This approach allows diffusion models to learn a\nmore disentangled latent space, which enables smoother interpolation, more\naccurate inversion, and more precise control over attributes directly in the\nlatent space. Our extensive experiments consisting of image interpolations,\nimage inversions, and linear editing show the effectiveness of our method.",
+      "github_url": "https://github.com/isno0907/isodiff",
+      "main_contributions": "The paper introduces Isometric Diffusion, a diffusion model equipped with a geometric regularizer to learn a more disentangled latent space. This approach aims to address the problem of entangled latent spaces in existing diffusion models, enabling smoother interpolation, more accurate inversion, and more precise control over attributes directly in the latent space.",
+      "methodology": "The core methodology involves equipping a diffusion model with a novel loss function that encourages isometry between the latent space and the image space. This is achieved by regularizing the mapping from the latent space to the data manifold to be isometric, guiding the model to learn a geometrically sound latent space that better reflects the data manifold. The method uses stereographic coordinates to define a Riemannian metric on the hypersphere manifold of the latent space and employs a stochastic trace estimator to reduce computational complexity.",
+      "experimental_setup": "The approach was evaluated on CIFAR-10, CelebA-HQ, LSUN-Church, and LSUN-Bedrooms datasets, resizing images to 256x256 (except for CIFAR-10). Evaluation metrics included Fréchet Inception Distance (FID), Perceptual Path Length (PPL), Linear Separability (LS), Mean Condition Number (MCN), Variance of Riemannian metric (V oR), and a newly designed metric called mean Relative Trajectory Length (mRTL). The experiments involved fine-tuning pre-trained models with the proposed isometric loss and comparing the results with baseline diffusion models.",
+      "limitations": "Applying the isometric regularizer introduces a trade-off between FID and disentanglement metrics. While the method improves disentanglement and latent space smoothness, it may lead to a slight degradation in the quality of generated images as measured by FID.",
+      "future_research_directions": "Future research directions include applying the method to conditional generation tasks, exploring ways to minimize the trade-off between FID and disentanglement, and scaling the method to larger and more complex datasets and models, including text-to-image models like Stable Diffusion."
+    }
   ]
 }
