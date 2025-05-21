@@ -22,5 +22,8 @@
     "experimental_setup": "The framework is validated through comprehensive numerical experiments on synthetic datasets (S-curve, Swiss roll, Hyperplane) and benchmark datasets (MNIST, CelebA). The experiments demonstrate LWGAN's ability to detect the intrinsic dimensions for both simulated examples and real image data and generate high-quality samples. The performance is evaluated using Inception Score (IS), Fréchet Inception Distance (FID), and reconstruction errors.",
     "limitations": "The paper focuses on scenarios where the data lies on a topological manifold. The generator G is deterministic. The method's sensitivity to the choice of neural network architecture and hyperparameters (e.g., gradient penalty parameter, rank regularization parameter) is not fully explored.",
     "future_research_directions": "Future research directions include investigating a more general scenario where the generator G is stochastic by adding an extra noise vector to its input. Incorporating the stochastic LWGAN into more recent GAN modules such as BigGAN to produce high-resolution and high-fidelity images along with the estimation of the intrinsic dimension is suggested. Application of LWGAN to structural estimation in economics is also proposed."
-  }
+  },
+  "add_queries": [
+    "vision"
+  ]
 }
