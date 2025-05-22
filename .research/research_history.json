@@ -1,5 +1,25 @@
 {
   "base_queries": [
     "diffusion model"
-  ]
+  ],
+  "base_github_url": "https://github.com/coderpiaobozhe/classifier-free-diffusion-guidance-Pytorch",
+  "base_method_text": {
+    "arxiv_id": "2312.07586v5",
+    "arxiv_url": "http://arxiv.org/abs/2312.07586v5",
+    "title": "Characteristic Guidance: Non-linear Correction for Diffusion Model at\n  Large Guidance Scale",
+    "authors": [
+      "Candi Zheng",
+      "Yuan Lan"
+    ],
+    "published_date": "2023-12-11T02:40:40Z",
+    "journal": "",
+    "doi": "",
+    "summary": "Popular guidance for denoising diffusion probabilistic model (DDPM) linearly\ncombines distinct conditional models together to provide enhanced control over\nsamples. However, this approach overlooks nonlinear effects that become\nsignificant when guidance scale is large. To address this issue, we propose\ncharacteristic guidance, a guidance method that provides first-principle\nnon-linear correction for classifier-free guidance. Such correction forces the\nguided DDPMs to respect the Fokker-Planck (FP) equation of diffusion process,\nin a way that is training-free and compatible with existing sampling methods.\nExperiments show that characteristic guidance enhances semantic characteristics\nof prompts and mitigate irregularities in image generation, proving effective\nin diverse applications ranging from simulating magnet phase transitions to\nlatent space sampling.",
+    "github_url": "https://github.com/coderpiaobozhe/classifier-free-diffusion-guidance-Pytorch",
+    "main_contributions": "The paper introduces Characteristic Guidance, a novel non-linear correction method for classifier-free guided Denoising Diffusion Probabilistic Models (DDPMs) that addresses the irregularities arising from large guidance scales. The method enforces adherence to the Fokker-Planck equation, enhancing semantic characteristics and mitigating image generation artifacts.",
+    "methodology": "Characteristic guidance corrects classifier-free guidance by incorporating a non-linear correction term (∆x) derived from the Fokker-Planck equation using the method of characteristics and a harmonic ansatz. This involves iteratively solving a fixed-point equation to determine ∆x, using accelerated fixed-point iteration algorithms and projection operators for regularization and faster convergence.",
+    "experimental_setup": "The method was evaluated on conditional Gaussian distributions, mixtures of Gaussians, simulations of magnet phase transitions (Landau-Ginzburg model), and image generation tasks using CIFAR-10, ImageNet 256 (with latent diffusion models), and Stable Diffusion. Evaluation metrics included KL divergence, Negative Log-Likelihood (NLL), Frechet Inception Distance (FID), Inception Score (IS), and visual inspection.",
+    "limitations": "The effectiveness of FID as an evaluation metric is compromised due to the discrepancy between target conditional probabilities and marginal probabilities. The iterative computation of the non-linear correction term can be slow, and the method's performance relies on the harmonic ansatz, which may not hold in all scenarios.",
+    "future_research_directions": "Future research directions include exploring advanced regularization techniques to enhance the convergence rate of the iterative computation and investigating more appropriate evaluation metrics that account for the goals of guided DDPMs. It also includes exploration on how to relax the harmonic ansatz."
+  }
 }
