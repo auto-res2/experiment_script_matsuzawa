@@ -1,1 +1,7 @@
-airas-template
+# Adaptive Characteristic Simulation for Non-Linear Correction in Guided Diffusion
+> ⚠️ **NOTE:** This research is an automatic research using AIRAS.
+## Abstract
+We introduce Adaptive Characteristic Simulation (ACS), a novel approach for improving classifier-free guided Denoising Diffusion Probabilistic Models (DDPMs) under large guidance scales. Whereas prior work often relies on fixed-point iterations and harmonic assumptions to handle high-scale imbalances, ACS replaces this approach with a multi-stage numerical scheme driven by local error estimates. Specifically, ACS adapts both step size and random perturbation intensity in an SDE-based framework, providing robust performance in high-curvature regions where purely linear corrections fail. To validate its effectiveness, we conduct three experiments: (1) a synthetic ODE integration task, highlighting the efficiency of adaptive steps; (2) a controlled noise injection scenario, showing that dynamically tuned random perturbations improve stability; and (3) a toy end-to-end diffusion-based sampling experiment comparing ACS with standard guidance methods in terms of convergence quality and runtime. Results consistently indicate reduced computational burden, better stability, and enhanced control over sample trajectories, thus demonstrating the value of ACS for non-linear guidance in complex diffusion problems.
+
+- [Research history](https://github.com/auto-res2/experiment_script_matsuzawa/blob/base-branch-3/.research/research_history.json)
+- [Devin execution log](https://app.devin.ai/sessions/e7a44c12721a4f3cb14ba95e84dc134a)
