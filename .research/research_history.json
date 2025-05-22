@@ -21,5 +21,8 @@
     "experimental_setup": "The method was evaluated on conditional Gaussian distributions, mixtures of Gaussians, simulations of magnet phase transitions (Landau-Ginzburg model), and image generation tasks using CIFAR-10, ImageNet 256 (with latent diffusion models), and Stable Diffusion. Evaluation metrics included KL divergence, Negative Log-Likelihood (NLL), Frechet Inception Distance (FID), Inception Score (IS), and visual inspection.",
     "limitations": "The effectiveness of FID as an evaluation metric is compromised due to the discrepancy between target conditional probabilities and marginal probabilities. The iterative computation of the non-linear correction term can be slow, and the method's performance relies on the harmonic ansatz, which may not hold in all scenarios.",
     "future_research_directions": "Future research directions include exploring advanced regularization techniques to enhance the convergence rate of the iterative computation and investigating more appropriate evaluation metrics that account for the goals of guided DDPMs. It also includes exploration on how to relax the harmonic ansatz."
-  }
+  },
+  "add_queries": [
+    "vision"
+  ]
 }
