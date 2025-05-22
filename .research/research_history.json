@@ -56,5 +56,7 @@
       "limitations": "The evaluation of the BPDA+EOT attack is performed on a subset of the test set due to the high computational cost. Some experimental details and ablation study results are deferred to the appendix due to space limitations.",
       "future_research_directions": "The paper suggests further developments in diffusion-based purification methods, implying exploration of new diffusion models, advanced simulation techniques, and adaptive control of randomness to further enhance adversarial robustness and computational efficiency."
     }
-  ]
+  ],
+  "base_experimental_code": "The repository provides code for training and sampling from a diffusion model with classifier-free guidance. However, there is no explicit code implementing 'Characteristic Guidance', the non-linear correction method at the core of the paper. The diffusion.py file contains the implementation of Gaussian Diffusion, including forward and reverse processes, and the training loss. The sample.py and train.py files contain the sampling and training loops respectively. The unet.py defines the UNet architecture used as the conditional generator.",
+  "base_experimental_info": "The experimental setup involves training a UNet model on CIFAR-10 dataset using the code provided. Key parameters include: Timesteps (T=1000), Guidance scale (w=1.8), Variance parameter (v=0.3), Learning rate (lr=2e-4), Batch size (batchsize=256), Number of classes (clsnnum=10), Sampling steps for DDIM (num_steps=50), Eta for DDIM variance (eta=0.0). The code supports distributed training. Evaluation is performed by visual inspection of generated samples, and quantitative metrics like FID are calculated."
 }
