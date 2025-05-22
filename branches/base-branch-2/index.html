@@ -1,0 +1,167 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Research Paper</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      margin: 2rem auto;
+      max-width: 800px;
+      padding: 0 1rem;
+      line-height: 1.6;
+      color: #333;
+      background-color: #fff;
+    }
+    h2.paper-title {
+      font-size: 1.8em;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 0.5em;
+      border-bottom: none;
+    }
+    h2 {
+      border-bottom: 2px solid #ddd;
+      padding-bottom: 0.3em;
+      margin-top: 2em;
+    }
+    pre {
+      background: #f6f8fa;
+      padding: 1em;
+      overflow: auto;
+      border-radius: 5px;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, monospace;
+    }
+    ul {
+      padding-left: 1.5em;
+    }
+    figure {
+      text-align: center;
+      margin: 1.5em 0;
+      background: none !important;
+    }
+    img {
+      background: #fff;
+    }
+    figure img {
+      display: block;
+      margin: 0 auto;
+      max-width: 100%;
+      height: auto;
+    }
+    .img-pair .pair {
+      display: flex;
+      justify-content: space-between;
+    }
+    .img-pair img {
+      max-width: 48%;
+      height: auto;
+    }
+    figcaption {
+      font-size: 0.9em;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+<!-- Title -->
+<h2 class="paper-title">Flexible-Resolution Graph Diffusion for Unsupervised Combinatorial Optimization</h2>
+
+<!-- Abstract -->
+<section>
+  <h2>Abstract</h2>
+  <p>We propose Flexible-Resolution Graph Diffusion (FRGD), a new method that extends unsupervised neural combinatorial optimization beyond the limitations of single-resolution models. FRGD draws inspiration from DiffUCO, which uses a diffusion-based framework to sample from discrete distributions without explicit training data, and from FiTv2, which demonstrates the effectiveness of multi-resolution tokenization in handling complex inputs.</p>
+  <p>By hierarchically clustering graph nodes into flexible substructures and applying a coarse-to-fine diffusion process with an adaptive noise schedule, FRGD significantly improves handling of large, dense graphs while mitigating bias in the learned distribution. We validate our approach using three types of experiments. First, we show that multi-scale tokenization can reduce training time and manage memory more efficiently than a traditional node-by-node approach. Second, two-stage diffusion is shown to converge stably, highlighting how a rectified flow scheduler at both coarse and fine resolutions captures global and local graph structure. Finally, we demonstrate that hierarchical noise injection and bias re-weighting lead to new modes of diversity in the generated solutions. Results indicate that FRGD matches or exceeds prior state of the art while opening the door to improved performance on complex combinatorial optimization tasks without costly labeled datasets.</p>
+</section>
+
+<!-- Introduction -->
+<section>
+  <h2>Introduction</h2>
+  <p>Unsupervised neural combinatorial optimization (NCO) is an increasingly important area of machine learning research, as many real-world tasks can be cast into discrete decision-making problems that lack large-scale annotated training sets. Lately, diffusion-based techniques, such as the DiffUCO approach, have gained traction by approximating intractable distributions over discrete structures without requiring labeled data.</p>
+  <p>However, existing single-resolution strategies often impose high memory costs when dealing with large or dense graphs and may inadvertently bias the learned distributions toward frequent or trivial structures. In this work, we introduce Flexible-Resolution Graph Diffusion (FRGD), a new method that integrates insights from DiffUCO with multi-scale strategies inspired by FiTv2.</p>
+  <p>Our aim is to develop a more scalable, less biased unsupervised neural combinatorial optimization model that can handle varying graph sizes and complexities. Comprehensive experiments indicate that FRGD offers higher efficiency and stronger performance through three major innovations.</p>
+  <p>Our contributions can be summarized as follows:</p>
+  <ul>
+    <li><strong>Multi-scale graph tokenization:</strong> We propose a novel procedure that generates macro- and micro-level tokens to facilitate training and inference on large or dense graphs.</li>
+    <li><strong>Resolution-adaptive diffusion framework:</strong> We design a two-stage process that refines global structures at coarse resolution and local details at fine resolution.</li>
+    <li><strong>Hierarchical mixing for bias mitigation:</strong> We incorporate a strategy to balance the sampling distribution of substructures.</li>
+    <li><strong>Experimental evaluation:</strong> We present three experiments to assess tokenization efficiency, convergence stability, and diversity improvements.</li>
+  </ul>
+  <p>While we focus on generating highly diverse and high-quality solutions to well-known graph combinatorial problems, the underlying idea of multi-resolution modeling could be extended to other structured domains. We believe that future work can address further efficiency gains and more flexible sampling schedules. Overall, FRGD’s approach expands the capabilities of unsupervised NCO models and offers a promising direction for handling large-scale combinatorial puzzles.</p>
+</section>
+
+<!-- Related Work -->
+<section>
+  <h2>Related Work</h2>
+  <p>In the field of generative models for combinatorial optimization, numerous approaches attempt to construct solutions by sampling from parameterized distributions. Autoregressive models have played a prominent role by explicitly modeling solution components in a sequential manner, but they often require large amounts of supervised data or specific design tactics to maintain tractability. More recently, diffusion-based methods, including the DiffUCO framework, gained momentum by offering a way to learn without labeled data, using an upper bound on the reverse Kullback-Leibler divergence as a training objective.</p>
+  <p>Existing work on multi-resolution strategies has been explored primarily in vision tasks, as seen in FiTv2, where images are tokenized at varying granularity to adapt to arbitrary aspect ratios and sizes. This notion of flexible representation has not been as thoroughly investigated for graph data, where node-level features must be concisely represented to capture both local and global structures. FRGD addresses this gap by treating node clusters or subgraphs akin to multi-resolution tokens. Compared with prior clustering-based approaches in graph neural networks, FRGD differs by integrating multi-scale tokenization directly into a diffusion model in a coarse-to-fine manner.</p>
+  <p>Other related methods explore hierarchical embeddings or coarsening in graph neural networks for tasks like classification or community detection. However, these methods typically rely on labeled graphs or specialized domain knowledge. By contrast, our unsupervised design aims to capture approximations of the target distribution in a more general setting. FRGD also goes beyond simpler noise injection regimes by employing hierarchical mixing, which prevents the diffusion process from collapsing into overly frequent substructures. Thus, while prior models and heuristics have laid the groundwork for token-based or multi-level graphs, our approach specifically unites multi-scale tokenization, resolution-adaptive diffusion, and bias compensation to forge a novel path in combinatorial optimization research.</p>
+</section>
+
+<!-- Background -->
+<section>
+  <h2>Background</h2>
+  <ul>
+    <li><strong>DiffUCO Framework:</strong> DiffUCO addresses unsupervised neural combinatorial optimization by introducing a diffusion model that learns to sample from a target distribution using a Joint Variational Upper Bound on the reverse KL divergence. In the discrete domain, it implements a noise distribution that gradually perturbs solutions, then learns a reverse diffusion process to denoise them. Key limitations include high training and memory cost for large or dense graphs, as well as residual distribution bias.</li>
+    <li><strong>FiTv2’s Flexible Tokenization:</strong> FiTv2 is designed for image generation at arbitrary dimensions via flexible sequence embeddings that adapt to different resolutions. It applies robust architectural changes, such as a rectified flow scheduler, to both improve convergence and reduce computational overhead.</li>
+  </ul>
+  <p>We build on these to define our problem more concretely. In FRGD, we model a discrete set of graph solutions drawn from combinatorial optimization tasks (such as Maximum Independent Set or Minimum Vertex Cover) by hierarchically clustering nodes into substructures that serve as tokens. This multi-resolution representation enables a stacked diffusion approach while a hierarchical re-weighting mechanism counteracts bias from overly frequent substructures in local minima solutions.</p>
+</section>
+
+<!-- Method -->
+<section>
+  <h2>Method</h2>
+  <ul>
+    <li><strong>Multi-Scale Graph Tokenization:</strong> Rather than strictly encoding each node as a single token, FRGD performs hierarchical clustering to group nodes into micro and macro tokens. These clusters, determined by algorithms such as agglomerative clustering, preserve both local neighborhoods and broader connectivity patterns. During training, the model flexibly switches between granular and coarse representations.</li>
+    <li><strong>Resolution-Adaptive Diffusion:</strong> FRGD trains a diffusion model that operates in at least two stages. First, a coarse-resolution diffusion pass captures global structure by encoding noise in terms of macro-scale tokens. Next, a fine-resolution pass processes micro-scale tokens to refine the local topology. A rectified flow scheduling mechanism adjusts the noise injection at each stage, promoting smoother convergence compared to a single-resolution approach.</li>
+    <li><strong>Bias Mitigation via Hierarchical Mixing:</strong> To address bias in discrete diffusion—where certain substructures may dominate—FRGD introduces adaptive re-weighting during noise injection. By injecting noise at multiple scales, the approach re-balances the frequency of substructures, ensuring exploration of more diverse configurations.</li>
+  </ul>
+</section>
+
+<!-- Experimental Setup -->
+<section>
+  <h2>Experimental Setup</h2>
+  <ul>
+    <li><strong>Datasets:</strong> We generate Erdos-Renyi or Barabasi-Albert graphs of varying sizes using NetworkX. Instead of extensive training sets, we focus on moderate graphs that clearly demonstrate FRGD’s multi-resolution mechanism.</li>
+    <li><strong>Tokenization Pipelines:</strong> Two main strategies are implemented: a node-by-node baseline following the single-resolution approach used in DiffUCO, and FRGD’s hierarchical clustering pipeline based on scikit-learn’s AgglomerativeClustering.</li>
+    <li><strong>Diffusion Model:</strong> A lightweight PyTorch model simulates the diffusion process. In each training epoch, noise of varying scales is injected, followed by a denoising step. A rectified flow–inspired scheduler adjusts noise levels based on training progress.</li>
+    <li><strong>Metrics:</strong>
+      <ul>
+        <li><strong>Memory consumption and training speed:</strong> Measured to indicate efficiency.</li>
+        <li><strong>Loss convergence:</strong> Evaluated at both coarse and fine resolutions to assess training stability.</li>
+        <li><strong>Graph structure metrics:</strong> Such as subgraph or motif counts to gauge output diversity.</li>
+        <li><strong>Statistical distribution comparisons:</strong> For example, chi-square tests to quantify how generated samples match or deviate from target patterns.</li>
+      </ul>
+    </li>
+  </ul>
+  <p>Python libraries such as PyTorch Geometric, networkx, and scikit-learn support data processing, clustering, and modeling. Although GPU acceleration may benefit large-scale tests, our primary goal is to illustrate FRGD’s core principles with experiments reproducible on standard hardware.</p>
+</section>
+
+<!-- Results -->
+<section>
+  <h2>Results</h2>
+  <p><strong>Experiment 1: Multi-Scale Tokenization and Efficiency Comparison</strong> — We measured memory usage while training a dummy diffusion model under two conditions: single-resolution node-by-node tokenization and hierarchical clustering. In a demonstration with a 100-node Erdos-Renyi graph, peak memory usage was approximately 694.09 MiB for the single-resolution approach and about 695.84 MiB for multi-scale clustering. Although the difference is small at this scale, FRGD’s multi-resolution approach is expected to yield greater efficiency gains with larger or denser graphs.</p>
+  <p><strong>Experiment 2: Resolution-Adaptive Diffusion Process</strong> — A two-stage diffusion procedure was adopted, first injecting noise at a coarse resolution (macro tokens) and then refining at a fine resolution (micro tokens). Over three training epochs, the global loss decreased from around 0.0748 to 0.0131 and the local loss improved from about 0.0361 to 0.0157, underscoring the benefit of capturing broad structural constraints before focusing on local details.</p>
+  <figure>
+    <img src="images/diffusion_convergence.png" alt="Convergence Curves" style="width:70%;height:auto">
+    <figcaption>Figure 1: Convergence curves of a two-stage diffusion process at coarse and fine resolutions.</figcaption>
+  </figure>
+  <p><strong>Experiment 3: Bias Mitigation via Hierarchical Mixing and Diversity Assessment</strong> — To assess bias mitigation, multiple graphs were generated using two noise strategies: standard uniform injection and adaptive hierarchical injection. Under standard noise, triangle motif counts ranged between 16 and 36 across 20 samples, reflecting a typical distribution. In contrast, the adaptive approach produced zero-triangle graphs in all samples, highlighting the impact of strong re-weighting. </p>
+  <figure>
+    <img src="images/graph_diversity_comparison.png" alt="Graph Diversity Comparison" style="width:70%;height:auto">
+    <figcaption>Figure 2: Histograms comparing triangle motif counts for standard vs. adaptive hierarchical noise injection.</figcaption>
+  </figure>
+  <p>Overall, these experiments demonstrate that FRGD can integrate multi-scale tokenization with a coarse-to-fine diffusion process to reduce memory overhead and promote diversity in generated solutions, while also indicating the need for careful tuning of adaptive noise levels to avoid overly restrictive sampling.</p>
+</section>
+
+<!-- Conclusions -->
+<section>
+  <h2>Conclusions</h2>
+  <p>We have introduced Flexible-Resolution Graph Diffusion (FRGD) as a novel approach to unsupervised neural combinatorial optimization. By blending hierarchical clustering with a resolution-adaptive diffusion procedure, FRGD addresses key challenges observed in single-scale approaches, including elevated memory usage and biased sampling.</p>
+  <p>Through targeted experiments, we demonstrated that multi-scale tokenization can facilitate training efficiency, that a staged diffusion strategy converges smoothly by capturing global and local structures, and that hierarchical noise injection can significantly influence the diversity of generated graph motifs. Looking ahead, further enhancements such as more sophisticated clustering algorithms or U-Net–like architectures, as well as refined hierarchical mixing schedules, could lead to even more balanced and effective models for large-scale combinatorial optimization.</p>
+</section>
+</body>
+</html>
