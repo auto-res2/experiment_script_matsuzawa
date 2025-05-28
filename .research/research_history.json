@@ -1,7 +1,5 @@
 {
-  "base_queries": [
-    "diffusion model"
-  ],
+  "base_queries": "llm",
   "base_github_url": "https://github.com/yixuan/LWGAN",
   "base_method_text": {
     "arxiv_id": "2409.18374v1",
