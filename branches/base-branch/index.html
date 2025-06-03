@@ -1,0 +1,239 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Research Paper</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      margin: 2rem auto;
+      max-width: 800px;
+      padding: 0 1rem;
+      line-height: 1.6;
+      color: #333;
+      background-color: #fff;
+    }
+    h2.paper-title {
+      font-size: 1.8em;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 0.5em;
+      border-bottom: none;
+    }
+    h2 {
+      border-bottom: 2px solid #ddd;
+      padding-bottom: 0.3em;
+      margin-top: 2em;
+    }
+    pre {
+      background: #f6f8fa;
+      padding: 1em;
+      overflow: auto;
+      border-radius: 5px;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, monospace;
+    }
+    ul {
+      padding-left: 1.5em;
+    }
+    figure {
+      text-align: center;
+      margin: 1.5em 0;
+      background: none !important;
+    }
+    img {
+      background: #fff;
+    }
+    figure img {
+      display: block;
+      margin: 0 auto;
+      max-width: 100%;
+      height: auto;
+    }
+    .img-pair .pair {
+      display: flex;
+      justify-content: space-between;
+    }
+    .img-pair img {
+      max-width: 48%;
+      height: auto;
+    }
+    figcaption {
+      font-size: 0.9em;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+<h2 class="paper-title">Iso-LWGAN: A Geometry-Aware Approach to Adaptive Generative Modeling</h2>
+
+<section>
+  <h2>Abstract</h2>
+  <p>We introduce Iso-LWGAN, an adaptive dimension-learning framework that builds on the Latent Wasserstein GAN (LWGAN) by integrating an isometric regularization term and partial stochasticity in the generator. Our goal is to address the challenge of learning data manifolds whose intrinsic dimensions are lower than those of the ambient space while also preserving local distances for enhanced interpretability.</p>
+  <p>The isometric regularizer encourages the generator to maintain geometric fidelity between latent codes and output samples, whereas the partially stochastic generator captures the multimodality often present in real-world data. This combination tackles issues of latent mismatch and mode collapse reported in previous GAN-based methods. We quantitatively and qualitatively validate Iso-LWGAN on synthetic manifolds and real datasets such as MNIST, showing that our method preserves local geometry, detects manifold dimensions, and achieves improved coverage of data modes.</p>
+  <p>Experiments reveal that aligning latent distances with generated sample distances leads to smoother interpolations, whereas introducing carefully controlled noise inside the generator helps mitigate mode collapse. Our results underscore Iso-LWGAN’s potential as a powerful and flexible tool for manifold-aware generative modeling.</p>
+</section>
+
+<section>
+  <h2>Introduction</h2>
+  <p>Generative modeling seeks to learn underlying distributions from observed data, enabling the generation of new, high-quality samples that approximate real-world complexity. Classic latent-variable models such as Variational Auto-Encoders (VAEs) and Generative Adversarial Networks (GANs) have demonstrated remarkable success in areas including image synthesis, text generation, and audio modeling. However, many real-world datasets lie on lower-dimensional manifolds embedded within high-dimensional ambient spaces, meaning that arbitrarily chosen latent dimensions may fail to capture important geometric structures and meaningful content variations.</p>
+  <p>Recent work has emphasized the benefits of manifold-awareness for generative models. The Latent Wasserstein GAN (LWGAN) was proposed to adaptively estimate the manifold’s intrinsic dimension by learning a latent distribution with a diagonal covariance matrix whose rank corresponds to the data dimensionality. LWGAN combines concepts from Wasserstein Auto-Encoders (WAE) and Wasserstein GANs (WGAN) to yield consistent dimension estimates, but limitations persist. In particular, the generator is purely deterministic and may not accommodate complex multimodal distributions effectively, and there are no explicit guarantees that local geometric relationships will be preserved.</p>
+  <p>Concurrently, isometric or distance-preserving techniques have gained traction in representation learning. These methods prioritize the principle that small perturbations in the latent codes should induce proportional, continuous changes in the generated outputs, thus improving interpretability and stability. Strictly deterministic mappings, however, can limit coverage of diverse data modes, reducing the model’s capacity to distribute probability mass over the often multimodal data manifold.</p>
+  <p>In this paper, we propose Iso-LWGAN, an enhancement over LWGAN that addresses these gaps by incorporating an isometric regularizer and introducing partial stochasticity in generation. The key contributions are:</p>
+  <ul>
+    <li><strong>Distance Preservation:</strong> We incorporate a distance-preserving penalty, inspired by isometric representation learning, to align local distances in the latent and output spaces, yielding smoother transitions and fewer geometric distortions.</li>
+    <li><strong>Controlled Noise Injection:</strong> We inject controlled noise into the generator, striking a balance between deterministic and fully stochastic mappings, which helps avoid mode collapse while preserving stable training.</li>
+    <li><strong>Dimension Consistency:</strong> We preserve the diagonal latent-covariance parameterization from LWGAN, ensuring that the learned dimensionality matches the manifold dimension.</li>
+    <li><strong>Experimental Validation:</strong> We conduct experiments that isolate the effect of isometric regularization, analyze the benefits of partial noise, and finally compare Iso-LWGAN against the baseline LWGAN on MNIST.</li>
+  </ul>
+  <p>The remainder of this paper is organized as follows. We first position our approach in relation to prior manifold-based and geometry-conscious generative methods. Next, we summarize background concepts on dimension-adaptive latent variable models. We then detail the Iso-LWGAN architecture, focusing on how the isometric penalty and partial noise injection integrate with LWGAN’s dimension consistency. We follow with our experimental setup on synthetic data and real data (MNIST). Finally, we present comprehensive results showing local geometry improvements, better coverage, and structured latent spaces, and conclude with reflections on future directions for manifold-aware generative modeling.</p>
+</section>
+
+<section>
+  <h2>Related Work</h2>
+  <p>Generative adversarial networks have progressed substantially since their inception, largely focusing on broader distribution matching in Euclidean space. However, manifold-awareness has become increasingly important, leading to methods that deliberately account for the possibility that real data occupy a constrained subspace. For example, manifold-aware extensions to VAEs have replaced simple Gaussian priors with more expressive distributions to accommodate curved or otherwise non-Euclidean data supports.</p>
+  <p>Dimension-consistent techniques specifically aim to match the latent space dimension to that of the underlying data manifold. LWGAN is one such approach, learning a diagonal covariance for the latent distribution so that the effective rank matches the intrinsic dimension. Meanwhile, WGAN variants rely on a Wasserstein metric for stable training, but they typically do not tackle dimension estimation or local distance preservation.</p>
+  <p>Beyond dimension adaptivity, an emerging research direction explores isometric representation learning, wherein the goal is to preserve local distances. Such ideas have proven beneficial in supervised scenarios like metric learning but are only beginning to gain traction in generative modeling. Ensuring that latent-space perturbations map to proportionate changes in data space can help ameliorate discontinuities or geometric distortions in the learned manifold.</p>
+  <p>Partial or selective noise injection has also been proposed to mitigate mode collapse. Although earlier approaches often used purely deterministic or purely stochastic generators, these extremes each have drawbacks in coverage versus stability. A “hybrid” methodology—feeding a modest noise vector alongside the latent code—can expand the distribution of outputs for each latent code without severely disrupting training. Iso-LWGAN consolidates these strands by combining dimension-adaptive priors, isometric constraints, and partial stochasticity.</p>
+</section>
+
+<section>
+  <h2>Background</h2>
+  <p>Real-world data frequently reside on manifolds of lower dimension than the space in which they physically appear. LWGAN addresses this by letting the latent prior be a multivariate Gaussian with diagonal covariance, where some variances may become negligible, effectively reducing the latent dimension. Formally, if the data manifold X ⊂ ℝ&amp;sup3; has dimension m, then a rank-m diagonal matrix A captures variance in m directions while suppressing variance in the others. The learned parameters dictate which directions remain active.</p>
+  <p>Adversarial training in LWGAN is based on minimizing the Wasserstein distance between real and generated data distributions. One typically enforces a 1-Lipschitz constraint on the critic (discriminator) using gradient penalty or a similar technique.</p>
+  <p>Although dimension adaptation offers benefits for manifold alignment, local geometry could still be distorted because the WGAN objective does not explicitly penalize differences in local distances. Moreover, a purely deterministic generator can struggle to reproduce multimodal distributions, leading to partial collapse of modes. Integrating an isometric constraint and partial noise injection can address these problems:</p>
+  <ul>
+    <li><strong>Isometric Representation Learning:</strong> A penalty is incorporated on the absolute difference between pairwise distances in latent codes and in generated outputs, thereby preserving local geometry.</li>
+    <li><strong>Partial Stochasticity:</strong> By concatenating a small noise vector ε with the latent code z, multiple potential outcomes from the same z are permitted, enhancing coverage and reducing collapse. The parameter σ governs the influence of noise in generation, balancing the reliability of a deterministic map with the expressiveness of a stochastic one.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Method</h2>
+  <p>Iso-LWGAN synthesizes three main ideas for manifold-aware generative modeling: dimension adaptation, isometric regularization, and partial stochasticity.</p>
+  <ul>
+    <li><strong>Adaptive Latent Dimensionality:</strong> We adopt the LWGAN notion of a diagonal covariance matrix for the latent normal distribution. By learning which directions in ℝ<em>d</em> are truly active, the model approximates the intrinsic manifold dimension. The overall architecture includes an encoder Q: X → Z that maps data to latent codes and a generator G: Z → X that attempts to reconstruct data from latent codes.</li>
+    <li><strong>Isometric Regularization:</strong> To promote distance preservation, a term is added that penalizes the mismatch between pairwise distances of latent codes and generated points. The loss governing this, <em>L<sub>iso</sub></em>, ensures local geometric fidelity by matching distances between pairs in the latent and output spaces.</li>
+    <li><strong>Partially Stochastic Generator:</strong> Instead of using a fully deterministic generator, a noise vector ε drawn from a low-dimensional normal distribution N(0, σ²I) is concatenated with the latent code z. This partial noise injection permits a range of outputs from the same latent input, increasing diversity and mitigating mode collapse while maintaining training stability.</li>
+  </ul>
+  <p>The overall training objective combines the standard WGAN-based adversarial loss with the isometric penalty:</p>
+  <p>L<sub>total</sub> = L<sub>Wasserstein</sub> + λ<sub>iso</sub> * L<sub>iso</sub></p>
+  <p>This formulation balances stable manifold coverage, local geometry preservation, and dimension adaptivity in one unified framework.</p>
+</section>
+
+<section>
+  <h2>Experimental Setup</h2>
+  <p>We conduct three separate experiments to verify the contributions of the isometric regularizer, partial generator noise, and the combined Iso-LWGAN approach.</p>
+  <ul>
+    <li><strong>Geometry Preservation on Synthetic 2D Data:</strong>
+      <p><strong>Dataset:</strong> A two-component Gaussian mixture in ℝ<sub>2</sub>.</p>
+      <p><strong>Goal:</strong> To observe how varying λ<sub>iso</sub> ∈ {0, 0.1, 0.5, 1.0, 2.0} influences distance alignment, measured via the average absolute difference between pairwise distances in latent and generated spaces, while tracking reconstruction error and latent interpolations.</p>
+      <p><strong>Architecture:</strong> A simple encoder and generator with two hidden layers using the Adam optimizer over a moderate number of epochs.</p>
+    </li>
+    <li><strong>Partially Stochastic Generator for Multimodal Data:</strong>
+      <p><strong>Dataset:</strong> A 2D multimodal dataset with multiple clusters.</p>
+      <p><strong>Goal:</strong> To investigate the effect of partial noise injection by varying σ<sub>noise</sub> ∈ {0, 0.1, 0.5}. The focus is on assessing if moderate noise levels improve mode coverage and reduce mode collapse.</p>
+      <p><strong>Metrics:</strong> Qualitative sample diversity inspection and training stability assessments under different noise magnitudes.</p>
+    </li>
+    <li><strong>MNIST Comparison: Iso-LWGAN vs. Base LWGAN:</strong>
+      <p><strong>Dataset:</strong> MNIST digits (28×28 images), where the underlying manifold dimension is plausibly much smaller than the 784-dimensional image space.</p>
+      <p><strong>Goal:</strong> To compare a baseline LWGAN (without isometric regularization or noise injection) against Iso-LWGAN (with nonzero λ<sub>iso</sub> and partial noise). Both models share a similar feedforward encoder/generator architecture aside from the noise mechanism.</p>
+      <p><strong>Measurements:</strong> Tracking reconstruction and total losses, inspecting digit coverage, generating latent interpolations, and qualitatively assessing smoothness in transitions and sample diversity.</p>
+    </li>
+  </ul>
+  <p>Implementation is carried out using PyTorch, leveraging modules like <code>torch.cdist</code> for pairwise distance computation, and incorporating standard WGAN gradient penalties or spectral normalization in the critic. Hyperparameters such as batch size and learning rates are kept consistent across comparable experiments. Models and plotted results are saved as PDF files for reproducibility.</p>
+</section>
+
+<section>
+  <h2>Results</h2>
+  <p><strong>Geometry Preservation with Isometric Regularization</strong></p>
+  <figure>
+    <img src="images/recon_error_comparison.png" style="width:70%;height:auto" alt="Recon Error Comparison">
+    <figcaption>Figure 1: Recon Error Comparison showing the evolution of reconstruction error at different λ_iso values for the two-component Gaussian mixture.</figcaption>
+  </figure>
+  <figure>
+    <img src="images/stochastic_diversity_sigma0.1.png" style="width:70%;height:auto" alt="Stochastic Diversity at σ=0.1">
+    <figcaption>Figure 2: Stochastic Diversity at σ=0.1, confirming that local geometry remains coherent under moderate noise.</figcaption>
+  </figure>
+  <figure>
+    <img src="images/lambda_comparison.png" style="width:70%;height:auto" alt="Lambda Comparison">
+    <figcaption>Figure 3: Lambda Comparison depicting how average distance differences drop as λ_iso increases.</figcaption>
+  </figure>
+  <figure>
+    <img src="images/stochastic_diversity_sigma0.5.png" style="width:70%;height:auto" alt="Stochastic Diversity at σ=0.5">
+    <figcaption>Figure 4: Stochastic Diversity at σ=0.5, highlighting samples with geometry retention.</figcaption>
+  </figure>
+  <figure>
+    <img src="images/latent_interpolation_lambda1.0.png" style="width:70%;height:auto" alt="Latent Interpolation with λ_iso=1.0">
+    <figcaption>Figure 5: Latent Interpolation with λ_iso=1.0, demonstrating smoother transitions with nonzero isometric penalty.</figcaption>
+  </figure>
+  <figure>
+    <img src="images/stochastic_diversity_sigma0.0.png" style="width:70%;height:auto" alt="Stochastic Diversity at σ=0.0">
+    <figcaption>Figure 6: Stochastic Diversity at σ=0.0, showing minimal variability in output when the generator is deterministic.</figcaption>
+  </figure>
+  <p><strong>Partial Noise Injection and Mode Coverage</strong></p>
+  <figure>
+    <img src="images/latent_interpolation_Iso.png" style="width:70%;height:auto" alt="Latent Interpolation in Iso-LWGAN">
+    <figcaption>Figure 7: Latent Interpolation in Iso-LWGAN illustrating smooth transitions in a partially stochastic setting.</figcaption>
+  </figure>
+  <figure>
+    <img src="images/sigma_loss_comparison.png" style="width:70%;height:auto" alt="Sigma Loss Comparison">
+    <figcaption>Figure 8: Sigma Loss Comparison summarizing training stability and reconstruction performance at different σ_noise levels.</figcaption>
+  </figure>
+  <figure>
+    <img src="images/distance_preservation.png" style="width:70%;height:auto" alt="Distance Preservation">
+    <figcaption>Figure 9: Distance Preservation showing aggregated statistics of geometry retention for varying λ_iso and σ_noise.</figcaption>
+  </figure>
+  <figure>
+    <img src="images/noise_injection_sigma0.0.png" style="width:70%;height:auto" alt="Noise Injection σ=0.0">
+    <figcaption>Figure 10: Noise Injection σ=0.0 depicting nearly identical outputs for a given latent code.</figcaption>
+  </figure>
+  <figure>
+    <img src="images/latent_interpolation_lambda0.5.png" style="width:70%;height:auto" alt="Latent Interpolation with λ_iso=0.5">
+    <figcaption>Figure 11: Latent Interpolation with λ_iso=0.5 demonstrating that even moderate isometric penalties preserve smooth geometry.</figcaption>
+  </figure>
+  <figure>
+    <img src="images/noise_injection_sigma0.1.png" style="width:70%;height:auto" alt="Noise Injection σ=0.1">
+    <figcaption>Figure 12: Noise Injection σ=0.1 highlighting controlled variability in outputs from the same latent code.</figcaption>
+  </figure>
+  <p><strong>Overall Comparison on MNIST</strong></p>
+  <figure>
+    <img src="images/mnist_comparison.png" style="width:70%;height:auto" alt="MNIST Comparison">
+    <figcaption>Figure 13: MNIST Comparison showing side-by-side generated images from Base LWGAN and Iso-LWGAN.</figcaption>
+  </figure>
+  <figure>
+    <img src="images/diversity_comparison.png" style="width:70%;height:auto" alt="Diversity Comparison">
+    <figcaption>Figure 14: Diversity Comparison summarizing coverage of digit classes, where Base LWGAN sometimes overlooks certain modes.</figcaption>
+  </figure>
+  <figure>
+    <img src="images/latent_interpolation_Base.png" style="width:70%;height:auto" alt="Latent Interpolation in Base LWGAN">
+    <figcaption>Figure 15: Latent Interpolation in Base LWGAN illustrating less smooth transitions compared to Iso-LWGAN.</figcaption>
+  </figure>
+  <figure>
+    <img src="images/avg_diff_comparison.png" style="width:70%;height:auto" alt="Average Distance Differences">
+    <figcaption>Figure 16: Average Distance Differences summarizing geometry metrics, with Iso-LWGAN showing better local distance preservation.</figcaption>
+  </figure>
+  <figure>
+    <img src="images/latent_interpolation_lambda2.0.png" style="width:70%;height:auto" alt="Latent Interpolation with λ_iso=2.0">
+    <figcaption>Figure 17: Latent Interpolation with λ_iso=2.0 demonstrating an extreme isometric setting with strongly enforced distance preservation.</figcaption>
+  </figure>
+  <figure>
+    <img src="images/noise_injection_sigma0.5.png" style="width:70%;height:auto" alt="Noise Injection σ=0.5">
+    <figcaption>Figure 18: Noise Injection σ=0.5 displaying increased output diversity at high noise levels, though with potential instability.</figcaption>
+  </figure>
+  <figure>
+    <img src="images/latent_interpolation_lambda0.0.png" style="width:70%;height:auto" alt="Latent Interpolation with λ_iso=0.0">
+    <figcaption>Figure 19: Latent Interpolation with λ_iso=0.0 showing the absence of local distance regularization resulting in possible distortions.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2>Conclusions</h2>
+  <p>We introduced Iso-LWGAN, an extension of LWGAN that incorporates an isometric regularizer and selective noise injection in the generator. These enhancements address crucial issues of local geometric fidelity and mode coverage without sacrificing the underlying dimension-adaptive approach.</p>
+  <p>Our experiments on synthetic manifolds and MNIST reveal that higher isometric penalties substantially reduce geometric distortions, while partial noise injection effectively mitigates mode collapse in multimodal data. Although isometric regularization can slightly increase reconstruction loss, the alignment of latent and output geometries yields smoother interpolations and more coherent transitions.</p>
+  <p>In practice, tuning λ_iso and σ_noise allows for a balance between geometric preservation, output variability, and reconstruction quality. Future work will explore applying Iso-LWGAN to higher-resolution images and integrating advanced manifold constraints, potentially involving curvature or topological features, to further enhance generative modeling of complex data structures.</p>
+</section>
+</body>
+</html>
