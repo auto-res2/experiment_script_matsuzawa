@@ -32,6 +32,11 @@ jobs:
             pdftoppm "$pdf" "output_images/${name}" -png
           done
 
+          for png in output_images/*-1.png; do
+            base=$(basename "$png" -1.png)
+            mv "$png" "output_images/${base}.png"
+          done
+
       - name: Switch to gh-pages branch
         run: |
           git fetch origin gh-pages
