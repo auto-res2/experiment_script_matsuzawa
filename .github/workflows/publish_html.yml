@@ -7,11 +7,14 @@ jobs:
   convert-and-upload:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write
+
     steps:
       - name: Checkout current branch
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install PDF to PNG tools
         run: |
@@ -42,8 +45,8 @@ jobs:
 
       - name: Commit and push to gh-pages
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add branches
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add branches/
           git commit -m "Upload PNGs from ${{ github.ref_name }}"
           git push origin gh-pages
