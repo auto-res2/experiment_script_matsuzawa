@@ -55,15 +55,9 @@ jobs:
 
       - name: Commit and push artifacts
         run: |
-          if [[ -n "$(git status --porcelain .research/latex/images .research/${BASENAME}.pdf)" ]]; then
-            git config user.email "action@github.com"
-            git config user.name  "GitHub Action"
-
-            git add .research/latex/images
-            git add .research/${BASENAME}.pdf
-
-            git commit -m "Add LaTeX artifacts"
-            git push origin "${{ github.ref_name }}"
-          else
-            echo "No new artifacts to commit."
-          fi
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .research/latex/images
+          git add .research/${BASENAME}.pdf
+          git commit -m "Add LaTeX artifacts"
+          git push origin "${{ github.ref_name }}"
