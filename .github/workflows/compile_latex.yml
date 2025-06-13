@@ -7,9 +7,14 @@ jobs:
   compile-latex:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install TeX packages
         run: |
@@ -26,23 +31,12 @@ jobs:
           latest=$(ls .research | grep '^iteration[0-9]\+$' | sed 's/iteration//' | sort -n | tail -n1)
           src_dir=".research/iteration${latest}/images"
           dest_dir=".research/latex/images"
-          echo "src_dir  = ${src_dir}"
-          echo "dest_dir = ${dest_dir}"
           echo "Copying from $src_dir to $dest_dir"
-
-          echo "::group::List src_dir BEFORE copy"
-          if [ -d "$src_dir" ]; then
-            ls -al "$src_dir"
-          else
-            echo "src_dir does NOT exist"
-          fi
-          echo "::endgroup::"
 
           mkdir -p "$dest_dir"
           cp -r "$src_dir"/* "$dest_dir" || echo "No images to copy"
-          ls -al "$dest_dir"
 
-      - name: Run pdflatex + bibtex manually in .research/latex/
+      - name: Compile LaTeX
         run: |
           cd .research/latex
           TEXFILE=$(ls *.tex | head -n1)
@@ -53,12 +47,23 @@ jobs:
           pdflatex -interaction=nonstopmode "$TEXFILE"
           pdflatex -interaction=nonstopmode "$TEXFILE"
 
+          echo "BASENAME=$BASENAME" >> $GITHUB_ENV
+
           mkdir -p ../
           cp "$BASENAME.pdf" ../
           cp "$BASENAME.log" ../ || true
 
-      - name: Upload compiled LaTeX
-        uses: actions/upload-artifact@v4
-        with:
-          name: compiled-latex
-          path: .research/
+      - name: Commit and push artifacts
+        run: |
+          if [[ -n "$(git status --porcelain .research/latex/images .research/${BASENAME}.pdf)" ]]; then
+            git config user.email "action@github.com"
+            git config user.name  "GitHub Action"
+
+            git add .research/latex/images
+            git add .research/${BASENAME}.pdf
+
+            git commit -m "Add LaTeX artifacts"
+            git push origin "${{ github.ref_name }}"
+          else
+            echo "No new artifacts to commit."
+          fi
