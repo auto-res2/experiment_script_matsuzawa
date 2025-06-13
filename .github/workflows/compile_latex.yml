@@ -1,0 +1,53 @@
+name: Compile LaTeX
+
+on:
+  workflow_dispatch:
+
+jobs:
+  compile-latex:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install TeX packages
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            texlive-base \
+            texlive-latex-recommended \
+            texlive-fonts-recommended \
+            texlive-latex-extra \
+            texlive-science \
+
+      - name: Copy latest images to .research/latex/images/
+        run: |
+          latest=$(ls .research | grep '^iteration[0-9]\+$' | sed 's/iteration//' | sort -n | tail -n1)
+          src_dir=".research/iteration${latest}/images"
+          dest_dir=".research/latex/images"
+          echo "Copying from $src_dir to $dest_dir"
+
+          mkdir -p "$dest_dir"
+          cp -r "$src_dir"/* "$dest_dir" || echo "No images to copy"
+
+      - name: Run pdflatex + bibtex manually in .research/latex/
+        run: |
+          cd .research/latex
+          TEXFILE=$(ls *.tex | head -n1)
+          BASENAME=$(basename "$TEXFILE" .tex)
+
+          pdflatex -interaction=nonstopmode "$TEXFILE"
+          bibtex "$BASENAME"
+          pdflatex -interaction=nonstopmode "$TEXFILE"
+          pdflatex -interaction=nonstopmode "$TEXFILE"
+
+          mkdir -p ../
+          cp "$BASENAME.pdf" ../
+          cp "$BASENAME.log" ../ || true
+
+      - name: Upload compiled LaTeX
+        uses: actions/upload-artifact@v4
+        with:
+          name: compiled-latex
+          path: .research/

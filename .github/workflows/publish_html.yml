@@ -1,5 +1,4 @@
-name: publish_html
-
+name: Publish Html
 on:
   workflow_dispatch:
 
